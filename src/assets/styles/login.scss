@@ -1,50 +1,85 @@
 @import "./variables/colors.scss";
 
-.login-wrapper {
-  min-height: 100vh;
+.login-sec {
   width: 100%;
-  position: relative;
-}
-.form-container {
-  margin: 0;
-  display: flex;
+  height: 100vh;
+  min-height: 700px;
   justify-content: center;
-  align-items: center;
-  background-color: white;
-  padding: 20px;
-  z-index: 90;
-  border-radius: 5px;
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.014);
-}
-
-.login-form {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100%;
-  border-radius: 5px;
-}
+  background-color: $color1;
 
-.username:hover {
-  border-color: $color2;
-}
+  .login-box {
+    display: flex;
+    min-height: 400px;
+    width: 50%;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.196);
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: $bgColor;
 
-.banner {
-  background: url("https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80");
-  background-color: rgba(27, 52, 180, 0.639);
-  background-blend-mode: multiply;
-  width: 100%;
-  height: 40%;
-  position: absolute;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  span {
-    font-size: 40px;
-    text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.215);
-    color: white;
+    .login-form-box {
+      background-color: $bgColor;
+      padding: 20px;
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      justify-content: center;
+      align-items: center;
+      .logo {
+        // border-radius: 100%;
+        width: 50px;
+        height: 50px;
+        // overflow: hidden;
+        box-shadow: 0px 0px 5px rgba(255, 144, 71, 0.33);
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          display: block;
+        }
+      }
+      .welcome {
+      }
+      .login-form {
+      }
+    }
+    .login-img-box {
+      width: 50%;
+      overflow: hidden;
+      background-color: $blackColor;
+      // clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
+      .mySwiper {
+        width: 100%;
+        height: 100%;
+        .swiper-pagination {
+          .swiper-pagination-bullet-active-main {
+            width: 10px;
+            height: 10px;
+            background-color: $bgColor;
+          }
+        }
+        .swiper-wrapper {
+          width: 100%;
+          height: 100%;
+          .swiper-slide {
+            width: 100%;
+            .ant-image {
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+      }
+    }
   }
 }

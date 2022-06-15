@@ -23,79 +23,82 @@ export const RoutesFa = () => {
       <Routes>
         <Route exact path={map.routes.login} element={<Login />} />
       </Routes>
-      <Template>
-        <Routes>
-          <Route
-            exact
-            path={map.routes.dashboard}
-            element={
-              access_token ? <Dashboard /> : <Navigate to={map.routes.login} />
-            }
-          />
 
-          <Route
-            exact
-            path={map.routes.admins}
-            element={
-              access_token ? <Admins /> : <Navigate to={map.routes.login} />
-            }
-          />
-          <Route
-            exact
-            path={map.routes.userCategories}
-            element={
-              access_token ? (
-                <UserCategories />
-              ) : (
-                <Navigate to={map.routes.login} />
-              )
-            }
-          />
-          <Route
-            exact
-            path={map.routes.payments}
-            element={
-              access_token ? <Payments /> : <Navigate to={map.routes.login} />
-            }
-          />
-          <Route
-            exact
-            path={map.routes.userCalls}
-            element={
-              access_token ? <UserCalls /> : <Navigate to={map.routes.login} />
-            }
-          />
-          <Route
-            exact
-            path={map.routes.settlementRequests}
-            element={
-              access_token ? (
-                <SettlementRequests />
-              ) : (
-                <Navigate to={map.routes.login} />
-              )
-            }
-          />
-          <Route
-            exact
-            path={map.routes.users}
-            element={
-              access_token ? <Users /> : <Navigate to={map.routes.login} />
-            }
-          />
-          <Route
-            exact
-            path={map.routes.walletDetails}
-            element={
-              access_token ? (
-                <WalletDetail />
-              ) : (
-                <Navigate to={map.routes.login} />
-              )
-            }
-          />
-        </Routes>
-      </Template>
+      <Routes>
+        <Route
+          exact
+          path={map.routes.dashboard}
+          // element={
+          //   access_token ? <Dashboard /> : <Navigate to={map.routes.login} />
+          // }
+          element={<Dashboard />}
+        />
+
+        <Route
+          exact
+          path={map.routes.admins}
+          // element={
+          //   access_token ? <Admins /> : <Navigate to={map.routes.login} />
+          // }
+          element={<Admins />}
+        />
+        <Route
+          exact
+          path={map.routes.userCategories}
+          // element={
+          //   access_token ? (
+          //     <UserCategories />
+          //   ) : (
+          //     <Navigate to={map.routes.login} />
+          //   )
+          // }
+          element={<UserCategories />}
+        />
+        <Route
+          exact
+          path={map.routes.payments}
+          // element={
+          //   access_token ? <Payments /> : <Navigate to={map.routes.login} />
+          // }
+          element={<Payments />}
+        />
+        <Route
+          exact
+          path={map.routes.userCalls}
+          // element={
+          //   access_token ? <UserCalls /> : <Navigate to={map.routes.login} />
+          // }
+          element={<UserCalls />}
+        />
+        <Route
+          exact
+          path={map.routes.settlementRequests}
+          // element={
+          //   access_token ? (
+          //     <SettlementRequests />
+          //   ) : (
+          //     <Navigate to={map.routes.login} />
+          //   )
+          // }
+          element={<SettlementRequests />}
+        />
+        <Route
+          exact
+          path={map.routes.users}
+          // element={
+          //   access_token ? <Users /> : <Navigate to={map.routes.login} />
+          // }
+          element={<Users />}
+        />
+        <Route
+          exact
+          path={map.routes.walletDetails}
+          // element={
+          //   access_token ? <WalletDetail /> : <Navigate to={map.routes.login} />
+          // }
+          element={<WalletDetail />}
+        />
+      </Routes>
     </>
   );
 };

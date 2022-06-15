@@ -3,8 +3,6 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ConfigProvider } from "antd";
-// import "antd/dist/antd.less";
-import "antd/dist/antd.css";
 import { ApolloProvider, gql } from "@apollo/client";
 import { client } from "./lib/tokenManager";
 import { Provider } from "react-redux";

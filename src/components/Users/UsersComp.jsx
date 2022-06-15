@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import DefaultTable from "../Table/DefaultTable";
-import { Button, Form, message, Popconfirm, Spin, Typography } from "antd";
+import {
+  Avatar,
+  Button,
+  Form,
+  message,
+  Popconfirm,
+  Spin,
+  Typography,
+  Image,
+} from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import {
   useFilterUsers,
@@ -43,43 +52,59 @@ export const UsersComp = () => {
   const columns = [
     {
       title: "نام کامل",
-      dataIndex: "fullName",
+      // dataIndex: "fullName",
       width: "20%",
       editable: true,
       align: "center",
+      render: (_, record) => {
+        return (
+          <>
+            <div className="flex-row-center">
+              <Avatar
+                src={
+                  <Image
+                    src={
+                      record?.image
+                        ? record?.image
+                        : "https://joeschmoe.io/api/v1/random"
+                    }
+                    style={{ width: 32 }}
+                  />
+                }
+              />
+              {/* <img src={record.image} alt="" /> */}
+              <span>{record.fullName}</span>
+            </div>
+          </>
+        );
+      },
     },
     {
-      title: "نام کاربری",
-      dataIndex: "username",
-      width: "10%",
+      title: "ایمیل",
+      dataIndex: "email",
+      width: "20%",
       editable: true,
       align: "center",
     },
     {
       title: "شماره تماس",
       dataIndex: "phoneNumber",
-      width: "10%",
+      width: "20%",
       editable: true,
       align: "center",
     },
     {
-      title: "کیف پول",
-      dataIndex: "wallet",
-      width: "10%",
+      title: "آدرس",
+      dataIndex: "address",
+      width: "20%",
       editable: true,
       align: "center",
     },
-    {
-      title: "امتیاز",
-      dataIndex: "rate",
-      width: "10%",
-      editable: true,
-      align: "center",
-    },
+
     {
       title: "تغییرات",
       dataIndex: "actions",
-      width: "40%",
+      width: "20%",
       align: "center",
       render: (_, record) => {
         return (
@@ -93,9 +118,6 @@ export const UsersComp = () => {
             <Typography.Link onClick={() => showEditModal(record)}>
               <EditOutlined />
             </Typography.Link>
-            <Button type="primary" onClick={() => gotToDetailsPage(record._id)}>
-              جزییات کیف پول
-            </Button>
             <Typography.Link>
               <Popconfirm
                 onConfirm={() => remove(record)}
@@ -105,6 +127,14 @@ export const UsersComp = () => {
               >
                 <DeleteOutlined />
               </Popconfirm>
+            </Typography.Link>
+            <Typography.Link>
+              <Button
+                type="primary"
+                onClick={() => gotToDetailsPage(record._id)}
+              >
+                جزییات
+              </Button>
             </Typography.Link>
           </span>
         );

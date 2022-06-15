@@ -4,13 +4,11 @@ import { useQuery, gql, useMutation, useLazyQuery } from "@apollo/client";
 export const GET_USERS = gql`
   query {
     getUsers {
+      image
       fullName
-      username
+      email
       phoneNumber
-      wallet
-      rate
-      _id
-      createdAt
+      address
     }
   }
 `;
