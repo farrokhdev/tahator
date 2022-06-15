@@ -1,0 +1,64 @@
+@import "../variables/colors.scss";
+
+.costum-template {
+  min-height: 100vh !important;
+
+  .logo {
+    padding: 40px 20px;
+    font-size: 15px;
+    line-height: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    overflow: hidden;
+
+    img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .logo-text {
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 400;
+      margin: 0;
+      transition: opacity 0.3s ease;
+    }
+  }
+  .site-layout .header-costume {
+    padding: 0 24px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+  .costum-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+// modal footer text align
+.ant-modal-wrap-rtl .ant-modal-footer {
+  text-align: right !important;
+}
+
+// logout
+.logout {
+  background-color: transparent !important;
+  color: $color2 !important;
+  cursor: pointer !important;
+}
+
+// ant message
+.ant-message {
+  z-index: 9999999999999999999999999999999999999999 !important;
+}

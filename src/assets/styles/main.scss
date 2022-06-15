@@ -1,0 +1,28 @@
+@import "./globals/text.scss";
+@import "./globals/flex.scss";
+@import "./ant/ant-custom.scss";
+@import "./ant/ant-template.scss";
+@import "./dashboard.scss";
+@import "./login.scss";
+@import "./topbox.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%; //for rem (1rem is 10px)
+}
+body {
+  font-family: iranyekan, sans-serif !important;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
