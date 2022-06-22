@@ -1,82 +1,177 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Dropdown, Menu, Space, message } from "antd";
-import AddUserModal from "../modals/AddUserModal";
-import { AddUserForm } from "../Forms/AddUserForm";
-import { SearchUserForm } from "../Forms/SearchUserForm";
+import {
+  Tabs,
+  Button,
+  Input,
+  Dropdown,
+  Menu,
+  Space,
+  message,
+  Spin,
+  Form,
+} from "antd";
+import { DownOutlined, UpOutlined, SearchOutlined } from "@ant-design/icons";
+import GlobModal from "../modals/GlobModal";
+import { AddAdminForm } from "../Forms/AddAdminForm";
+import { EditAdminForm } from "../Forms/EditAdminForm";
 
 const { Search } = Input;
+const { TabPane } = Tabs;
+
+const validateMessages = {
+  required: "${label} پر کردن این فیلد ضروری میباشد!",
+  types: {
+    email: "${label} ایمیل معتبر نمیباشد!",
+    number: "${label} شماره تلفن معتبر نیست!",
+  },
+  number: {
+    range: "${label} باید بین ${min} و ${max} باشد",
+  },
+};
 
 export const TopBox = ({
-  searchText,
-  btnText,
-  filterUsers = "",
-  refetch = "",
-  error = "",
-  createUser = "",
+  filter = {},
+  showModal = "",
+  visible = "",
+  hideModal = "",
+  editVisible = "",
+  hideEditModal = "",
+  edit = "",
+  create = "",
+  getAll = "",
+  getByFilter = "",
+  createForm = "",
+  editForm = "",
+  searchForm = "",
+  loading,
 }) => {
-  // MODAL OPRATIONS
-  const [addModal, setAddModal] = useState(false);
-  const showModal = () => {
-    setAddModal(true);
-  };
-  const hideModal = () => {
-    setAddModal(false);
-  };
-  // MODAL OPRATIONS END
-
-  const onSearch = (value) => {
-    try {
-      filterUsers({
-        variables: {
-          filters: {
-            username: value.username,
-            fullName: value.fullName,
-            phoneNumber: value.phoneNumber,
-            createdAt: value.createdAt,
-          },
-        },
-      }).then(() => refetch());
-    } catch (err) {
-      if (error) {
-        message.error(error?.message ? error?.message : "خطا مجددا تلاش کنید");
-      }
-    }
+  // DROP DOWN OPRATIONS
+  const [dropVisible, setDropVisible] = useState(false);
+  const openDrop = () => {
+    setDropVisible(!dropVisible);
   };
 
-  const addUser = (values) => {
+  // on search
+  const onSearch = (values) => {
     try {
-      createUser({
-        variables: {
-          username: values.username,
-          fullName: values.fullName,
-          phoneNumber: values.phoneNumber,
-        },
-      }).then(() => {
-        message.success("کاربر با موفقیت ساخته شد");
-        hideModal();
-        refetch();
+      getByFilter({
+        ...values,
       });
+      setDropVisible(!dropVisible);
     } catch (err) {
       console.log(err);
-      message.error(error?.message ? error?.message : "خطا مجددا تلاش کنید");
     }
   };
+
+  // get all
+  const getAllData = async () => {
+    await getAll()
+      .then(() => searchForm.resetFields())
+      .then(() => setDropVisible(false));
+  };
+
+  const menu = (
+    <Menu
+      items={[
+        {
+          label: (
+            <Tabs defaultActiveKey="1">
+              <TabPane key="1">
+                <Form
+                  form={searchForm}
+                  onFinish={onSearch}
+                  validateMessages={validateMessages}
+                >
+                  <Form.Item
+                    name={"name"}
+                    label={filter && filter?.first}
+                    rules={[
+                      {
+                        required: true,
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name={"username"}
+                    label={filter && filter?.second}
+                    rules={[
+                      {
+                        required: true,
+                      },
+                    ]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      icon={<SearchOutlined />}
+                    >
+                      جستجو
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </TabPane>
+            </Tabs>
+          ),
+          key: "0",
+        },
+      ]}
+    />
+  );
+  // DROP DOWN OPRATIONS END
+  // MODAL OPRATIONS
+
+  // MODAL OPRATIONS END
+
   return (
     <>
-      {/* ADD USER MODAL */}
-      <AddUserModal addModal={addModal} hideModal={hideModal}>
-        <AddUserForm onFinish={addUser} />
-      </AddUserModal>
-      {/* ADD USER MODAL END */}
+      {/* ADD MODAL */}
+      <GlobModal
+        title={" ایجاد ادمین"}
+        visible={visible}
+        hideModal={hideModal}
+        formName={"add-admin"}
+      >
+        <AddAdminForm onFinish={create} formRef={createForm} />
+      </GlobModal>
+      {/* ADD MODAL END */}
+      {/* EDIT MODAL */}
+      <GlobModal
+        title={" ویرایش ادمین"}
+        visible={editVisible}
+        hideModal={hideEditModal}
+        formName={"edit-admin"}
+      >
+        {loading ? (
+          <Spin spinning={loading} />
+        ) : (
+          <EditAdminForm onFinish={edit} formRef={editForm} />
+        )}
+      </GlobModal>
+      {/* EDIT MODAL END */}
       <div className="top-box">
         <div className="search">
-          {/* <Search placeholder={searchText} onSearch={onSearch} enterButton /> */}
-
-          <SearchUserForm onFinish={onSearch} />
+          <Dropdown overlay={menu} trigger={["click"]} visible={dropVisible}>
+            <Button
+              type="primary"
+              icon={dropVisible ? <UpOutlined /> : <DownOutlined />}
+              onClick={openDrop}
+            >
+              فیلتر
+            </Button>
+          </Dropdown>
+          <Button type="primary" onClick={getAllData}>
+            همه
+          </Button>
         </div>
+
         <div className="create-btn">
           <Button type="primary" onClick={showModal}>
-            {btnText}
+            ایجاد
           </Button>
         </div>
       </div>

@@ -9,42 +9,45 @@ import { useNavigate } from "react-router-dom";
 import "../assets/styles/login.scss";
 import Logo from "../assets/images/icon/logo.png";
 import { LoginSlider } from "../components/Login/LoginSlider";
-
-const SET_LOGIN = gql`
-  mutation AddTodo($username: String!, $password: String!) {
-    adminLogin(input: { username: $username, password: $password }) {
-      token
-    }
-  }
-`;
+import { useLogin } from "../hooks/useAuth";
 
 const Login = () => {
   const Navigate = useNavigate();
 
-  const [setLogin, { data, loading, error }] = useMutation(SET_LOGIN);
+  const { setLogin, loginData, loginloading, loginError, loginRefetch } =
+    useLogin();
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     const { username, password } = values;
     try {
-      setLogin({ variables: { username, password } }).then(() =>
-        message.success("به پنل ادمین خوش آمدید")
-      );
+      await setLogin({
+        variables: {
+          input: {
+            username: username,
+            password: password,
+          },
+        },
+      }).then((res) => {
+        console.log(res);
+        message.success("به پنل ادمین خوش آمدید");
+      });
     } catch (err) {
       console.log(err);
-      message.error(
-        error?.message ? error?.message : "خطا در ورود مجدد تلاش کنید"
-      );
+      await message.error(loginError?.message && "خطا در ورود مجدد تلاش کنید");
     }
   };
 
   useEffect(() => {
-    if (data && data?.adminLogin) {
-      TokenManager.setToken(data.adminLogin.token, "REFRESH_TOKEN");
+    if (loginData && loginData?.adminLogin) {
+      TokenManager.setToken(
+        loginData?.adminLogin.token.accessToken,
+        "REFRESH_TOKEN"
+      );
       setTimeout(() => {
         window.location.replace(map.routes.users);
       }, 1000);
     }
-  }, [data]);
+  }, [loginData]);
 
   return (
     <div className="login-sec">
@@ -100,7 +103,7 @@ const Login = () => {
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
-                loading={loading}
+                loading={loginloading}
                 block
               >
                 ورود

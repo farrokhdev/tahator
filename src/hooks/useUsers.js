@@ -2,57 +2,32 @@ import { useQuery, gql, useMutation, useLazyQuery } from "@apollo/client";
 
 // GET_USERS
 export const GET_USERS = gql`
-  query {
-    getUsers {
-      image
-      fullName
-      email
-      phoneNumber
-      address
-    }
-  }
-`;
-
-export const useGetUsers = () => {
-  const {
-    data: usersData,
-    loading: usersLoading,
-    error: usersError,
-    refetch,
-  } = useQuery(GET_USERS, {
-    manual: true,
-  });
-
-  return { usersData, usersLoading, usersError, refetch };
-};
-
-// for filter users
-export const FILTER_USERS = gql`
   query getUsers($filters: GetUsersQueryInput) {
     getUsers(filters: $filters) {
       fullName
       phoneNumber
-      username
-      wallet
-      rate
+      email
+      type
       _id
+      # wallet
+      # rate
+      # createdAt
     }
   }
 `;
 
-export const useFilterUsers = (filters) => {
+export const useGetUsers = (filters) => {
   const [
-    filterUsers,
-    {
-      data: filterUsersData,
-      loading: filterUsersLoading,
-      error: filterUsersError,
+    getUsersList,
+    { data: usersData, loading: usersLoading, error: usersError, refetch },
+  ] = useLazyQuery(GET_USERS, {
+    variables: {
+      filters: filters,
     },
-  ] = useLazyQuery(FILTER_USERS, {
-    variables: { filters: filters },
+    fetchPolicy: "no-cache",
   });
 
-  return { filterUsers, filterUsersData, filterUsersLoading, filterUsersError };
+  return { getUsersList, usersData, usersLoading, usersError, refetch };
 };
 
 // GET_USERS END
@@ -62,18 +37,25 @@ export const GET_USER = gql`
   query getSingleUser($id: ID!) {
     getUser(id: $id) {
       fullName
-      username
       phoneNumber
-      wallet
-      rate
+      email
+      type
       _id
+      cashWallet {
+        unit {
+          _id
+          unit
+          status
+        }
+        amount
+      }
     }
   }
 `;
 
 export const useGetUser = (id) => {
   const [
-    getSingleUser,
+    getUser,
     {
       data: singleUserData,
       loading: singleUserLoading,
@@ -82,10 +64,11 @@ export const useGetUser = (id) => {
     },
   ] = useLazyQuery(GET_USER, {
     variables: { id: id },
+    fetchPolicy: "no-cache",
   });
 
   return {
-    getSingleUser,
+    getUser,
     singleUserData,
     singleUserLoading,
     singleUserError,
@@ -116,18 +99,8 @@ export const useDeleteUser = (input) => {
 
 // ADD USER
 export const AddUser = gql`
-  mutation addUser(
-    $username: String
-    $fullName: String!
-    $phoneNumber: String!
-  ) {
-    createUserByAdmin(
-      input: {
-        username: $username
-        fullName: $fullName
-        phoneNumber: $phoneNumber
-      }
-    ) {
+  mutation addUser($input: CreateUserByAdminInput) {
+    createUserByAdmin(input: $input) {
       _id
     }
   }
@@ -145,22 +118,8 @@ export const useAddUser = (input) => {
 
 // EDIT USER
 export const editUser = gql`
-  mutation editUser(
-    $username: String
-    $fullName: String!
-    $wallet: Float!
-    $phoneNumber: String!
-    $userId: ID!
-  ) {
-    updateUserByAdmin(
-      input: {
-        username: $username
-        wallet: $wallet
-        fullName: $fullName
-        phoneNumber: $phoneNumber
-      }
-      userId: $userId
-    ) {
+  mutation editUser($input: UpdateUserByAdminInput, $userId: ID!) {
+    updateUserByAdmin(input: $input, userId: $userId) {
       _id
     }
   }

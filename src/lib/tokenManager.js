@@ -14,7 +14,7 @@ export const client = new ApolloClient({
   uri: "https://cashforchat.com:8080/graphql",
   cache: new InMemoryCache(),
   headers: {
-    // authorization: token ? token : "",
+    authorization: token ? token : "",
   },
 });
 

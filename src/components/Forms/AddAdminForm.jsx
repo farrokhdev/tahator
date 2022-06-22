@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Input, InputNumber } from "antd";
+import { Button, Form, Input, InputNumber, Select } from "antd";
 import Password from "antd/lib/input/Password";
 
 const validateMessages = {
@@ -13,12 +13,15 @@ const validateMessages = {
   },
 };
 
-export const AddAdminForm = ({ onFinish }) => {
+const { Option } = Select;
+
+export const AddAdminForm = ({ onFinish, formRef }) => {
   return (
     <Form
-      name="add-user"
+      name="add-admin"
       onFinish={onFinish}
       validateMessages={validateMessages}
+      form={formRef}
     >
       <Form.Item
         name={"name"}
@@ -53,6 +56,7 @@ export const AddAdminForm = ({ onFinish }) => {
       >
         <Input />
       </Form.Item>
+
       <Form.Item
         name={"password"}
         label="کلمه عبور"
@@ -65,7 +69,7 @@ export const AddAdminForm = ({ onFinish }) => {
       >
         <Input.Password />
       </Form.Item>
-      <Form.Item
+      {/* <Form.Item
         name={"phoneNumber"}
         label="شماره تماس"
         rules={[
@@ -77,7 +81,7 @@ export const AddAdminForm = ({ onFinish }) => {
         ]}
       >
         <Input />
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item
         name={"role"}
         label="نقش"
@@ -87,14 +91,10 @@ export const AddAdminForm = ({ onFinish }) => {
           },
         ]}
       >
-        <Input />
+        <Select defaultValue={"انتخاب"}>
+          <Option value="62ad78660e6f4119f9208983">Admin</Option>
+        </Select>
       </Form.Item>
-
-      {/* <Form.Item>
-        <Button type="primary" htmlType="submit">
-          ثبت
-        </Button>
-      </Form.Item> */}
     </Form>
   );
 };

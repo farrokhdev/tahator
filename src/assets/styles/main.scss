@@ -1,11 +1,12 @@
 @import "./globals/text.scss";
 @import "./globals/flex.scss";
-@import "./ant/ant-custom.scss";
-@import "./ant/ant-template.scss";
+
 @import "./dashboard.scss";
 @import "./login.scss";
 @import "./topbox.scss";
 @import "swiper/css";
+@import "./ant/ant-custom.scss";
+@import "./ant/ant-template.scss";
 
 * {
   margin: 0;

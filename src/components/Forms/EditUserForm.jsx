@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Form, Input, InputNumber, message } from "antd";
+import { Button, Form, Input, InputNumber, message, Select } from "antd";
 
 const validateMessages = {
   required: "${label} پر کردن این فیلد ضروری میباشد!",
@@ -12,90 +12,44 @@ const validateMessages = {
   },
 };
 
-export const EditUserForm = ({
-  onFinish,
-  userID,
-  singleUserData,
-  getSingleUser,
-  singleRefetch,
-  refetch,
-  updateUser,
-  editError,
-  hideEditModal,
-}) => {
-  useEffect(() => {
-    try {
-      getSingleUser({
-        variables: {
-          id: userID,
-        },
-      }).then(() => {
-        singleRefetch();
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  }, [userID]);
+const { Option } = Select;
 
-  const edit = (value) => {
-    try {
-      updateUser({
-        variables: {
-          userId: userID,
-          username: value.username,
-          fullName: value.fullName,
-          phoneNumber: value.phoneNumber,
-        },
-      }).then(() => {
-        message.success("کاربر با موفقیت بروزرسانی شد");
-        hideEditModal();
-        refetch();
-      });
-    } catch (err) {
-      console.log(err);
-      message.error(editError.message);
-    }
-  };
-
+export const EditUserForm = ({ onFinish, formRef }) => {
   return (
     <Form
       name="edit-user"
-      onFinish={edit}
+      onFinish={onFinish}
       validateMessages={validateMessages}
-      initialValues={{
-        username: singleUserData?.getUser.username,
-        fullName: singleUserData?.getUser.fullName,
-        phoneNumber: singleUserData?.getUser.phoneNumber,
-      }}
+      form={formRef}
     >
       <Form.Item
-        name={"username"}
-        label="نام کاربری"
+        name={"fullName"}
+        label="نام کامل"
         rules={[
           {
-            required: true,
+            // required: true,
           },
         ]}
       >
         <Input />
       </Form.Item>
       <Form.Item
-        name={"fullName"}
-        label="نام کامل"
+        name={"password"}
+        label="کلمه عبور"
         rules={[
           {
-            required: true,
+            // required: true,
           },
         ]}
       >
-        <Input />
+        <Input.Password />
       </Form.Item>
       <Form.Item
         name={"phoneNumber"}
         label="شماره تماس"
         rules={[
           {
-            required: true,
+            // required: true,
             min: 0,
             max: 11,
           },
@@ -103,12 +57,36 @@ export const EditUserForm = ({
       >
         <Input />
       </Form.Item>
-
-      {/* <Form.Item>
-        <Button type="primary" htmlType="submit">
-          ثبت
-        </Button>
-      </Form.Item> */}
+      <Form.Item
+        name={"email"}
+        label="ایمیل"
+        rules={[
+          {
+            // required: true,
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label={"نوع"}
+        name="type"
+        rules={[
+          {
+            // required: true,
+          },
+        ]}
+      >
+        <Select
+          defaultValue="حقیقی"
+          style={{
+            width: "50%",
+          }}
+        >
+          <Option value={"Real"}>حقیقی</Option>
+          <Option value={"Legal"}>حقوقی</Option>
+        </Select>
+      </Form.Item>
     </Form>
   );
 };

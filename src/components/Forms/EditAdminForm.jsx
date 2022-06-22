@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
-import { Button, Form, Input, InputNumber, message } from "antd";
+import React from "react";
+import { Button, Form, Input, InputNumber, Select } from "antd";
+import Password from "antd/lib/input/Password";
 
 const validateMessages = {
   required: "${label} پر کردن این فیلد ضروری میباشد!",
@@ -12,126 +13,36 @@ const validateMessages = {
   },
 };
 
-export const EditAdminForm = ({
-  onFinish,
-  userID,
-  singleAdminData,
-  getSingleAdmin,
-  singleRefetch,
-  refetch,
-  update,
-  editError,
-  hideEditModal,
-}) => {
-  useEffect(() => {
-    try {
-      getSingleAdmin({
-        variables: {
-          id: userID,
-        },
-      }).then(() => {
-        singleRefetch();
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  }, [userID]);
+const { Option } = Select;
 
-  const edit = (value) => {
-    try {
-      update({
-        variables: {
-          id: userID,
-          username: value.username,
-          name: value.name,
-          family: value.family,
-          password: value.password,
-          phoneNumber: value.phoneNumber,
-        },
-      }).then(() => {
-        message.success("کاربر با موفقیت بروزرسانی شد");
-        hideEditModal();
-        refetch();
-      });
-    } catch (err) {
-      console.log(err);
-      message.error(
-        editError?.message
-          ? editError?.message
-          : "بروزرسانی با خطلا مواجه شد مجددا تلاش کنید"
-      );
-    }
-  };
-
+export const EditAdminForm = ({ onFinish, formRef }) => {
   return (
     <Form
-      name="edit-user"
-      onFinish={edit}
+      name="edit-admin"
+      onFinish={onFinish}
       validateMessages={validateMessages}
-      initialValues={{
-        username: singleAdminData?.getAdmin.username,
-        name: singleAdminData?.getAdmin.name,
-        family: singleAdminData?.getAdmin.family,
-        phoneNumber: singleAdminData?.getAdmin.phoneNumber,
-      }}
+      form={formRef}
     >
-      <Form.Item
-        name={"name"}
-        label="نام "
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
+      <Form.Item name={"name"} label="نام ">
         <Input />
       </Form.Item>
-      <Form.Item
-        name={"username"}
-        label="نام کاربری"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
+      <Form.Item name={"username"} label="نام کاربری">
         <Input />
       </Form.Item>
-      <Form.Item
-        name={"family"}
-        label="نام خانوادگی"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
+      <Form.Item name={"family"} label="نام خانوادگی">
         <Input />
       </Form.Item>
-      <Form.Item
-        name={"password"}
-        label="کلمه عبور"
-        rules={[
-          {
-            required: true,
-            min: 8,
-          },
-        ]}
-      >
+
+      <Form.Item name={"password"} label="کلمه عبور">
         <Input.Password />
       </Form.Item>
-      <Form.Item
-        name={"phoneNumber"}
-        label="شماره تماس"
-        rules={[
-          {
-            required: true,
-            min: 0,
-            max: 11,
-          },
-        ]}
-      >
+      {/* <Form.Item name={"phoneNumber"} label="شماره تماس">
         <Input />
+      </Form.Item> */}
+      <Form.Item name={"role"} label="نقش">
+        <Select defaultValue={"انتخاب"}>
+          <Option value="62ad78660e6f4119f9208983">Admin</Option>
+        </Select>
       </Form.Item>
 
       {/* <Form.Item>

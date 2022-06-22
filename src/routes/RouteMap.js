@@ -1,16 +1,17 @@
 const routes = {
   login: "login",
   dashboard: "/",
-  users: "users",
-  userCategories: "user-categories",
-  payments: "payments",
   admins: "admins",
-  settlementRequests: "settlement-requests",
-  wallet: "wallet",
-  userCalls: "user-calls",
-  kit: "dashboard/kit",
-  userReservations: "dashboard/user-reservations",
-  walletDetails: "users/wallet/:id",
+  services: "services",
+  orders: "orders",
+  other: "other",
+  units: "units",
+  auth: "auth",
+  services: "services",
+  categories: "categories",
+  categoriesAtr: "categories-atribute",
+  roles: "roles",
+  users: "users",
 };
 
 const ref = { ...{ routes } };

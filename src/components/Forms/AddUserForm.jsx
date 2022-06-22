@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, Input, InputNumber } from "antd";
+import { Button, Form, Input, InputNumber, Select } from "antd";
 
 const validateMessages = {
   required: "${label} پر کردن این فیلد ضروری میباشد!",
@@ -12,24 +12,15 @@ const validateMessages = {
   },
 };
 
-export const AddUserForm = ({ onFinish }) => {
+const { Option } = Select;
+export const AddUserForm = ({ onFinish, formRef }) => {
   return (
     <Form
       name="add-user"
       onFinish={onFinish}
       validateMessages={validateMessages}
+      form={formRef}
     >
-      <Form.Item
-        name={"username"}
-        label="نام کاربری"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
       <Form.Item
         name={"fullName"}
         label="نام کامل"
@@ -40,6 +31,17 @@ export const AddUserForm = ({ onFinish }) => {
         ]}
       >
         <Input />
+      </Form.Item>
+      <Form.Item
+        name={"password"}
+        label="کلمه عبور"
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+      >
+        <Input.Password />
       </Form.Item>
       <Form.Item
         name={"phoneNumber"}
@@ -54,12 +56,36 @@ export const AddUserForm = ({ onFinish }) => {
       >
         <Input />
       </Form.Item>
-
-      {/* <Form.Item>
-        <Button type="primary" htmlType="submit">
-          ثبت
-        </Button>
-      </Form.Item> */}
+      <Form.Item
+        name={"email"}
+        label="ایمیل"
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label={"نوع"}
+        name="type"
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+      >
+        <Select
+          defaultValue="حقیقی"
+          style={{
+            width: "50%",
+          }}
+        >
+          <Option value={"Real"}>حقیقی</Option>
+          <Option value={"Legal"}>حقوقی</Option>
+        </Select>
+      </Form.Item>
     </Form>
   );
 };

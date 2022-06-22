@@ -68,52 +68,77 @@ export const Template = ({ children }) => {
           </Menu.Item>
           <Menu.Item
             className={
-              location?.pathname === "/users" ? "ant-menu-item-selected" : ""
+              location?.pathname === "/services" ? "ant-menu-item-selected" : ""
             }
             key="2"
             icon={<UsergroupAddOutlined />}
           >
-            <Link to="/users">مدیریت کاربران</Link>
+            <Link to="/services"> خدمات</Link>
           </Menu.Item>
           <Menu.Item
             className={
-              location?.pathname === "/user-categories"
-                ? "ant-menu-item-selected"
-                : ""
+              location?.pathname === "/orders" ? "ant-menu-item-selected" : ""
             }
             key="3"
-            icon={<DropboxOutlined />}
+            icon={<UsergroupAddOutlined />}
           >
-            <Link to="/user-categories">دسته بندی کاربران</Link>
+            <Link to="/orders"> دستورات</Link>
           </Menu.Item>
           <Menu.Item
             className={
-              location?.pathname === "/payments" ? "ant-menu-item-selected" : ""
+              location?.pathname === "/units" ? "ant-menu-item-selected" : ""
             }
             key="4"
-            icon={<TransactionOutlined />}
+            icon={<UsergroupAddOutlined />}
           >
-            <Link to="/payments">تراکنش ها</Link>
+            <Link to="/units"> یونیت ها</Link>
           </Menu.Item>
           <Menu.Item
             className={
-              location?.pathname === "/user-calls"
+              location?.pathname === "/categories"
                 ? "ant-menu-item-selected"
                 : ""
             }
             key="5"
-            icon={<PhoneOutlined />}
+            icon={<UsergroupAddOutlined />}
           >
-            <Link to="/user-calls">تماس های کاربران</Link>
+            <Link to="/categories"> دسته بندی ها</Link>
           </Menu.Item>
-          {/* <Menu.Item key="6" icon={<PhoneOutlined />}>
-            <Link to="/settlement-requests">درخواست تسویه</Link>
-          </Menu.Item> */}
+          <Menu.Item
+            className={
+              location?.pathname === "/categories-atribute"
+                ? "ant-menu-item-selected"
+                : ""
+            }
+            key="6"
+            icon={<UsergroupAddOutlined />}
+          >
+            <Link to="/categories-atribute">ویژگی دسته بندی ها</Link>
+          </Menu.Item>
+          <Menu.Item
+            className={
+              location?.pathname === "/roles" ? "ant-menu-item-selected" : ""
+            }
+            key="7"
+            icon={<UsergroupAddOutlined />}
+          >
+            <Link to="/roles">نقش ها</Link>
+          </Menu.Item>
+          <Menu.Item
+            className={
+              location?.pathname === "/users" ? "ant-menu-item-selected" : ""
+            }
+            key="8"
+            icon={<UsergroupAddOutlined />}
+          >
+            <Link to="/users">کاربر ها</Link>
+          </Menu.Item>
+
           <Menu.Item
             className={
               location?.pathname === "/admins" ? "ant-menu-item-selected" : ""
             }
-            key="7"
+            key="9"
             icon={<UsergroupAddOutlined />}
           >
             <Link to="/admins">مدیران</Link>

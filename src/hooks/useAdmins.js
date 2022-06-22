@@ -2,28 +2,41 @@ import { useQuery, gql, useMutation, useLazyQuery } from "@apollo/client";
 
 // GET ALL ADMINS
 export const GET_Admins = gql`
-  query {
-    getAdmins(pagination: { limit: 5 }) {
+  query getAdminsList($filters: GetAdminsByAdminQueryInput) {
+    getAdmins(filters: $filters) {
       username
       name
       family
-      phoneNumber
+      role
       _id
     }
   }
 `;
 
-export const useGetAdmins = () => {
-  const {
-    data: adminsData,
-    loading: adminsLoading,
-    error: adminsError,
-    refetch: adminRefetch,
-  } = useQuery(GET_Admins, {
+export const useGetAdmins = (filters) => {
+  const [
+    getAdminsList,
+    {
+      data: adminsData,
+      loading: adminsLoading,
+      error: adminsError,
+      refetch: adminRefetch,
+    },
+  ] = useLazyQuery(GET_Admins, {
     manual: true,
+    variables: {
+      filters: filters,
+    },
+    fetchPolicy: "no-cache",
   });
 
-  return { adminsData, adminsLoading, adminsError, adminRefetch };
+  return {
+    getAdminsList,
+    adminsData,
+    adminsLoading,
+    adminsError,
+    adminRefetch,
+  };
 };
 
 // GET ALL ADMINS END
@@ -35,7 +48,8 @@ export const GET_ADMIN = gql`
       username
       name
       family
-      phoneNumber
+
+      role
       _id
     }
   }
@@ -52,6 +66,7 @@ export const useGetAdmin = (id) => {
     },
   ] = useLazyQuery(GET_ADMIN, {
     variables: { id: id },
+    fetchPolicy: "no-cache",
   });
 
   return {
@@ -98,29 +113,11 @@ export const useDeleteAdmin = (id) => {
 
 // ADD ADMIN
 export const AddAdmin = gql`
-  mutation addAdmin(
-    $username: String!
-    $name: String!
-    $family: String!
-    $phoneNumber: String!
-    $password: String!
-    $role: ID!
-  ) {
-    createAdminByAdmin(
-      input: {
-        username: $username
-        name: $name
-        family: $family
-        phoneNumber: $phoneNumber
-        password: $password
-        role: $role
-      }
-    ) {
+  mutation addAdmin($input: CreateAdminByAdminInput) {
+    createAdminByAdmin(input: $input) {
       username
       name
       family
-      phoneNumber
-      password
       status
       role
     }
@@ -140,11 +137,10 @@ export const useAddAdmin = (input) => {
 // EDIT ADMIN
 
 export const EditAdmin = gql`
-  mutation editAdmin($username: String, $id: ID!) {
-    updateAdminByAdmin(input: { username: $username }, id: $id) {
+  mutation editAdmin($input: UpdateAdminByAdminInput, $id: ID!) {
+    updateAdminByAdmin(input: $input, id: $id) {
       _id
       username
-      phoneNumber
       password
       status
     }
