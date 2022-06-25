@@ -1,0 +1,23 @@
+.details-box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  .det-title {
+    text-align: center;
+    display: flex;
+    min-height: 90px;
+    align-items: center;
+    width: 100%;
+  }
+  .det-content {
+    text-align: right;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

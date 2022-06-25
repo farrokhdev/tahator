@@ -25,7 +25,7 @@ export const GET_Services = gql`
         }
         accepted
       }
-      discount
+      # discount
       value
       expireDate
 

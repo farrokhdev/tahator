@@ -1,13 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DefaultTable from "../Table/DefaultTable";
 import { Form, Popconfirm, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { TopBox } from "../Globals/TopBox";
-import { useGetOrders } from "../../hooks/useOrder";
+import { useGetOrders, useGetUserOrders } from "../../hooks/useOrder";
+import { OrdersGetByfilter } from "../CrudOprations/OrdersOpration";
+import { OrdersTopBox } from "../Globals/OrdersTopBox";
 
 export const OrdersComp = () => {
+  // form refs
   const [form] = Form.useForm();
+  const [searchForm] = Form.useForm();
 
+  // CRUD OPRATION
   const {
     getOrdersList,
     ordersData,
@@ -16,20 +21,34 @@ export const OrdersComp = () => {
     ordersRefetch,
   } = useGetOrders();
 
+  // user orders
+  const {
+    getUserOrdersList,
+    usesrOrdersData,
+    userOrdersLoading,
+    userOrdersError,
+    userOrdersRefetch,
+  } = useGetUserOrders();
+
   useEffect(() => {
     getOrdersList();
   }, []);
 
+  const filterOrders = (input) => {
+    OrdersGetByfilter(getOrdersList, input, ordersRefetch, ordersError);
+  };
+  // CRUD OPRATION END
+
   // TABLE COLUMN
   const columns = [
     {
-      title: "ارائه کننده",
-      dataIndex: "presenter",
+      title: "ارایه دهنده",
+      // dataIndex: "presenter",
       width: "20%",
       editable: true,
       align: "center",
       render: (_, record) => {
-        return <>{record?.services?.presenter?.fullName}</>;
+        return <>{record?.service?.presenter?.fullName}</>;
       },
     },
     {
@@ -39,7 +58,13 @@ export const OrdersComp = () => {
       editable: true,
       align: "center",
       render: (_, record) => {
-        return <>{record?.services?.category?.name?.value}</>;
+        return (
+          <>
+            {record?.service?.category?.name?.map((item) => {
+              return <>{item.value} ,</>;
+            })}
+          </>
+        );
       },
     },
     {
@@ -50,6 +75,18 @@ export const OrdersComp = () => {
       align: "center",
       render: (_, record) => {
         return <>{record?.buyer?.fullName}</>;
+      },
+    },
+
+    {
+      title: "وضعیت",
+      dataIndex: "accepted",
+      width: "20%",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        console.log(record);
+        return <>{record?.accepted ? "تایید شده" : " تایید نشده"}</>;
       },
     },
     {
@@ -66,22 +103,25 @@ export const OrdersComp = () => {
               justifyContent: "space-evenly",
             }}
           >
-            <Typography.Link
-            //  onClick={() => showEditModal(record)}
+            <Typography.Link onClick={() => showDetailModal(record)}>
+              جزییات خرید
+            </Typography.Link>
+            {/* <Typography.Link
+             onClick={() => showEditModal(record)}
             >
               <EditOutlined />
             </Typography.Link>
 
             <Typography.Link>
               <Popconfirm
-                // onConfirm={() => remove(record)}
+                onConfirm={() => remove(record)}
                 title="آیا مطمئن هستید؟"
                 okText={"حذف"}
                 cancelText={"انصراف"}
               >
                 <DeleteOutlined />
               </Popconfirm>
-            </Typography.Link>
+            </Typography.Link> */}
           </span>
         );
       },
@@ -90,13 +130,58 @@ export const OrdersComp = () => {
 
   // TABLE COLUMN END
 
+  // MODAL OPRATIONS
+  const [visible, setVisible] = useState(false);
+
+  const showModal = () => {
+    setVisible(true);
+  };
+  const hideModal = () => {
+    setVisible(false);
+  };
+  const [editVisible, setEditVisible] = useState(false);
+
+  const showEditModal = async (record) => {
+    // getSingleOp(record._id);a
+    setEditVisible(true);
+  };
+
+  const hideEditModal = () => {
+    setEditVisible(false);
+  };
+  // details modal
+  const [detVisible, setDetVisible] = useState(false);
+
+  const showDetailModal = async (record) => {
+    await getUserOrdersList();
+    setDetVisible(true);
+  };
+
+  const hideDetailModal = () => {
+    setDetVisible(false);
+  };
+
+  // MODAL OPRATIONS END
+
   return (
     <>
-      <TopBox
-        query={""}
-        mutation={""}
-        filter={{ first: "سرویس", second: "خریدار" }}
-        showModal={""}
+      <OrdersTopBox
+        filter={{ first: "وضعیت", second: "سرویس", third: "خریدار" }}
+        showModal={showModal}
+        visible={visible}
+        hideModal={hideModal}
+        editVisible={editVisible}
+        hideEditModal={hideEditModal}
+        detVisible={detVisible}
+        hideDetailModal={hideDetailModal}
+        // edit = {}
+        // create = {}
+        getAll={getOrdersList}
+        getByFilter={filterOrders}
+        // createForm = {}
+        // editForm = {}
+        searchForm={searchForm}
+        // loading={}
       />
       <DefaultTable
         form={form}

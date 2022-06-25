@@ -82,7 +82,7 @@ export const Template = ({ children }) => {
             key="3"
             icon={<UsergroupAddOutlined />}
           >
-            <Link to="/orders"> دستورات</Link>
+            <Link to="/orders"> سفارشات</Link>
           </Menu.Item>
           <Menu.Item
             className={
