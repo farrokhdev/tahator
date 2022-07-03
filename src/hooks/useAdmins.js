@@ -27,7 +27,6 @@ export const useGetAdmins = (filters) => {
     variables: {
       filters: filters,
     },
-    fetchPolicy: "no-cache",
   });
 
   return {

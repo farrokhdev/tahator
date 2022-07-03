@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import DefaultTable from "../Table/DefaultTable";
-import { Form, Popconfirm, Typography } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, Form, Popconfirm, Tag, Typography } from "antd";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  CheckSquareOutlined,
+} from "@ant-design/icons";
 import { CategoriesTopBox } from "../Globals/CategoriesTopBox";
 import {
   useGetCategories,
@@ -16,6 +20,7 @@ import {
   CatsEdit,
   CatsGetByfilter,
   CatsGetSingle,
+  getCatsHandler,
 } from "../CrudOprations/CategoriesOpration";
 
 export const CategoriesComp = () => {
@@ -31,16 +36,16 @@ export const CategoriesComp = () => {
   //   CRUD OPRATIONS
 
   // get
-  const {
-    getCategoriesList,
-    CategoriesData,
-    CategoriesLoading,
-    CategoriesError,
-    CategoriesRefetch,
-  } = useGetCategories();
+  const { getCategoriesList, CategoriesLoading, CategoriesError } =
+    useGetCategories();
+
+  const [cats, setCats] = useState([]);
+  const refetchHandler = () => {
+    getCatsHandler(getCategoriesList, setCats);
+  };
 
   useEffect(() => {
-    getCategoriesList();
+    getCatsHandler(getCategoriesList, setCats);
   }, []);
 
   // filter
@@ -48,7 +53,7 @@ export const CategoriesComp = () => {
     CatsGetByfilter(
       getCategoriesList,
       filters,
-      CategoriesRefetch,
+      refetchHandler,
       CategoriesError,
       searchForm
     );
@@ -59,11 +64,11 @@ export const CategoriesComp = () => {
     useAddCategorie();
 
   const createOp = (input) => {
-    console.log(input);
+    console.log({ ...input });
     CatsCreate(
       createCategorie,
-      { name: { lang: input.name, value: input.name } },
-      CategoriesRefetch,
+      { ...input },
+      refetchHandler,
       createForm,
       hideModal,
       addError
@@ -88,14 +93,11 @@ export const CategoriesComp = () => {
     useEditCategorie();
 
   const editOp = (input) => {
-    console.log(input);
     CatsEdit(
       editCategorie,
-      {
-        name: { lang: input.name, value: input.name },
-      },
+      input,
       id,
-      CategoriesRefetch,
+      refetchHandler,
       hideEditModal,
       editError
     );
@@ -106,14 +108,30 @@ export const CategoriesComp = () => {
     useDeleteCategorie();
 
   const deleteOp = (id) => {
-    CatsDelete(removeCategorie, id, CategoriesRefetch, deleteError);
+    CatsDelete(removeCategorie, id, refetchHandler, deleteError);
   };
   //   CRUD OPRATIONS END
 
   // TABLE COLUMN
   const columns = [
     {
-      title: "نام",
+      title: "نام دسته",
+      dataIndex: "name",
+      width: "20%",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        return (
+          <div className="d-flex-row gap-10">
+            {record?.name.map((val) => (
+              <Tag color="success"> {val.value} </Tag>
+            ))}
+          </div>
+        );
+      },
+    },
+    {
+      title: "زیردسته ها",
       dataIndex: "name",
       width: "20%",
       editable: true,
@@ -121,24 +139,20 @@ export const CategoriesComp = () => {
       render: (_, record) => {
         console.log(record);
         return (
-          <>
-            {record?.name.map((val) => (
-              <>{val.value},</>
+          <div className="d-flex-row gap-10">
+            {record?.categoryAttrs?.map((atr) => (
+              <Tag color="processing">
+                {" "}
+                {atr?.name?.map((name) => {
+                  return <>{name.value}</>;
+                })}{" "}
+              </Tag>
             ))}
-          </>
+          </div>
         );
       },
     },
-    {
-      title: "دسته بندی",
-      dataIndex: "category",
-      width: "20%",
-      editable: true,
-      align: "center",
-      render: (_, record) => {
-        return <>{record?.category?.name?.value}</>;
-      },
-    },
+
     {
       title: "تایید شده",
       dataIndex: "accepted",
@@ -146,7 +160,11 @@ export const CategoriesComp = () => {
       editable: true,
       align: "center",
       render: (_, record) => {
-        return <>{record?.accepted ? "تایید شده" : "تایید نشده"}</>;
+        return (
+          <Tag color={"success"}>
+            {record?.accepted ? "تایید شده" : "تایید نشده"}
+          </Tag>
+        );
       },
     },
     {
@@ -167,6 +185,33 @@ export const CategoriesComp = () => {
               <EditOutlined />
             </Typography.Link>
 
+            <Typography.Link>
+              <Popconfirm
+                onConfirm={() =>
+                  CatsEdit(
+                    editCategorie,
+                    {
+                      name: record.name.map((n) => {
+                        return {
+                          lang: n.lang,
+                          value: n.value,
+                        };
+                      }),
+                      accepted: true,
+                    },
+                    record._id,
+                    refetchHandler,
+                    hideEditModal,
+                    editError
+                  )
+                }
+                title="آیا از تایید مطمئن هستید؟"
+                okText={"تایید"}
+                cancelText={"انصراف"}
+              >
+                <CheckSquareOutlined style={{ color: "green" }} />
+              </Popconfirm>
+            </Typography.Link>
             <Typography.Link>
               <Popconfirm
                 onConfirm={() => deleteOp(record._id)}
@@ -227,7 +272,7 @@ export const CategoriesComp = () => {
       />
       <DefaultTable
         form={form}
-        data={CategoriesData?.getCategorys}
+        data={cats}
         columns={columns}
         loading={CategoriesLoading}
         error={CategoriesError}

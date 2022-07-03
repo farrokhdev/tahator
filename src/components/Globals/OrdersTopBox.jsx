@@ -50,6 +50,7 @@ export const OrdersTopBox = ({
   editForm = "",
   searchForm = "",
   loading,
+  orderDetails = "",
 }) => {
   // get services
   const {
@@ -203,10 +204,14 @@ export const OrdersTopBox = ({
         hideModal={hideDetailModal}
       >
         <div className="details-box">
-          <div className="det-title">جزییات خرید</div>
-          <div className="det-content">
-            <span></span>
-          </div>
+          {loading ? (
+            <Spin spinning={loading} />
+          ) : (
+            <>
+              <div className="det-title">جزییات خرید</div>
+              <div className="det-content"></div>
+            </>
+          )}
         </div>
       </GlobModal>
       {/* ADD MODAL END */}

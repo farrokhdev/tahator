@@ -17,6 +17,7 @@ import {
   AdminEdit,
   AdminGetByfilter,
   AdminGetSingle,
+  getAdminsHandler,
 } from "../CrudOprations/AdminOprations";
 
 import { AddAdminForm } from "../Forms/AddAdminForm";
@@ -35,13 +36,17 @@ export const AdminsComp = () => {
   //   CRUD OPRATIONS
 
   // get
-  const {
-    getAdminsList,
-    adminsData,
-    adminsLoading,
-    adminsError,
-    adminRefetch,
-  } = useGetAdmins();
+  const { getAdminsList, adminsData, adminsLoading, adminsError } =
+    useGetAdmins();
+
+  const [admins, setAdmins] = useState([]);
+  const refetchHandler = () => {
+    getAdminsHandler(getAdminsList, setAdmins);
+  };
+
+  useEffect(() => {
+    getAdminsHandler(getAdminsList, setAdmins);
+  }, []);
 
   useEffect(() => {
     getAdminsList();
@@ -52,7 +57,7 @@ export const AdminsComp = () => {
     AdminGetByfilter(
       getAdminsList,
       filters,
-      adminRefetch,
+      refetchHandler,
       adminsError,
       searchForm
     );
@@ -66,7 +71,7 @@ export const AdminsComp = () => {
     AdminCreate(
       createAdmin,
       input,
-      adminRefetch,
+      refetchHandler,
       createForm,
       hideModal,
       addError
@@ -90,7 +95,7 @@ export const AdminsComp = () => {
   const { editAdmin, editData, editLoading, editError } = useEditAdmin();
 
   const editOp = (input) => {
-    AdminEdit(editAdmin, input, id, adminRefetch, hideEditModal, editError);
+    AdminEdit(editAdmin, input, id, refetchHandler, hideEditModal, editError);
   };
 
   // delete
@@ -98,7 +103,7 @@ export const AdminsComp = () => {
     useDeleteAdmin();
 
   const deleteOp = (id) => {
-    AdminDelete(removeAdmin, id, adminRefetch, deleteError);
+    AdminDelete(removeAdmin, id, refetchHandler, deleteError);
   };
   //   CRUD OPRATIONS END
 
@@ -215,7 +220,7 @@ export const AdminsComp = () => {
       />
       <DefaultTable
         form={form}
-        data={adminsData?.getAdmins}
+        data={admins}
         columns={columns}
         loading={adminsLoading}
         error={adminsError}

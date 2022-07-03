@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Form, Input, InputNumber, Select, Spin } from "antd";
-import Password from "antd/lib/input/Password";
+import { PlusOutlined } from "@ant-design/icons";
 
 const validateMessages = {
   required: "${label} پر کردن این فیلد ضروری میباشد!",
@@ -23,12 +23,58 @@ export const EditUnitForm = ({ onFinish, formRef, data, loading, error }) => {
       validateMessages={validateMessages}
       form={formRef}
     >
-      <Form.Item name={"name"} label="زبان">
-        <Select defaultValue={"زبان"}>
-          <Option value="en">en</Option>
-          <Option value="tr">tr</Option>
-        </Select>
-      </Form.Item>
+      <Form.List
+        name="name"
+
+        // rules={[
+        //   {
+        //     validator: async (_, names) => {
+        //       if (!names || names.length < 2) {
+        //         return Promise.reject(new Error("حد اقل مجاز"));
+        //       }
+        //     },
+        //   },
+        // ]}
+      >
+        {(fields, { add, remove }, { errors }) => (
+          <>
+            {fields.map((field, key) => {
+              return (
+                <>
+                  <Form.Item
+                    key={key}
+                    label="نام یونیت"
+                    {...field}
+                    name={[field.name, "value"]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    key={key}
+                    label="زبان"
+                    {...field}
+                    name={[field.name, "lang"]}
+                  >
+                    <Input />
+                  </Form.Item>
+                </>
+              );
+            })}
+
+            <Form.Item>
+              <Button
+                type="dashed"
+                onClick={() => add()}
+                icon={<PlusOutlined />}
+              >
+                افزودن یونیت
+              </Button>
+
+              <Form.ErrorList errors={errors} />
+            </Form.Item>
+          </>
+        )}
+      </Form.List>
       <Form.Item name={"service"} label="خدمات">
         {loading ? (
           <Spin spinning={loading} />

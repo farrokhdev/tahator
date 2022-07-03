@@ -10,7 +10,14 @@ export const GET_Categories = gql`
         lang
         value
       }
+      categoryAttrs {
+        name {
+          lang
+          value
+        }
+      }
       accepted
+      isDeleted
     }
   }
 `;
@@ -46,6 +53,7 @@ export const GET_Categorie = gql`
     getCategory(id: $id) {
       name {
         value
+        lang
       }
 
       _id
@@ -135,9 +143,7 @@ export const useAddCategorie = (input) => {
 export const EditCategorie = gql`
   mutation editCategorie($input: UpdateCategoryByAdminInput, $id: ID!) {
     updateCategoryByAdmin(input: $input, id: $id) {
-      name {
-        value
-      }
+      _id
     }
   }
 `;

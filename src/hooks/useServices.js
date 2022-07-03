@@ -19,15 +19,24 @@ export const GET_Services = gql`
       }
       category {
         _id
-        name {
-          lang
-          value
-        }
         accepted
+        categoryAttrs {
+          name {
+            lang
+            value
+          }
+          attrValues {
+            name {
+              lang
+              value
+            }
+          }
+        }
       }
       # discount
       value
       expireDate
+      isDeleted
 
       # barter
       # expireDate

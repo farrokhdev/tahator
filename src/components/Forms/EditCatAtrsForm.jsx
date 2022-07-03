@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Form, Input, InputNumber, Select, Spin } from "antd";
-import Password from "antd/lib/input/Password";
+import { PlusOutlined } from "@ant-design/icons";
 
 const validateMessages = {
   required: "${label} پر کردن این فیلد ضروری میباشد!",
@@ -23,25 +23,81 @@ export const EditCatAtrsForm = ({
 }) => {
   return (
     <Form
-      name="edit-category_atrrs"
+      name="edit-category_attrs"
       onFinish={onFinish}
       validateMessages={validateMessages}
       form={formRef}
+
+      // rules={[
+      //   {
+      //     validator: async (_, names) => {
+      //       if (!names || names.length < 2) {
+      //         return Promise.reject(new Error("حد اقل مجاز"));
+      //       }
+      //     },
+      //   },
+      // ]}
     >
-      <Form.Item name={"name"} label="نام ">
-        <Select defaultValue={"زبان"}>
-          <Option value={"en"}>en</Option>
-          <Option value={"tr"}>tr</Option>
-        </Select>
-      </Form.Item>
-      <Form.Item name={"category"} label="دسته بندی ">
+      <Form.List
+        name="name"
+
+        // rules={[
+        //   {
+        //     validator: async (_, names) => {
+        //       if (!names || names.length < 2) {
+        //         return Promise.reject(new Error("حد اقل مجاز"));
+        //       }
+        //     },
+        //   },
+        // ]}
+      >
+        {(fields, { add, remove }, { errors }) => (
+          <>
+            {fields.map((field, key) => {
+              return (
+                <>
+                  <Form.Item
+                    key={key}
+                    label="نام زیر دسته"
+                    {...field}
+                    name={[field.name, "value"]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    key={key}
+                    label="زبان"
+                    {...field}
+                    name={[field.name, "lang"]}
+                  >
+                    <Input />
+                  </Form.Item>
+                </>
+              );
+            })}
+
+            <Form.Item>
+              <Button
+                type="dashed"
+                onClick={() => add()}
+                icon={<PlusOutlined />}
+              >
+                افزودن دسته
+              </Button>
+
+              <Form.ErrorList errors={errors} />
+            </Form.Item>
+          </>
+        )}
+      </Form.List>
+      <Form.Item label="نام دسته اصلی" name={"category"}>
         <Select defaultValue={"نام  دسته"}>
           {CategoriesLoading ? (
             <Spin spinning={CategoriesLoading} />
           ) : (
             <>
               {CategoriesData &&
-                CategoriesData.getCategorys.map((cat) => {
+                CategoriesData?.map((cat) => {
                   return (
                     <Option value={cat._id}>
                       {cat.name.map((value) => (

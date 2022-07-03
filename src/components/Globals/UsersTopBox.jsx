@@ -12,12 +12,14 @@ import {
   Select,
   Card,
   Typography,
+  InputNumber,
 } from "antd";
 import { DownOutlined, UpOutlined, SearchOutlined } from "@ant-design/icons";
 import GlobModal from "../modals/GlobModal";
 import { AddUserForm } from "../Forms/AddUserForm";
 import { EditUserForm } from "../Forms/EditUserForm";
 import { BsFillWalletFill } from "react-icons/bs";
+import { useChargeWallet } from "../../hooks/useWallet";
 
 const { Search } = Input;
 const { Option } = Select;
@@ -53,6 +55,15 @@ export const UsersTopBox = ({
   loading = "",
   singleUserData = "",
 }) => {
+  // charge wallet hook
+  const {
+    chargeUserWallet,
+    chargeData,
+    chargeLoading,
+    chargeError,
+    walletRefetch,
+  } = useChargeWallet();
+
   // DROP DOWN OPRATIONS
   const [dropVisible, setDropVisible] = useState(false);
   const openDrop = () => {
@@ -100,6 +111,30 @@ export const UsersTopBox = ({
     await getAll()
       .then(() => searchForm.resetFields())
       .then(() => setDropVisible(false));
+  };
+
+  // Increase number
+  const [walletNumber, setWalletNumber] = useState();
+  const increase = (e) => {
+    console.log(e);
+    setWalletNumber(e);
+  };
+  // Decrease number
+  const decrease = (e) => {
+    console.log(e);
+    setWalletNumber(e);
+  };
+  const handleCharge = async () => {
+    try {
+      chargeUserWallet({
+        variables: {
+          amount: walletNumber,
+          id: singleUserData?.getUser?._id,
+        },
+      }).then(() => walletRefetch());
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const menu = (
@@ -171,7 +206,7 @@ export const UsersTopBox = ({
         formName={"wallet"}
       >
         {loading ? (
-          <Spin spinning={loading} />
+          <Spin spinning={loading ? loading : chargeLoading} />
         ) : (
           <div className="flex-col-center gap-10">
             <div className="wallet-card flex-col-center">
@@ -195,11 +230,24 @@ export const UsersTopBox = ({
             <div className="flex-row">
               <div className="wallet-amount">
                 <span> کیف پول : </span>
-              <span>
-                {singleUserData && singleUserData.getUser.cashWallet.amount}
-              </span>
+                <span>
+                  {singleUserData && singleUserData.getUser.cashWallet.amount}
+                </span>
               </div>
-
+            </div>
+            <div className="wallet-func">
+              <div>
+                <InputNumber defaultValue={0} onChange={(e) => decrease(e)} />
+                <Button type="primary" onClick={handleCharge}>
+                  کاهش
+                </Button>
+              </div>
+              <div>
+                <InputNumber defaultValue={0} onChange={(e) => increase(e)} />
+                <Button type="primary" onClick={handleCharge}>
+                  افزایش{" "}
+                </Button>
+              </div>
             </div>
           </div>
         )}

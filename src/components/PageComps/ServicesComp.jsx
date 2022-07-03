@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from "react";
 import DefaultTable from "../Table/DefaultTable";
-import { Form, message, Popconfirm, Tag, Typography } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Form,
+  message,
+  Modal,
+  Popconfirm,
+  Tag,
+  Typography,
+} from "antd";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  CheckSquareOutlined,
+} from "@ant-design/icons";
 import {
   useAddService,
   useDeleteService,
@@ -11,6 +23,7 @@ import {
 } from "../../hooks/useServices";
 import { ServicesTopBox } from "../Globals/ServicesTopBox";
 import {
+  getServicesHandler,
   ServiceCreate,
   ServiceDelete,
   ServiceEdit,
@@ -21,6 +34,11 @@ import { useGetUsers } from "../../hooks/useUsers";
 import { useGetCategories } from "../../hooks/useCategories";
 import { useGetUnits } from "../../hooks/useUnits";
 import { useGetCurrencys } from "../../hooks/useCurrency";
+import { getUsersHandler } from "../CrudOprations/UserOprations";
+import { getCatsHandler } from "../CrudOprations/CategoriesOpration";
+import { getCurrencyHandler } from "../CrudOprations/UnitsOprations";
+import GlobModal from "../modals/GlobModal";
+import { useNavigate } from "react-router";
 
 export const ServicesComp = () => {
   // Form Refs
@@ -32,36 +50,40 @@ export const ServicesComp = () => {
 
   // Id
   const [id, setId] = useState(null);
+  const [catDetails, setCatDetails] = useState({});
 
   //   CRUD OPRATIONS
 
   // get
-  const { getUsersList, usersData, usersLoading, usersError, refetch } =
-    useGetUsers();
-  const {
-    getCategoriesList,
-    CategoriesData,
-    CategoriesLoading,
-    CategoriesError,
-    CategoriesRefetch,
-  } = useGetCategories();
-  const {
-    getCurrencysList,
-    CurrencysData,
-    CurrencysLoading,
-    CurrencysError,
-    CurrencysRefetch,
-  } = useGetCurrencys();
-  const {
-    getServicesList,
-    servicesData,
-    servicesLoading,
-    servicesError,
-    servicesRefetch,
-  } = useGetServices();
+  const { getUsersList, usersLoading, usersError } = useGetUsers();
+
+  const [users, setUsers] = useState([]);
+  const usersRefetchHandler = () => {
+    getUsersHandler(getUsersList, setUsers);
+  };
+
+  const { getCategoriesList, CategoriesLoading, CategoriesError } =
+    useGetCategories();
+  const [cats, setCats] = useState([]);
+  const catsRefetchHandler = () => {
+    getCatsHandler(getCategoriesList, setCats);
+  };
+
+  const { getCurrencysList, CurrencysLoading } = useGetCurrencys();
+  const [units, setUnits] = useState([]);
+  const unitsRefetchHandler = () => {
+    getCurrencyHandler(getCurrencysList, setUnits);
+  };
+
+  const { getServicesList, servicesLoading, servicesError } = useGetServices();
+
+  const [services, sestServices] = useState([]);
+  const refetchHandler = () => {
+    getServicesHandler(getServicesList, sestServices);
+  };
 
   useEffect(() => {
-    getServicesList();
+    getServicesHandler(getServicesList, sestServices);
   }, []);
 
   // filter
@@ -69,7 +91,7 @@ export const ServicesComp = () => {
     ServiceGetByfilter(
       getServicesList,
       filters,
-      servicesRefetch,
+      refetchHandler,
       servicesError,
       searchForm
     );
@@ -80,18 +102,16 @@ export const ServicesComp = () => {
     useAddService();
 
   const createOp = (input) => {
+    console.log(input);
     ServiceCreate(
       createService,
       {
-        name: {
-          lang: input.name,
-          value: input.name,
-        },
+        name: [...input.name],
         presenter: input.presenter,
         category: input.category,
         value: input.value,
         barter: {
-          unit: input.barter,
+          unit: input.unit,
           amount: input.amount,
         },
         cash: {
@@ -99,7 +119,7 @@ export const ServicesComp = () => {
           amount: input.cashAmount,
         },
       },
-      servicesRefetch,
+      refetchHandler,
       createForm,
       hideModal,
       addError
@@ -127,15 +147,12 @@ export const ServicesComp = () => {
     ServiceEdit(
       editService,
       {
-        name: {
-          lang: input.name,
-          value: input.name,
-        },
+        name: [...input.name],
         presenter: input.presenter,
         category: input.category,
         value: input.value,
         barter: {
-          unit: input.barter,
+          unit: input.unit,
           amount: input.amount,
         },
         cash: {
@@ -144,7 +161,7 @@ export const ServicesComp = () => {
         },
       },
       id,
-      servicesRefetch,
+      refetchHandler,
       hideEditModal,
       editError
     );
@@ -155,20 +172,31 @@ export const ServicesComp = () => {
     useDeleteService();
 
   const deleteOp = (id) => {
-    ServiceDelete(removeService, id, servicesRefetch, deleteError);
+    ServiceDelete(removeService, id, refetchHandler, deleteError);
   };
   //   CRUD OPRATIONS END
 
+  const Navigation = useNavigate();
+
+  const navigate = () => {
+    Navigation("/categories-atribute");
+  };
   // TABLE COLUMN
   const columns = [
     {
       title: "نام",
       dataIndex: "name",
-      width: "15%",
+      width: "20%",
       editable: true,
       align: "center",
       render: (_, record) => {
-        return <>{record?.name.map((val) => val.value)}</>;
+        return (
+          <div className="d-flex-row gap-10">
+            {record?.name.map((val) => (
+              <Tag color={"processing"}>{val.value}</Tag>
+            ))}
+          </div>
+        );
       },
     },
 
@@ -191,11 +219,9 @@ export const ServicesComp = () => {
       render: (_, record) => {
         return (
           <>
-            {record?.category.accepted ? (
-              <Tag color={"green"}>تایید شده</Tag>
-            ) : (
-              <Tag color={"red"}>تایید نشده</Tag>
-            )}
+            <Button type="primary" onClick={navigate}>
+              جزییات دسته بندی
+            </Button>
           </>
         );
       },
@@ -204,20 +230,6 @@ export const ServicesComp = () => {
       title: "مقدار",
       dataIndex: "value",
       width: "10%",
-      editable: true,
-      align: "center",
-    },
-    {
-      title: "میانگین",
-      dataIndex: "discount",
-      width: "10%",
-      editable: true,
-      align: "center",
-    },
-    {
-      title: "تاریخ انقضا",
-      dataIndex: "expireDate",
-      width: "20%",
       editable: true,
       align: "center",
     },
@@ -239,7 +251,33 @@ export const ServicesComp = () => {
             <Typography.Link onClick={() => showEditModal(record)}>
               <EditOutlined />
             </Typography.Link>
-
+            <Typography.Link>
+              <Popconfirm
+                onConfirm={() =>
+                  ServiceEdit(
+                    editService,
+                    {
+                      name: record.name.map((n) => {
+                        return {
+                          lang: n.lang,
+                          value: n.value,
+                        };
+                      }),
+                      accepted: true,
+                    },
+                    record._id,
+                    refetchHandler,
+                    hideEditModal,
+                    editError
+                  )
+                }
+                title="آیا از تایید مطمئن هستید؟"
+                okText={"تایید"}
+                cancelText={"انصراف"}
+              >
+                <CheckSquareOutlined style={{ color: "green" }} />
+              </Popconfirm>
+            </Typography.Link>
             <Typography.Link>
               <Popconfirm
                 onConfirm={() => deleteOp(record._id)}
@@ -262,9 +300,9 @@ export const ServicesComp = () => {
   const [visible, setVisible] = useState(false);
 
   const getUsersCatsUnits = async () => {
-    await getUsersList();
-    await getCategoriesList();
-    await getCurrencysList();
+    await usersRefetchHandler();
+    await catsRefetchHandler();
+    await unitsRefetchHandler();
   };
 
   const showModal = () => {
@@ -305,16 +343,16 @@ export const ServicesComp = () => {
         editForm={editForm}
         searchForm={searchForm}
         loading={singleLoading}
-        usersData={usersData}
+        usersData={users}
         usersLoading={usersLoading}
-        CategoriesData={CategoriesData}
+        CategoriesData={cats}
         CategoriesLoading={CategoriesLoading}
-        CurrencysData={CurrencysData}
+        CurrencysData={units}
         CurrencysLoading={CurrencysLoading}
       />
       <DefaultTable
         form={form}
-        data={servicesData?.getServices}
+        data={services}
         columns={columns}
         loading={servicesLoading}
         error={servicesError}

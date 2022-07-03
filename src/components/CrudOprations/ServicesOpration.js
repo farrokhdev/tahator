@@ -1,5 +1,19 @@
 import { message } from "antd";
 
+// get
+export const getServicesHandler = async (getF, set) => {
+  try {
+    await getF().then((res) => {
+      const data = res?.data?.getServices;
+      const filtered = res?.data?.getServices.filter(
+        (service) => !service.isDeleted
+      );
+      set(filtered);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 // create
 export const ServiceCreate = async (
   create = "",
@@ -116,14 +130,20 @@ export const ServiceGetSingle = async (
       console.log(res.data.getService);
       setId(id);
       formRef.setFieldsValue({
-        // name: res.data.getService.name.map((val) => val.value),
+        name: res.data.getService.name.map((item) => {
+          return {
+            lang: item.lang,
+            value: item.value,
+          };
+        }),
         presenter: res.data.getService.presenter._id,
         category: res.data.getService.category._id,
         value: res.data.getService.value,
 
-        // barter: res.data.getService.barter.unit._id,
+        unit: res.data.getService.barter.unit._id,
         amount: res.data.getService.barter.amount,
-        // cash: res.data.getService.cash.unit._id,
+
+        cash: res.data.getService.cash.unit._id,
         cashAmount: res.data.getService.barter.amount,
       });
     });

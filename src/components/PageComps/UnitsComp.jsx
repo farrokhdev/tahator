@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import DefaultTable from "../Table/DefaultTable";
-import { Form, Popconfirm, Typography } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { CategoriesTopBox } from "../Globals/CategoriesTopBox";
+import { Form, Popconfirm, Tag, Typography } from "antd";
 import {
-  useAddCategorie,
-  useGetCategorie,
-  useEditCategorie,
-  useDeleteCategorie,
-} from "../../hooks/useCategories";
+  DeleteOutlined,
+  EditOutlined,
+  CheckSquareOutlined,
+} from "@ant-design/icons";
+import { CategoriesTopBox } from "../Globals/CategoriesTopBox";
+
 import {
   CatsCreate,
   CatsDelete,
@@ -26,10 +25,12 @@ import {
 } from "../../hooks/useUnits";
 import { UnitsTopBox } from "../Globals/UnitsTopBox";
 import {
+  getUnitsHandler,
   UnitsDelete,
   UnitsEdit,
   UnitsGetSingle,
 } from "../CrudOprations/UnitsOprations";
+import { getServicesHandler } from "../CrudOprations/ServicesOpration";
 
 export const UnitsComp = () => {
   // form refs
@@ -44,8 +45,16 @@ export const UnitsComp = () => {
   //   CRUD OPRATIONS
 
   // get
-  const { getUnitsList, UnitsData, UnitsLoading, UnitsError, UnitsRefetch } =
-    useGetUnits();
+  const { getUnitsList, UnitsLoading, UnitsError } = useGetUnits();
+  const [units, setUnits] = useState([]);
+  const refetchHandler = () => {
+    getUnitsHandler(getUnitsList, setUnits);
+  };
+
+  useEffect(() => {
+    getUnitsHandler(getUnitsList, setUnits);
+  }, []);
+
   const {
     getServicesList,
     servicesData,
@@ -54,16 +63,17 @@ export const UnitsComp = () => {
     servicesRefetch,
   } = useGetServices();
 
-  useEffect(() => {
-    getUnitsList();
-  }, []);
+  const [services, sestServices] = useState([]);
+  const refetchServicesHandler = () => {
+    getServicesHandler(getServicesList, sestServices);
+  };
 
   // filter
   const FilterOp = (filters) => {
     CatsGetByfilter(
-      getUnitsList,
+      refetchHandler,
       filters,
-      UnitsRefetch,
+      refetchHandler,
       UnitsError,
       searchForm
     );
@@ -78,10 +88,10 @@ export const UnitsComp = () => {
     CatsCreate(
       createUnit,
       {
-        name: { lang: input.name, value: input.name },
+        name: [...input.name],
         service: input.service,
       },
-      UnitsRefetch,
+      refetchHandler,
       createForm,
       hideModal,
       addError
@@ -109,11 +119,11 @@ export const UnitsComp = () => {
     UnitsEdit(
       editUnit,
       {
-        name: { lang: input.name[0].lang, value: input.name[0].value },
-        service: input.service._id,
+        name: [...input.name],
+        service: input.service,
       },
       id,
-      UnitsRefetch,
+      refetchHandler,
       hideEditModal,
       editError
     );
@@ -124,7 +134,7 @@ export const UnitsComp = () => {
     useDeleteUnit();
 
   const deleteOp = (id) => {
-    UnitsDelete(removeUnit, id, UnitsRefetch, deleteError);
+    UnitsDelete(removeUnit, id, refetchHandler, deleteError);
   };
   //   CRUD OPRATIONS END
 
@@ -147,23 +157,21 @@ export const UnitsComp = () => {
       },
     },
     {
-      title: "ارايه دهنده سرویس",
-      dataIndex: "presenter",
-      width: "20%",
-      editable: true,
-      align: "center",
-      render: (_, record) => {
-        return <>{record?.service?.presenter?.fullName}</>;
-      },
-    },
-    {
       title: "تایید شده",
       dataIndex: "accepted",
       width: "20%",
       editable: true,
       align: "center",
       render: (_, record) => {
-        return <>{record?.accepted ? "تایید شده" : "تایید نشده"}</>;
+        return (
+          <>
+            {record?.accepted ? (
+              <Tag color={"success"}>تایید شده</Tag>
+            ) : (
+              <Tag color={"processing"}>تایید نشده</Tag>
+            )}
+          </>
+        );
       },
     },
     {
@@ -183,7 +191,33 @@ export const UnitsComp = () => {
             <Typography.Link onClick={() => showEditModal(record)}>
               <EditOutlined />
             </Typography.Link>
-
+            <Typography.Link>
+              <Popconfirm
+                onConfirm={() =>
+                  UnitsEdit(
+                    editUnit,
+                    {
+                      name: record.name.map((n) => {
+                        return {
+                          lang: n.lang,
+                          value: n.value,
+                        };
+                      }),
+                      accepted: true,
+                    },
+                    record._id,
+                    refetchHandler,
+                    hideEditModal,
+                    editError
+                  )
+                }
+                title="آیا از تایید مطمئن هستید؟"
+                okText={"تایید"}
+                cancelText={"انصراف"}
+              >
+                <CheckSquareOutlined style={{ color: "green" }} />
+              </Popconfirm>
+            </Typography.Link>
             <Typography.Link>
               <Popconfirm
                 onConfirm={() => deleteOp(record._id)}
@@ -206,7 +240,7 @@ export const UnitsComp = () => {
   const [visible, setVisible] = useState(false);
 
   const showModal = async () => {
-    await getServicesList();
+    await refetchServicesHandler();
     setVisible(true);
   };
   const hideModal = () => {
@@ -216,7 +250,7 @@ export const UnitsComp = () => {
 
   const showEditModal = async (record) => {
     getSingleOp(record._id);
-    await getServicesList();
+    await refetchServicesHandler();
     setEditVisible(true);
   };
 
@@ -241,15 +275,15 @@ export const UnitsComp = () => {
         editForm={editForm}
         searchForm={searchForm}
         loading={singleLoading}
-        getAll={getUnitsList}
+        getAll={refetchHandler}
         getByFilter={FilterOp}
-        servicesData={servicesData}
+        servicesData={services}
         servicesLoading={servicesLoading}
         servicesError={servicesError}
       />
       <DefaultTable
         form={form}
-        data={UnitsData?.getUnits}
+        data={units}
         columns={columns}
         loading={UnitsLoading}
         error={UnitsError}

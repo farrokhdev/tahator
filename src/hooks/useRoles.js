@@ -58,6 +58,7 @@ export const useGetRole = (id) => {
     },
   ] = useLazyQuery(GET_Role, {
     variables: { id: id },
+    fetchPolicy: "no-cache",
   });
 
   return {

@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import DefaultTable from "../Table/DefaultTable";
-import { Form, message, Popconfirm, Typography } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Form, message, Popconfirm, Tag, Typography } from "antd";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  CheckSquareOutlined,
+} from "@ant-design/icons";
 
 import {
+  useAddAtrValue,
   useAddCategoryAtr,
   useDeleteCategoryAtr,
   useEditCategoryAtr,
@@ -11,19 +16,23 @@ import {
   useGetCategoryAtrs,
 } from "../../hooks/useCategoryAtr";
 import {
+  AtrsValueCreate,
   CategoriesAtrCreate,
   CategoriesAtrDelete,
   CategoriesAtrEdit,
   CategoriesAtrGetByfilter,
   CategoriesAtrGetSingle,
+  getCatsAtrHandler,
 } from "../CrudOprations/CategoriesAtrOprations";
 import { CategoriesAtrTopBox } from "../Globals/CategoriesAtrTopBox";
 import { useGetCategories } from "../../hooks/useCategories";
+import { getCatsHandler } from "../CrudOprations/CategoriesOpration";
 
 export const CategorieAtrComp = () => {
   // Form Refs
   const [form] = Form.useForm();
   const [createForm] = Form.useForm();
+  const [createAtrForm] = Form.useForm();
   const [editForm] = Form.useForm();
   const [searchForm] = Form.useForm();
   // Form Refs End
@@ -34,23 +43,22 @@ export const CategorieAtrComp = () => {
   //   CRUD OPRATIONS
 
   // get
-  const {
-    getCategoriesList,
-    CategoriesData,
-    CategoriesLoading,
-    CategoriesError,
-    CategoriesRefetch,
-  } = useGetCategories();
-  const {
-    getCategoryAtrsList,
-    CategoryAtrsData,
-    CategoryAtrsLoading,
-    CategoryAtrsError,
-    CategoryAtrsRefetch,
-  } = useGetCategoryAtrs();
+  const { getCategoriesList, CategoriesLoading } = useGetCategories();
+  const [cat, setCat] = useState([]);
+  const catRefetchHandler = () => {
+    getCatsHandler(getCategoriesList, setCat);
+  };
+
+  const { getCategoryAtrsList, CategoryAtrsLoading, CategoryAtrsError } =
+    useGetCategoryAtrs();
+
+  const [catAtr, setCatAtr] = useState([]);
+  const refetchHandler = () => {
+    getCatsAtrHandler(getCategoryAtrsList, setCatAtr);
+  };
 
   useEffect(() => {
-    getCategoryAtrsList();
+    getCatsAtrHandler(getCategoryAtrsList, setCatAtr);
   }, []);
 
   // filter
@@ -58,13 +66,27 @@ export const CategorieAtrComp = () => {
     CategoriesAtrGetByfilter(
       getCategoryAtrsList,
       filters,
-      CategoryAtrsRefetch,
+      refetchHandler,
       CategoryAtrsError,
       searchForm
     );
   };
 
   // add
+  const { createAtrValue, addValData, addValLoading, addValError } =
+    useAddAtrValue();
+
+  const createAtrValOp = (input) => {
+    console.log(input);
+    AtrsValueCreate(
+      createAtrValue,
+      { ...input },
+      refetchHandler,
+      createAtrForm,
+      hideAtrValModal,
+      addValError
+    );
+  };
   const { createCategoryAtr, addData, addLoading, addError, addRefetch } =
     useAddCategoryAtr();
 
@@ -72,15 +94,8 @@ export const CategorieAtrComp = () => {
     console.log(input);
     CategoriesAtrCreate(
       createCategoryAtr,
-      {
-        name: {
-          lang: input.name,
-          value: input.name,
-        },
-
-        category: input.category,
-      },
-      CategoryAtrsRefetch,
+      { ...input },
+      refetchHandler,
       createForm,
       hideModal,
       addError
@@ -107,16 +122,9 @@ export const CategorieAtrComp = () => {
   const editOp = (input) => {
     CategoriesAtrEdit(
       editCategoryAtr,
-      {
-        name: {
-          lang: input.name,
-          value: input.name,
-        },
-
-        category: input.category,
-      },
+      input,
       id,
-      CategoryAtrsRefetch,
+      refetchHandler,
       hideEditModal,
       editError
     );
@@ -127,19 +135,14 @@ export const CategorieAtrComp = () => {
     useDeleteCategoryAtr();
 
   const deleteOp = (id) => {
-    CategoriesAtrDelete(
-      removeCategoryAtr,
-      id,
-      CategoryAtrsRefetch,
-      deleteError
-    );
+    CategoriesAtrDelete(removeCategoryAtr, id, refetchHandler, deleteError);
   };
   //   CRUD OPRATIONS END
 
   // TABLE COLUMN
   const columns = [
     {
-      title: "نام زبان",
+      title: "نام زیر دسته ها",
       // dataIndex: "name",
       width: "15%",
       editable: true,
@@ -147,19 +150,59 @@ export const CategorieAtrComp = () => {
       render: (_, record) => {
         return (
           <>
-            <span>{record?.name[0].value}</span>
+            <div className="d-flex-row gap-10">
+              {record?.name.map((item) => {
+                return (
+                  <>
+                    <Tag color="processing"> {item.value} </Tag>
+                  </>
+                );
+              })}
+            </div>
           </>
         );
       },
     },
     {
-      title: "کد دسته بندی",
+      title: "کد دسته های اصلی",
       // dataIndex: "name",
       width: "15%",
       editable: true,
       align: "center",
       render: (_, record) => {
-        return <>{record?.category._id}</>;
+        return (
+          <>
+            <Tag color="success"> {record?.category?._id} </Tag>
+          </>
+        );
+      },
+    },
+    {
+      title: "مقدار های ویژگی",
+
+      width: "15%",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        return (
+          <>
+            {record?.attrValues ? (
+              <>
+                {record?.attrValues?.map((item) => {
+                  return (
+                    <>
+                      {item?.name?.map((name) => {
+                        return <Tag color={"processing"}>{name.value}</Tag>;
+                      })}
+                    </>
+                  );
+                })}
+              </>
+            ) : (
+              "__"
+            )}
+          </>
+        );
       },
     },
     {
@@ -169,7 +212,11 @@ export const CategorieAtrComp = () => {
       editable: true,
       align: "center",
       render: (_, record) => {
-        return <>{record?.accepted ? "تایید شده" : "تایید نشده"}</>;
+        return (
+          <Tag color={"success"}>
+            {record?.accepted ? "تایید شده" : "تایید نشده"}
+          </Tag>
+        );
       },
     },
 
@@ -179,6 +226,7 @@ export const CategorieAtrComp = () => {
       width: "30%",
       align: "center",
       render: (_, record) => {
+        console.log(record);
         return (
           <span
             style={{
@@ -190,7 +238,33 @@ export const CategorieAtrComp = () => {
             <Typography.Link onClick={() => showEditModal(record)}>
               <EditOutlined />
             </Typography.Link>
-
+            <Typography.Link>
+              <Popconfirm
+                onConfirm={() =>
+                  CategoriesAtrEdit(
+                    editCategoryAtr,
+                    {
+                      name: record.name.map((n) => {
+                        return {
+                          lang: n.lang,
+                          value: n.value,
+                        };
+                      }),
+                      accepted: true,
+                    },
+                    record._id,
+                    refetchHandler,
+                    hideEditModal,
+                    editError
+                  )
+                }
+                title="آیا از تایید مطمئن هستید؟"
+                okText={"تایید"}
+                cancelText={"انصراف"}
+              >
+                <CheckSquareOutlined style={{ color: "green" }} />
+              </Popconfirm>
+            </Typography.Link>
             <Typography.Link>
               <Popconfirm
                 onConfirm={() => deleteOp(record._id)}
@@ -213,7 +287,7 @@ export const CategorieAtrComp = () => {
   const [visible, setVisible] = useState(false);
 
   const showModal = async () => {
-    await getCategoriesList();
+    await catRefetchHandler();
     setVisible(true);
   };
   const hideModal = () => {
@@ -223,12 +297,22 @@ export const CategorieAtrComp = () => {
 
   const showEditModal = async (record) => {
     getSingleOp(record._id);
-    await getCategoriesList();
+    await catRefetchHandler();
     setEditVisible(true);
   };
 
   const hideEditModal = () => {
     setEditVisible(false);
+  };
+  const [atrValVisble, setAtrValVisible] = useState(false);
+
+  const showAtrValModal = async (record) => {
+    getSingleOp(record._id);
+    setAtrValVisible(true);
+  };
+
+  const hideAtrValModal = () => {
+    setAtrValVisible(false);
   };
 
   // MODAL OPRATIONS END
@@ -237,25 +321,32 @@ export const CategorieAtrComp = () => {
     <>
       <CategoriesAtrTopBox
         filter={{ first: "نام", second: "وضعیت" }}
+        showAtrValModal={showAtrValModal}
+        atrValVisble={atrValVisble}
+        hideAtrValModal={hideAtrValModal}
         showModal={showModal}
         visible={visible}
         hideModal={hideModal}
         editVisible={editVisible}
         hideEditModal={hideEditModal}
         edit={editOp}
+        createAtrValue={createAtrValOp}
         create={createOp}
         getAll={getCategoryAtrsList}
         getByFilter={FilterOp}
         createForm={createForm}
+        createAtrForm={createAtrForm}
         editForm={editForm}
         searchForm={searchForm}
         loading={singleLoading}
-        CategoriesData={CategoriesData}
+        CategoriesData={cat}
+        CategoriesAtrData={catAtr}
+        CategoriesAtrLoading={CategoryAtrsLoading}
         CategoriesLoading={CategoriesLoading}
       />
       <DefaultTable
         form={form}
-        data={CategoryAtrsData?.getCategory_attrs}
+        data={catAtr}
         columns={columns}
         loading={CategoryAtrsLoading}
         error={CategoryAtrsError}

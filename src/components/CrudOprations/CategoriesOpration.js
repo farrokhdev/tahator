@@ -1,5 +1,21 @@
 import { message } from "antd";
 
+// get
+export const getCatsHandler = async (getF, set) => {
+  try {
+    await getF().then((res) => {
+      // console.log(res.data.getCategorys);
+      const catsData = res?.data?.getCategorys;
+      const filteredCats = res?.data?.getCategorys.filter(
+        (cat) => !cat.isDeleted
+      );
+      set(filteredCats);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 // create
 export const CatsCreate = async (
   create = "",
@@ -16,7 +32,7 @@ export const CatsCreate = async (
       },
     })
       .then(() => {
-        message.success("ادمین جدید با موفقیت ایجاد شد");
+        message.success("دسته جدید با موفقیت ایجاد شد");
         refetch();
       })
       .then(() => {
@@ -60,15 +76,16 @@ export const CatsEdit = async (
   hide = "",
   error = ""
 ) => {
+  console.log(input);
   try {
     await edit({
       variables: {
         id: id,
-        input: { ...input },
+        input: input,
       },
     })
       .then(() => {
-        message.success("ادمین با موفقیت ویرایش شد");
+        message.success("دسته با موفقیت ویرایش شد");
         refetch();
       })
       .then(() => {
@@ -92,7 +109,7 @@ export const CatsDelete = async (
         id: id,
       },
     }).then(() => {
-      message.success("ادمین با موفقیت حذف شد");
+      message.success("دسته با موفقیت حذف شد");
       refetch();
     });
   } catch (err) {
@@ -113,9 +130,15 @@ export const CatsGetSingle = async (
         id: id,
       },
     }).then((res) => {
+      console.log(res.data.getCategory.name);
       setId(id);
       formRef.setFieldsValue({
-        ...res.data.getCats,
+        name: res.data.getCategory.name.map((item) => {
+          return {
+            lang: item.lang,
+            value: item.value,
+          };
+        }),
       });
     });
   } catch (err) {

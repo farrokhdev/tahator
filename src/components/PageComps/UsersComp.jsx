@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import DefaultTable from "../Table/DefaultTable";
-import { Form, message, Popconfirm, Tag, Typography } from "antd";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, Form, message, Popconfirm, Tag, Typography } from "antd";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  CheckSquareOutlined,
+} from "@ant-design/icons";
 import { TopBox } from "../Globals/TopBox";
 import { useGetUnits } from "../../hooks/useUnits";
 
 import {
+  getUsersHandler,
   UserCreate,
   UserDelete,
   UserEdit,
@@ -37,25 +42,42 @@ export const UsersComp = () => {
   //   CRUD OPRATIONS
 
   // get
-  const { getUsersList, usersData, usersLoading, usersError, refetch } =
-    useGetUsers();
+  const { getUsersList, usersLoading, usersError } = useGetUsers();
+
+  const [users, setUsers] = useState([]);
+  const refetchHandler = () => {
+    getUsersHandler(getUsersList, setUsers);
+  };
 
   useEffect(() => {
-    getUsersList();
+    getUsersHandler(getUsersList, setUsers);
   }, []);
 
   // filter
   const FilterOp = (filters) => {
-    UserGetByfilter(getUsersList, filters, refetch, usersError, searchForm);
+    UserGetByfilter(
+      getUsersList,
+      filters,
+      refetchHandler,
+      usersError,
+      searchForm
+    );
   };
 
   // add
-  const { createUser, addData, addLoading, addError, addRefetch } =
+  const { createUser, addData, addLoading, addError, addrefetchHandler } =
     useAddUser();
 
   const createOp = (input) => {
     console.log(input);
-    UserCreate(createUser, input, refetch, createForm, hideModal, addError);
+    UserCreate(
+      createUser,
+      input,
+      refetchHandler,
+      createForm,
+      hideModal,
+      addError
+    );
   };
 
   // get single
@@ -64,7 +86,7 @@ export const UsersComp = () => {
     singleUserData,
     singleUserLoading,
     singleUserError,
-    singleRefetch,
+    singlerefetchHandler,
   } = useGetUser();
 
   const getSingleOp = (id) => {
@@ -75,7 +97,7 @@ export const UsersComp = () => {
   const { updateUser, editData, editLoading, editError } = useEditUser();
 
   const editOp = (input) => {
-    UserEdit(updateUser, input, id, refetch, hideEditModal, editError);
+    UserEdit(updateUser, input, id, refetchHandler, hideEditModal, editError);
   };
 
   // delete
@@ -83,7 +105,7 @@ export const UsersComp = () => {
     useDeleteUser();
 
   const deleteOp = (id) => {
-    UserDelete(removeUser, id, refetch, deleteError);
+    UserDelete(removeUser, id, refetchHandler, deleteError);
   };
   //   CRUD OPRATIONS END
 
@@ -110,6 +132,17 @@ export const UsersComp = () => {
       },
     },
     {
+      title: "موجودی",
+      // dataIndex: "wallet",
+      width: "20%",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        console.log(record);
+        return <>{record?.cashWallet?.amount}</>;
+      },
+    },
+    {
       title: "type",
       dataIndex: "type",
       width: "20%",
@@ -127,7 +160,6 @@ export const UsersComp = () => {
         );
       },
     },
-
     {
       title: "تغییرات",
       dataIndex: "actions",
@@ -145,10 +177,10 @@ export const UsersComp = () => {
             <Typography.Link onClick={() => showEditModal(record)}>
               <EditOutlined />
             </Typography.Link>
-            <Typography.Link onClick={() => showWalletModal(record)}>
+
+            <Button type="primary" onClick={() => showWalletModal(record)}>
               کیف پول
-            </Typography.Link>
-            <Typography.Link>جزییات</Typography.Link>
+            </Button>
 
             <Typography.Link>
               <Popconfirm
@@ -228,7 +260,7 @@ export const UsersComp = () => {
       />
       <DefaultTable
         form={form}
-        data={usersData?.getUsers}
+        data={users}
         columns={columns}
         loading={usersLoading}
         error={usersError}

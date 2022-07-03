@@ -1,5 +1,19 @@
 import { message } from "antd";
 
+// get
+export const getCatsAtrHandler = async (getF, set) => {
+  try {
+    await getF().then((res) => {
+      const data = res?.data?.getCategory_attrs;
+      const filtered = res?.data?.getCategory_attrs.filter(
+        (catAtr) => !catAtr.isDeleted
+      );
+      set(filtered);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 // create
 export const CategoriesAtrCreate = async (
   create = "",
@@ -16,7 +30,34 @@ export const CategoriesAtrCreate = async (
       },
     })
       .then(() => {
-        message.success("ادمین جدید با موفقیت ایجاد شد");
+        message.success("ویژگی دسته جدید با موفقیت ایجاد شد");
+        refetch();
+      })
+      .then(() => {
+        formRef.resetFields();
+        hide();
+      });
+  } catch (err) {
+    console.log(err);
+    await message.error(error ? error.message : "خطا");
+  }
+};
+export const AtrsValueCreate = async (
+  create = "",
+  input = "",
+  refetch = "",
+  formRef = "",
+  hide = "",
+  error = ""
+) => {
+  try {
+    await create({
+      variables: {
+        input: { ...input },
+      },
+    })
+      .then(() => {
+        message.success("مقدار ویژگی با موفقیت ایجاد شد");
         refetch();
       })
       .then(() => {
@@ -68,7 +109,7 @@ export const CategoriesAtrEdit = async (
       },
     })
       .then(() => {
-        message.success("ادمین با موفقیت ویرایش شد");
+        message.success("ویژگی دسته با موفقیت ویرایش شد");
         refetch();
       })
       .then(() => {
@@ -92,7 +133,7 @@ export const CategoriesAtrDelete = async (
         id: id,
       },
     }).then(() => {
-      message.success("ادمین با موفقیت حذف شد");
+      message.success("ویژگی دسته با موفقیت حذف شد");
       refetch();
     });
   } catch (err) {
@@ -116,7 +157,13 @@ export const CategoriesAtrGetSingle = async (
       console.log(res.data.getCategory_attr);
       setId(id);
       formRef.setFieldsValue({
-        name: res.data.getCategory_attr.name[0].value,
+        name: res.data.getCategory_attr.name.map((item) => {
+          return {
+            lang: item.lang,
+            value: item.value,
+          };
+        }),
+
         category: res.data.getCategory_attr.category._id,
       });
     });

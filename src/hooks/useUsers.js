@@ -9,9 +9,18 @@ export const GET_USERS = gql`
       email
       type
       _id
+      cashWallet {
+        unit {
+          _id
+          unit
+          status
+        }
+        amount
+      }
       # wallet
       # rate
       # createdAt
+      isDeleted
     }
   }
 `;
@@ -39,6 +48,7 @@ export const GET_USER = gql`
       fullName
       phoneNumber
       email
+      username
       type
       _id
       cashWallet {

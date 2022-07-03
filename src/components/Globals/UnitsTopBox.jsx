@@ -157,7 +157,7 @@ export const UnitsTopBox = ({
         <AddUnitForm
           onFinish={create}
           formRef={createForm}
-          data={servicesData?.getServices}
+          data={servicesData}
           loading={servicesLoading}
           error={servicesError}
         />
@@ -176,7 +176,7 @@ export const UnitsTopBox = ({
           <EditUnitForm
             onFinish={edit}
             formRef={editForm}
-            data={servicesData?.getServices}
+            data={servicesData}
             loading={servicesLoading}
             error={servicesError}
           />

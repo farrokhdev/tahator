@@ -17,6 +17,7 @@ import { AddAdminForm } from "../Forms/AddAdminForm";
 import { EditAdminForm } from "../Forms/EditAdminForm";
 import { AddCategoryForm } from "../Forms/AddCategoryForm";
 import { EditCategoryForm } from "../Forms/EditCategoryForm";
+import { useNavigate } from "react-router";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -140,6 +141,12 @@ export const CategoriesTopBox = ({
 
   // MODAL OPRATIONS END
 
+  const Navigate = useNavigate();
+
+  const navigate = () => {
+    Navigate("/categories-atribute");
+  };
+
   return (
     <>
       {/* ADD MODAL */}
@@ -181,8 +188,10 @@ export const CategoriesTopBox = ({
             همه
           </Button>
         </div>
-
         <div className="create-btn">
+          <Button type="primary" onClick={navigate}>
+            ويژگی ها
+          </Button>
           <Button type="primary" onClick={showModal}>
             ایجاد
           </Button>

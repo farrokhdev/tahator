@@ -15,16 +15,16 @@ const validateMessages = {
 
 const { Option } = Select;
 
-export const AddCatAtrsForm = ({
+export const AddAtrsValForm = ({
   onFinish,
   formRef,
-  CategoriesData,
-  CategoriesLoading,
+  CategoriesAtrData,
+  CategoriesAtrLoading,
 }) => {
-  console.log(CategoriesData);
+  console.log(CategoriesAtrData);
   return (
     <Form
-      name="add-category_attrs"
+      name="add-atrs-val"
       onFinish={onFinish}
       validateMessages={validateMessages}
       form={formRef}
@@ -59,7 +59,7 @@ export const AddCatAtrsForm = ({
                 <>
                   <Form.Item
                     key={key}
-                    label="نام زیر دسته"
+                    label="نام مقدار ویژگی"
                     {...field}
                     name={[field.name, "value"]}
                   >
@@ -83,7 +83,7 @@ export const AddCatAtrsForm = ({
                 onClick={() => add()}
                 icon={<PlusOutlined />}
               >
-                افزودن دسته
+                افزودن مقدار
               </Button>
 
               <Form.ErrorList errors={errors} />
@@ -91,14 +91,14 @@ export const AddCatAtrsForm = ({
           </>
         )}
       </Form.List>
-      <Form.Item label="نام دسته اصلی" name={"category"}>
-        <Select defaultValue={"نام  دسته"}>
-          {CategoriesLoading ? (
-            <Spin spinning={CategoriesLoading} />
+      <Form.Item label="نام ویژگی" name={"categoryAttr"}>
+        <Select defaultValue={"نام  ویژگی"}>
+          {CategoriesAtrLoading ? (
+            <Spin spinning={CategoriesAtrLoading} />
           ) : (
             <>
-              {CategoriesData &&
-                CategoriesData?.map((cat) => {
+              {CategoriesAtrData &&
+                CategoriesAtrData?.map((cat) => {
                   return (
                     <Option value={cat._id}>
                       {cat.name.map((value) => (

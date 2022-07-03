@@ -17,6 +17,8 @@ import { AddAdminForm } from "../Forms/AddAdminForm";
 import { EditAdminForm } from "../Forms/EditAdminForm";
 import { AddCatAtrsForm } from "../Forms/AddCatAtrsForm";
 import { EditCatAtrsForm } from "../Forms/EditCatAtrsForm";
+import { useNavigate } from "react-router";
+import { AddAtrsValForm } from "../Forms/AddAtrsValForm";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -35,20 +37,27 @@ const validateMessages = {
 
 export const CategoriesAtrTopBox = ({
   filter = {},
+  showAtrValModal,
+  atrValVisble,
+  hideAtrValModal,
   showModal = "",
   visible = "",
   hideModal = "",
   editVisible = "",
   hideEditModal = "",
   edit = "",
+  createAtrValue = "",
   create = "",
   getAll = "",
   getByFilter = "",
   createForm = "",
+  createAtrForm = "",
   editForm = "",
   searchForm = "",
   loading,
   CategoriesData,
+  CategoriesAtrData,
+  CategoriesAtrLoading,
   CategoriesLoading,
 }) => {
   // DROP DOWN OPRATIONS
@@ -144,14 +153,35 @@ export const CategoriesAtrTopBox = ({
 
   // MODAL OPRATIONS END
 
+  const Navigate = useNavigate();
+
+  const navigate = () => {
+    Navigate("/categories");
+  };
+
   return (
     <>
+      {/* ADD ATRS VAl MODAL */}
+      <GlobModal
+        title={" ایجاد مقدار برای ویژگی"}
+        visible={atrValVisble}
+        hideModal={hideAtrValModal}
+        formName={"add-atrs-val"}
+      >
+        <AddAtrsValForm
+          onFinish={createAtrValue}
+          formRef={createAtrForm}
+          CategoriesAtrData={CategoriesAtrData}
+          CategoriesAtrLoading={CategoriesAtrLoading}
+        />
+      </GlobModal>
+      {/* ADD MODAL END */}
       {/* ADD MODAL */}
       <GlobModal
-        title={" ایجاد ادمین"}
+        title={" ایجاد ویژگی دسته بندی"}
         visible={visible}
         hideModal={hideModal}
-        formName={"add-category_atrrs"}
+        formName={"add-category_attrs"}
       >
         <AddCatAtrsForm
           onFinish={create}
@@ -166,7 +196,7 @@ export const CategoriesAtrTopBox = ({
         title={" ویرایش ویژگی دسته بندی"}
         visible={editVisible}
         hideModal={hideEditModal}
-        formName={"edit-category_atrrs"}
+        formName={"edit-category_attrs"}
       >
         {loading ? (
           <Spin spinning={loading} />
@@ -197,8 +227,12 @@ export const CategoriesAtrTopBox = ({
         </div>
 
         <div className="create-btn">
+          <Button type="primary" onClick={showAtrValModal}>
+            اضافه کردن مقادیر
+          </Button>
+
           <Button type="primary" onClick={showModal}>
-            ایجاد
+            ایجاد ویژگی
           </Button>
         </div>
       </div>

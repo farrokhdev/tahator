@@ -8,11 +8,21 @@ export const GET_CategoryAtrs = gql`
       _id
       name {
         value
+        lang
       }
 
       accepted
       category {
         _id
+      }
+      isDeleted
+      attrValues {
+        name {
+          lang
+          value
+        }
+        categoryAttr
+        isDeleted
       }
 
       # barter
@@ -35,6 +45,7 @@ export const useGetCategoryAtrs = () => {
     },
   ] = useLazyQuery(GET_CategoryAtrs, {
     manual: true,
+    fetchPolicy: "no-cache",
   });
 
   return {
@@ -54,6 +65,7 @@ export const GET_CategoryAtr = gql`
     getCategory_attr(id: $id) {
       name {
         value
+        lang
       }
       category {
         _id
@@ -143,7 +155,35 @@ export const useAddCategoryAtr = (input) => {
 
   return { createCategoryAtr, addData, addLoading, addError };
 };
+
 // ADD END
+
+// ADD ATTR VALUE
+const ADD_ATR_VALUE = gql`
+  mutation addAtrVal($input: CreateAttrValueByAdminInput) {
+    createAttrValueByAdmin(input: $input) {
+      _id
+      name {
+        lang
+        value
+      }
+      categoryAttr
+      isDeleted
+    }
+  }
+`;
+
+export const useAddAtrValue = (input) => {
+  const [
+    createAtrValue,
+    { data: addValData, loading: addValLoading, error: addValError },
+  ] = useMutation(ADD_ATR_VALUE, {
+    variables: { input: input },
+  });
+
+  return { createAtrValue, addValData, addValLoading, addValError };
+};
+// ADD ATTR VALUE END
 
 // EDIT CategoryAtr
 

@@ -57,7 +57,7 @@ export const Template = ({ children }) => {
 
           // defaultSelectedKeys={["1"]}
         >
-          <Menu.Item
+          {/* <Menu.Item
             className={
               location?.pathname === "/" ? "ant-menu-item-selected" : ""
             }
@@ -65,34 +65,17 @@ export const Template = ({ children }) => {
             icon={<DashboardOutlined />}
           >
             <Link to="/">داشبرد</Link>
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item
             className={
-              location?.pathname === "/services" ? "ant-menu-item-selected" : ""
+              location?.pathname === "/users" ? "ant-menu-item-selected" : ""
             }
-            key="2"
+            key="8"
             icon={<UsergroupAddOutlined />}
           >
-            <Link to="/services"> خدمات</Link>
+            <Link to="/users">کاربر ها</Link>
           </Menu.Item>
-          <Menu.Item
-            className={
-              location?.pathname === "/orders" ? "ant-menu-item-selected" : ""
-            }
-            key="3"
-            icon={<UsergroupAddOutlined />}
-          >
-            <Link to="/orders"> سفارشات</Link>
-          </Menu.Item>
-          <Menu.Item
-            className={
-              location?.pathname === "/units" ? "ant-menu-item-selected" : ""
-            }
-            key="4"
-            icon={<UsergroupAddOutlined />}
-          >
-            <Link to="/units"> یونیت ها</Link>
-          </Menu.Item>
+
           <Menu.Item
             className={
               location?.pathname === "/categories"
@@ -124,15 +107,6 @@ export const Template = ({ children }) => {
           >
             <Link to="/roles">نقش ها</Link>
           </Menu.Item>
-          <Menu.Item
-            className={
-              location?.pathname === "/users" ? "ant-menu-item-selected" : ""
-            }
-            key="8"
-            icon={<UsergroupAddOutlined />}
-          >
-            <Link to="/users">کاربر ها</Link>
-          </Menu.Item>
 
           <Menu.Item
             className={
@@ -142,6 +116,34 @@ export const Template = ({ children }) => {
             icon={<UsergroupAddOutlined />}
           >
             <Link to="/admins">مدیران</Link>
+          </Menu.Item>
+          <Menu.Item
+            className={
+              location?.pathname === "/services" ? "ant-menu-item-selected" : ""
+            }
+            key="2"
+            icon={<UsergroupAddOutlined />}
+          >
+            <Link to="/services"> خدمات</Link>
+          </Menu.Item>
+
+          <Menu.Item
+            className={
+              location?.pathname === "/units" ? "ant-menu-item-selected" : ""
+            }
+            key="4"
+            icon={<UsergroupAddOutlined />}
+          >
+            <Link to="/units"> یونیت ها</Link>
+          </Menu.Item>
+          <Menu.Item
+            className={
+              location?.pathname === "/orders" ? "ant-menu-item-selected" : ""
+            }
+            key="3"
+            icon={<UsergroupAddOutlined />}
+          >
+            <Link to="/orders"> سفارشات</Link>
           </Menu.Item>
         </Menu>
       </Sider>

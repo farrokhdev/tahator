@@ -8,19 +8,15 @@ export const GET_Units = gql`
       _id
       name {
         value
+        lang
       }
-      service {
-        presenter {
-          fullName
-        }
-        _id
-      }
+      isDeleted
 
       # barter
       # expireDate
       # cash
       # profit
-      # accepted
+      accepted
     }
   }
 `;

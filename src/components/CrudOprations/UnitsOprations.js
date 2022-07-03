@@ -1,5 +1,33 @@
 import { message } from "antd";
 
+// get unit
+export const getUnitsHandler = async (getF, set) => {
+  try {
+    await getF().then((res) => {
+      const data = res?.data?.getUnits;
+      const filtered = res?.data?.getUnits.filter((unit) => !unit.isDeleted);
+      set(filtered);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+// get currency
+
+export const getCurrencyHandler = async (getF, set) => {
+  try {
+    await getF().then((res) => {
+      const data = res?.data?.getCurrencys;
+      const filtered = res?.data?.getCurrencys.filter(
+        (unit) => !unit.isDeleted
+      );
+      set(filtered);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 // create
 export const UnitsCreate = async (
   create = "",
@@ -16,7 +44,7 @@ export const UnitsCreate = async (
       },
     })
       .then(() => {
-        message.success("ادمین جدید با موفقیت ایجاد شد");
+        message.success("یونیت جدید با موفقیت ایجاد شد");
         refetch();
       })
       .then(() => {
@@ -68,7 +96,7 @@ export const UnitsEdit = async (
       },
     })
       .then(() => {
-        message.success("ادمین با موفقیت ویرایش شد");
+        message.success("یونیت با موفقیت ویرایش شد");
         refetch();
       })
       .then(() => {
@@ -92,7 +120,7 @@ export const UnitsDelete = async (
         id: id,
       },
     }).then(() => {
-      message.success("ادمین با موفقیت حذف شد");
+      message.success("یونیت با موفقیت حذف شد");
       refetch();
     });
   } catch (err) {
@@ -116,7 +144,13 @@ export const UnitsGetSingle = async (
       setId(id);
       console.log(res);
       formRef.setFieldsValue({
-        ...res.data.getUnit,
+        name: res?.data?.getUnit?.name?.map((item) => {
+          return {
+            value: item.value,
+            lang: item.lang,
+          };
+        }),
+        service: res?.data?.getUnit?.service?._id,
       });
     });
   } catch (err) {

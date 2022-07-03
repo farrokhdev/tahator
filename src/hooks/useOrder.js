@@ -13,6 +13,7 @@ export const GET_Orders = gql`
         presenter {
           fullName
           phoneNumber
+          _id
         }
         category {
           name {
@@ -51,8 +52,8 @@ export const useGetOrders = () => {
 };
 
 export const GET_UserOrders = gql`
-  query getUserOrdersList($filters: GetOrdersQueryInput) {
-    getUserOrdersByAdmin(filters: $filters) {
+  query getUserOrdersList($filters: GetOrdersQueryInput, $userId: ID!) {
+    getUserOrdersByAdmin(filters: $filters, userId: $userId) {
       _id
       accepted
       description
@@ -77,20 +78,20 @@ export const GET_UserOrders = gql`
 
 export const useGetUserOrders = () => {
   const [
-    getUserOrdersList,
+    getUserOrders,
     {
       data: userOrdersData,
       loading: userOrdersLoading,
       error: userOrdersError,
       refetch: userOrdersRefetch,
     },
-  ] = useLazyQuery(GET_Orders, {
+  ] = useLazyQuery(GET_UserOrders, {
     manual: true,
     fetchPolicy: "no-cache",
   });
 
   return {
-    getUserOrdersList,
+    getUserOrders,
     userOrdersData,
     userOrdersLoading,
     userOrdersError,

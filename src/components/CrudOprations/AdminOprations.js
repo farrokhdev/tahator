@@ -1,5 +1,17 @@
 import { message } from "antd";
 
+// get
+export const getAdminsHandler = async (getF, set) => {
+  try {
+    await getF().then((res) => {
+      const data = res?.data?.getAdmins;
+      const filtered = res?.data?.getAdmins.filter((admin) => !admin.isDeleted);
+      set(filtered);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 // create
 export const AdminCreate = async (
   create = "",

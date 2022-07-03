@@ -78,7 +78,7 @@ export const RolesComp = () => {
     {
       title: "نام",
       dataIndex: "name",
-      width: "20%",
+      width: "30%",
       editable: true,
       align: "center",
       render: (_, record) => {
@@ -88,7 +88,7 @@ export const RolesComp = () => {
     {
       title: "واژه کلیدی",
       dataIndex: "key",
-      width: "20%",
+      width: "30%",
       editable: true,
       align: "center",
       render: (_, record) => {
@@ -96,19 +96,9 @@ export const RolesComp = () => {
       },
     },
     {
-      title: "احرازات",
-      dataIndex: "permissions",
-      width: "20%",
-      editable: true,
-      align: "center",
-      render: (_, record) => {
-        return <>{record?.permitions}</>;
-      },
-    },
-    {
       title: "تغییرات",
       dataIndex: "actions",
-      width: "40%",
+      width: "20%",
       align: "center",
       render: (_, record) => {
         return (

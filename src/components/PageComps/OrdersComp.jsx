@@ -23,7 +23,7 @@ export const OrdersComp = () => {
 
   // user orders
   const {
-    getUserOrdersList,
+    getUserOrders,
     usesrOrdersData,
     userOrdersLoading,
     userOrdersError,
@@ -52,22 +52,6 @@ export const OrdersComp = () => {
       },
     },
     {
-      title: "دسته بندی",
-      dataIndex: "category",
-      width: "20%",
-      editable: true,
-      align: "center",
-      render: (_, record) => {
-        return (
-          <>
-            {record?.service?.category?.name?.map((item) => {
-              return <>{item.value} ,</>;
-            })}
-          </>
-        );
-      },
-    },
-    {
       title: "خریدار",
       dataIndex: "buyer",
       width: "20%",
@@ -78,17 +62,17 @@ export const OrdersComp = () => {
       },
     },
 
-    {
-      title: "وضعیت",
-      dataIndex: "accepted",
-      width: "20%",
-      editable: true,
-      align: "center",
-      render: (_, record) => {
-        console.log(record);
-        return <>{record?.accepted ? "تایید شده" : " تایید نشده"}</>;
-      },
-    },
+    // {
+    //   title: "وضعیت",
+    //   dataIndex: "accepted",
+    //   width: "20%",
+    //   editable: true,
+    //   align: "center",
+    //   render: (_, record) => {
+    //     console.log(record);
+    //     return <>{record?.accepted ? "تایید شده" : " تایید نشده"}</>;
+    //   },
+    // },
     {
       title: "تغییرات",
       dataIndex: "actions",
@@ -142,7 +126,7 @@ export const OrdersComp = () => {
   const [editVisible, setEditVisible] = useState(false);
 
   const showEditModal = async (record) => {
-    // getSingleOp(record._id);a
+    // getSingleOp(record._id);
     setEditVisible(true);
   };
 
@@ -152,8 +136,13 @@ export const OrdersComp = () => {
   // details modal
   const [detVisible, setDetVisible] = useState(false);
 
-  const showDetailModal = async (record) => {
-    await getUserOrdersList();
+  const showDetailModal = async (record, records) => {
+    console.log(record?.service);
+    await getUserOrders({
+      variables: {
+        userId: record?.service?.presenter?._id,
+      },
+    });
     setDetVisible(true);
   };
 
@@ -181,7 +170,8 @@ export const OrdersComp = () => {
         // createForm = {}
         // editForm = {}
         searchForm={searchForm}
-        // loading={}
+        loading={userOrdersLoading}
+        orderDetails={usesrOrdersData}
       />
       <DefaultTable
         form={form}

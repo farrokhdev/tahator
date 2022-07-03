@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Form, Input, InputNumber, Select, Spin } from "antd";
-import Password from "antd/lib/input/Password";
+import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 
 const validateMessages = {
   required: "${label} پر کردن این فیلد ضروری میباشد!",
@@ -32,20 +32,64 @@ export const AddServiceForm = ({
       validateMessages={validateMessages}
       form={formRef}
     >
-      <Form.Item
-        name={"name"}
-        label="نام "
-        rules={[
-          {
-            required: true,
-          },
-        ]}
+      <Form.List
+        name="name"
+
+        // rules={[
+        //   {
+        //     validator: async (_, names) => {
+        //       if (!names || names.length < 2) {
+        //         return Promise.reject(new Error("حد اقل مجاز"));
+        //       }
+        //     },
+        //   },
+        // ]}
       >
-        <Select defaultValue={"زبان"}>
-          <Option value={"en"}>en</Option>
-          <Option value={"tr"}>tr</Option>
-        </Select>
-      </Form.Item>
+        {(fields, { add, remove }, { errors }) => (
+          <>
+            {fields.map((field, key) => {
+              return (
+                <>
+                  <Form.Item
+                    key={key}
+                    label="نام "
+                    {...field}
+                    name={[field.name, "value"]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    key={key}
+                    label="زبان"
+                    {...field}
+                    name={[field.name, "lang"]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  {fields.length > 0 ? (
+                    <MinusCircleOutlined
+                      className="dynamic-delete-button"
+                      onClick={() => remove(field.name)}
+                    />
+                  ) : null}
+                </>
+              );
+            })}
+
+            <Form.Item>
+              <Button
+                type="dashed"
+                onClick={() => add()}
+                icon={<PlusOutlined />}
+              >
+                افزودن دسته
+              </Button>
+
+              <Form.ErrorList errors={errors} />
+            </Form.Item>
+          </>
+        )}
+      </Form.List>
       <Form.Item
         name={"presenter"}
         label="ارایه دهنده سرویس "
@@ -61,7 +105,7 @@ export const AddServiceForm = ({
           ) : (
             <>
               {usersData &&
-                usersData.getUsers.map((user) => {
+                usersData?.map((user) => {
                   return <Option value={user._id}>{user.fullName}</Option>;
                 })}
             </>
@@ -83,7 +127,7 @@ export const AddServiceForm = ({
           ) : (
             <>
               {CategoriesData &&
-                CategoriesData.getCategorys.map((cat) => {
+                CategoriesData?.map((cat) => {
                   return (
                     <Option value={cat._id}>
                       {cat.name.map((value) => (
@@ -107,71 +151,80 @@ export const AddServiceForm = ({
       >
         <InputNumber />
       </Form.Item>
-      <Form.Item
-        name={"barter"}
-        label="واحد currency"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <Select defaultValue={"یونیت"}>
-          {CurrencysLoading ? (
-            <Spin spinning={CurrencysLoading} />
-          ) : (
-            <>
-              {CurrencysData &&
-                CurrencysData.getCurrencys.map((currency) => {
-                  return <Option value={currency._id}>{currency.unit}</Option>;
-                })}
-            </>
-          )}
-        </Select>
+      <Form.Item>
+        <Form.Item
+          name={"unit"}
+          label="واحد پول tahatori"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Select defaultValue={"tahator"}>
+            {CurrencysLoading ? (
+              <Spin spinning={CurrencysLoading} />
+            ) : (
+              <>
+                {CurrencysData &&
+                  CurrencysData?.map((currency) => {
+                    return (
+                      <Option value={currency._id}>{currency.unit}</Option>
+                    );
+                  })}
+              </>
+            )}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name={"amount"}
+          label="مقدار پول tahatori"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <InputNumber />
+        </Form.Item>
       </Form.Item>
-      <Form.Item
-        name={"amount"}
-        label="میزان currency"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <InputNumber />
-      </Form.Item>
-      <Form.Item
-        name={"cash"}
-        label="پول"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <Select defaultValue={"یونیت"}>
-          {CurrencysLoading ? (
-            <Spin spinning={CurrencysLoading} />
-          ) : (
-            <>
-              {CurrencysData &&
-                CurrencysData.getCurrencys.map((currency) => {
-                  return <Option value={currency._id}>{currency.unit}</Option>;
-                })}
-            </>
-          )}
-        </Select>
-      </Form.Item>
-      <Form.Item
-        name={"cashAmount"}
-        label="میزان پول"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <InputNumber />
+
+      <Form.Item>
+        <Form.Item
+          name={"cash"}
+          label="واحد پول"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Select defaultValue={"cash"}>
+            {CurrencysLoading ? (
+              <Spin spinning={CurrencysLoading} />
+            ) : (
+              <>
+                {CurrencysData &&
+                  CurrencysData?.map((currency) => {
+                    return (
+                      <Option value={currency._id}>{currency.unit}</Option>
+                    );
+                  })}
+              </>
+            )}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name={"cashAmount"}
+          label="مقدار پول"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <InputNumber />
+        </Form.Item>
       </Form.Item>
     </Form>
   );
