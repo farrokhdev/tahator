@@ -27,16 +27,23 @@ import {
 import { UsersTopBox } from "../Globals/UsersTopBox";
 import CurrencyFormat from "react-currency-format";
 import { useNavigate } from "react-router";
-import { useGetSettlements } from "../../hooks/useSettelments";
+import {
+  useFinishSettelment,
+  useGetSettlements,
+} from "../../hooks/useSettelments";
 import {
   getSettelmentsHandler,
+  SettelmentFinish,
   SettelmentGetByfilter,
 } from "../CrudOprations/SettelmentOprations";
+import GlobModal from "../modals/GlobModal";
+import { FinishSettelmentForm } from "../Forms/FinishSettelmentForm";
 
 export const SettelmentsComp = () => {
   // Form Refs
   const [form] = Form.useForm();
   const [createForm] = Form.useForm();
+  const [finishForm] = Form.useForm();
   const [editForm] = Form.useForm();
   const [searchForm] = Form.useForm();
   // Form Refs End
@@ -112,6 +119,27 @@ export const SettelmentsComp = () => {
   const deleteOp = (id) => {
     UserDelete(removeUser, id, refetchHandler, deleteError);
   };
+
+  // finish
+  const { finishSettelmentReq, finishData, finishError, finishLoading } =
+    useFinishSettelment();
+
+  const finishOp = (input) => {
+    console.log(input);
+    SettelmentFinish(
+      finishSettelmentReq,
+      {
+        description: input.description,
+        status: 2,
+      },
+      id,
+      refetchHandler,
+      finishForm,
+      hideModal,
+      addError
+    );
+  };
+
   //   CRUD OPRATIONS END
 
   // TABLE COLUMN
@@ -133,7 +161,8 @@ export const SettelmentsComp = () => {
       editable: true,
       align: "center",
       render: (_, record) => {
-        return <>{record?.fullName}</>;
+        console.log(record);
+        return <>{record?.userId?.fullName}</>;
       },
     },
 
@@ -144,7 +173,7 @@ export const SettelmentsComp = () => {
       editable: true,
       align: "center",
       render: (_, record) => {
-        return <>{record?.country}</>;
+        return <>{record?.userId?.country}</>;
       },
     },
     {
@@ -154,7 +183,7 @@ export const SettelmentsComp = () => {
       editable: true,
       align: "center",
       render: (_, record) => {
-        return <>{record?.address}</>;
+        return <>{record?.userId?.address}</>;
       },
     },
 
@@ -167,7 +196,7 @@ export const SettelmentsComp = () => {
       render: (_, record) => {
         return (
           <>
-            {record.type == "Real" ? (
+            {record?.userId.type == "Real" ? (
               <Tag color={"yellow"}>{"حقیقی"}</Tag>
             ) : (
               <Tag color={"green"}>{"حقوقی"}</Tag>
@@ -188,7 +217,7 @@ export const SettelmentsComp = () => {
           <>
             {
               <CurrencyFormat
-                value={record?.cashWallet}
+                value={record?.userId?.cashWallet}
                 // suffix={"ریال"}
                 displayType={"text"}
                 thousandSeparator={true}
@@ -210,7 +239,7 @@ export const SettelmentsComp = () => {
           <>
             {
               <CurrencyFormat
-                value={record?.barter}
+                value={record?.creditCardNO}
                 // suffix={"ریال"}
                 displayType={"text"}
                 thousandSeparator={true}
@@ -228,18 +257,7 @@ export const SettelmentsComp = () => {
       align: "center",
       render: (_, record) => {
         console.log(record);
-        return (
-          <>
-            {
-              <CurrencyFormat
-                value={record?.barter}
-                // suffix={"ریال"}
-                displayType={"text"}
-                thousandSeparator={true}
-              />
-            }
-          </>
-        );
+        return <>{record?.amount}</>;
       },
     },
     {
@@ -252,14 +270,13 @@ export const SettelmentsComp = () => {
         console.log(record);
         return (
           <>
-            {
-              <CurrencyFormat
-                value={record?.barter}
-                // suffix={"ریال"}
-                displayType={"text"}
-                thousandSeparator={true}
-              />
-            }
+            {record?.status == 1
+              ? "ساخته شده"
+              : record?.status == 2
+              ? " پرداخت شده"
+              : record?.status == 3
+              ? " رد شده"
+              : ""}
           </>
         );
       },
@@ -279,32 +296,12 @@ export const SettelmentsComp = () => {
               justifyContent: "space-evenly",
             }}
           >
-            <Typography.Link>
-              <Popconfirm
-                // onConfirm={() =>
-                //   CatsEdit(
-                //     editCategorie,
-                //     {
-                //       name: record.name.map((n) => {
-                //         return {
-                //           lang: n.lang,
-                //           value: n.value,
-                //         };
-                //       }),
-                //       accepted: true,
-                //     },
-                //     record._id,
-                //     refetchHandler,
-                //     hideEditModal,
-                //     editError
-                //   )
-                // }
-                title="آیا از تایید مطمئن هستید؟"
-                okText={"تایید"}
-                cancelText={"انصراف"}
-              >
-                <CheckSquareOutlined style={{ color: "green" }} />
-              </Popconfirm>
+            <Typography.Link
+              onClick={() => showFinishModal(record)}
+              style={{ color: "green" }}
+            >
+              <CheckSquareOutlined style={{ color: "green" }} />
+              تایید
             </Typography.Link>
           </span>
         );
@@ -335,13 +332,19 @@ export const SettelmentsComp = () => {
   };
   const [walletVisible, setWalletVisible] = useState(false);
 
-  const showWalletModal = async (record) => {
-    getSingleOp(record._id);
-    setWalletVisible(true);
-  };
-
   const hideWalletModal = () => {
     setWalletVisible(false);
+  };
+
+  const [finishVisible, setFinishVisible] = useState(false);
+
+  const showFinishModal = async (record) => {
+    setId(record._id);
+    setFinishVisible(true);
+  };
+
+  const hideFinishModal = () => {
+    setFinishVisible(false);
   };
 
   // MODAL OPRATIONS END
@@ -355,7 +358,17 @@ export const SettelmentsComp = () => {
 
   return (
     <>
-      <UsersTopBox
+      {/* FINISH MODAL  */}
+      <GlobModal
+        title={"کیف پول"}
+        visible={finishVisible}
+        hideModal={hideFinishModal}
+        formName={"finish-settelment"}
+      >
+        <FinishSettelmentForm onFinish={finishOp} formRef={finishForm} />
+      </GlobModal>
+      {/* FINISH MODAL END */}
+      {/* <UsersTopBox
         filter={{
           first: "نام",
           second: "شماره",
@@ -378,7 +391,7 @@ export const SettelmentsComp = () => {
         searchForm={searchForm}
         loading={singleUserLoading}
         singleUserData={singleUserData}
-      />
+      /> */}
       <DefaultTable
         form={form}
         data={settelments}

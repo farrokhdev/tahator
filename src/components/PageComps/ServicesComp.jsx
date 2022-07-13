@@ -140,15 +140,15 @@ export const ServicesComp = () => {
       editable: true,
       width: "30%",
       align: "center",
-      // render: (_, record) => {
-      //   return (
-      //     <>
-      //       <Button type="primary" onClick={navigate}>
-      //         جزییات دسته بندی
-      //       </Button>
-      //     </>
-      //   );
-      // },
+      render: (_, record) => {
+        return (
+          <>
+            {record?.category?.name?.map((item) => {
+              return <>{item.lang === "en" && item.value}</>;
+            })}
+          </>
+        );
+      },
     },
   ];
 

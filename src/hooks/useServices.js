@@ -7,8 +7,17 @@ export const GET_Services = gql`
     getServices(filters: $filters) {
       _id
       name {
-        # lang
+        lang
         value
+      }
+      presenter {
+        fullName
+      }
+      category {
+        name {
+          value
+          lang
+        }
       }
     }
   }

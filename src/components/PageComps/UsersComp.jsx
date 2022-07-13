@@ -217,6 +217,7 @@ export const UsersComp = () => {
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
+              gap: "10px",
               justifyContent: "space-evenly",
             }}
           >

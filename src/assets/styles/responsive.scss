@@ -1,0 +1,14 @@
+@media only screen and (max-width: 900px) {
+  .top-box {
+    flex-direction: column !important;
+    gap: 10px;
+    .search {
+      flex-direction: column !important;
+      gap: 10px;
+    }
+  }
+
+  .costum-content {
+    padding: 0 !important;
+  }
+}

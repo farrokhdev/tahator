@@ -4,8 +4,8 @@ import { message } from "antd";
 export const getSettelmentsHandler = async (getF, set) => {
   try {
     await getF().then((res) => {
-      const data = res?.data?.getSettelments;
-      const filtered = res?.data?.getSettelments.filter(
+      const data = res?.data?.getSettlementRequests;
+      const filtered = res?.data?.getSettlementRequests.filter(
         (Settelment) => !Settelment.isDeleted
       );
       set(filtered);
@@ -63,7 +63,7 @@ export const SettelmentCreate = async (
       },
     })
       .then(() => {
-        message.success("کاربر جدید با موفقیت ایجاد شد");
+        message.success("درخواست جدید با موفقیت ایجاد شد");
         refetch();
       })
       .then(() => {
@@ -93,7 +93,7 @@ export const SettelmentEdit = async (
       },
     })
       .then(() => {
-        message.success("کاربر با موفقیت ویرایش شد");
+        message.success("درخواست با موفقیت ویرایش شد");
         refetch();
       })
       .then(() => {
@@ -117,7 +117,7 @@ export const SettelmentDelete = async (
         SettelmentId: id,
       },
     }).then(() => {
-      message.success("کاربر با موفقیت حذف شد");
+      message.success("درخواست با موفقیت حذف شد");
       refetch();
     });
   } catch (err) {
@@ -146,5 +146,36 @@ export const SettelmentGetSingle = async (
     });
   } catch (err) {
     console.log(err);
+  }
+};
+
+// finish
+export const SettelmentFinish = async (
+  finish = "",
+  input = "",
+  id = "",
+  refetch = "",
+  formRef = "",
+  hide = "",
+  error = ""
+) => {
+  try {
+    await finish({
+      variables: {
+        input: { ...input },
+        id: id,
+      },
+    })
+      .then(() => {
+        message.success("درخواست جدید با موفقیت ثبت شد");
+        refetch();
+      })
+      .then(() => {
+        formRef.resetFields();
+        hide();
+      });
+  } catch (err) {
+    console.log(err);
+    await message.error(error ? error.message : "خطا");
   }
 };

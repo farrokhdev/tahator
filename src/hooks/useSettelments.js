@@ -11,16 +11,16 @@ export const GET_Settlements = gql`
         fullName
         phoneNumber
         address
+        country
+        cashWallet
+        creditCardNO
         # image
         # profit
         # services
         # boughtServices
         # email
-        # creditCardNO
-        # country
         # bio
         # orders
-        # cashWallet
         # barter
         # birthday
         # city
@@ -71,6 +71,25 @@ export const useGetSettlements = (filters) => {
 };
 
 // GET_USERS END
+
+// Finish_settelment
+export const finishSettelment = gql`
+  mutation finishSettelmentss($input: FinishSettlementRequestInput, $id: ID!) {
+    finishSettlementRequest(input: $input, id: $id)
+  }
+`;
+export const useFinishSettelment = (input) => {
+  const [
+    finishSettelmentReq,
+    { data: finishData, loading: finishLoading, error: finishError },
+  ] = useMutation(finishSettelment, {
+    variables: { input: input },
+  });
+
+  return { finishSettelmentReq, finishData, finishLoading, finishError };
+};
+
+// Finish_settelment End
 
 // GET_Single
 // export const GET_USER = gql`
