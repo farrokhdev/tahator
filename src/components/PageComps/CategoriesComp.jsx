@@ -22,6 +22,7 @@ import {
   CatsGetSingle,
   getCatsHandler,
 } from "../CrudOprations/CategoriesOpration";
+import { langs } from "../../lib/globalLangs";
 
 export const CategoriesComp = () => {
   // form refs
@@ -64,10 +65,29 @@ export const CategoriesComp = () => {
     useAddCategorie();
 
   const createOp = (input) => {
-    console.log({ ...input });
+    Object.keys(input.value).forEach((k) => {
+      if (input?.value[k] === "" || input?.value[k] === undefined) {
+        delete input?.value[k];
+      }
+    });
+
     CatsCreate(
       createCategorie,
-      { ...input },
+
+      {
+        name: langs?.map((lng) => {
+          return {
+            value:
+              lng === "en"
+                ? input?.value?.en
+                : lng === "tr"
+                ? input?.value?.tr
+                : "",
+            lang: lng,
+          };
+        }),
+        parent: input.parent,
+      },
       refetchHandler,
       createForm,
       hideModal,
@@ -93,10 +113,34 @@ export const CategoriesComp = () => {
     useEditCategorie();
 
   const editOp = (input) => {
+    Object.keys(input.value).forEach((k) => {
+      if (
+        input?.value[k] === "" ||
+        input?.value[k] === undefined ||
+        input?.value[k] === null
+      ) {
+        delete input?.value[k];
+      }
+    });
+    console.log(input);
     CatsEdit(
       editCategorie,
-      input,
+      {
+        name: langs?.map((lng) => {
+          return {
+            value:
+              lng === "en"
+                ? input?.value?.en
+                : lng === "tr"
+                ? input?.value?.tr
+                : "",
+            lang: lng,
+          };
+        }),
+        parent: input.parent,
+      },
       id,
+      editForm,
       refetchHandler,
       hideEditModal,
       editError
@@ -115,38 +159,49 @@ export const CategoriesComp = () => {
   // TABLE COLUMN
   const columns = [
     {
-      title: "نام دسته",
-      dataIndex: "name",
-      width: "20%",
+      title: "نام دسته بندی (en)",
+      // dataIndex: "name",
+      width: "10%",
       editable: true,
       align: "center",
       render: (_, record) => {
         return (
           <div className="d-flex-row gap-10">
             {record?.name.map((val) => (
-              <Tag color="success"> {val.value} </Tag>
+              <> {val.lang === "en" && val.value} </>
             ))}
           </div>
         );
       },
     },
     {
-      title: "زیردسته ها",
+      title: "نام دسته بندی (tr)",
+      // dataIndex: "name",
+      width: "10%",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        return (
+          <div className="d-flex-row gap-10">
+            {record?.name.map((val) => (
+              <> {val.lang === "tr" && val.value} </>
+            ))}
+          </div>
+        );
+      },
+    },
+    {
+      title: "دسته بندی اصلی",
       dataIndex: "name",
-      width: "20%",
+      width: "10%",
       editable: true,
       align: "center",
       render: (_, record) => {
         console.log(record);
         return (
           <div className="d-flex-row gap-10">
-            {record?.categoryAttrs?.map((atr) => (
-              <Tag color="processing">
-                {" "}
-                {atr?.name?.map((name) => {
-                  return <>{name.value}</>;
-                })}{" "}
-              </Tag>
+            {record?.parent?.name.map((val) => (
+              <> {val.lang === "tr" && val.value} </>
             ))}
           </div>
         );
@@ -154,23 +209,42 @@ export const CategoriesComp = () => {
     },
 
     {
-      title: "تایید شده",
+      title: "وضعیت",
       dataIndex: "accepted",
-      width: "20%",
+      width: "10%",
       editable: true,
       align: "center",
       render: (_, record) => {
         return (
-          <Tag color={"success"}>
-            {record?.accepted ? "تایید شده" : "تایید نشده"}
-          </Tag>
+          <>
+            {record?.accepted ? (
+              <Tag color={"success"}>تایید شده</Tag>
+            ) : (
+              <Tag color={"warning"}>تایید نشده</Tag>
+            )}
+          </>
         );
       },
     },
     {
+      title: "ثبت کننده",
+      // dataIndex: "name",
+      width: "15%",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        return (
+          <>
+            {record?.user?.fullName == null ? "ادمین" : record?.user?.fullName}
+          </>
+        );
+      },
+    },
+
+    {
       title: "تغییرات",
       dataIndex: "actions",
-      width: "40%",
+      width: "20%",
       align: "center",
       render: (_, record) => {
         return (
@@ -191,12 +265,6 @@ export const CategoriesComp = () => {
                   CatsEdit(
                     editCategorie,
                     {
-                      name: record.name.map((n) => {
-                        return {
-                          lang: n.lang,
-                          value: n.value,
-                        };
-                      }),
                       accepted: true,
                     },
                     record._id,
@@ -254,6 +322,8 @@ export const CategoriesComp = () => {
   return (
     <>
       <CategoriesTopBox
+        categories={cats}
+        CategoriesLoading={CategoriesLoading}
         filter={{ first: "نام", second: "وضعیت" }}
         showModal={showModal}
         showEditModal={showEditModal}

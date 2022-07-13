@@ -4,23 +4,23 @@ import { useQuery, gql, useMutation, useLazyQuery } from "@apollo/client";
 export const GET_USERS = gql`
   query getUsers($filters: GetUsersQueryInput) {
     getUsers(filters: $filters) {
+      _id
+      type
       fullName
       phoneNumber
+      address
+      image
+      profit
       email
-      type
-      _id
-      cashWallet {
-        unit {
-          _id
-          unit
-          status
-        }
-        amount
-      }
-      # wallet
-      # rate
-      # createdAt
+      creditCardNO
+      country
+      bio
+      cashWallet
+      barter
       isDeleted
+      payments {
+        _id
+      }
     }
   }
 `;
@@ -45,19 +45,65 @@ export const useGetUsers = (filters) => {
 export const GET_USER = gql`
   query getSingleUser($id: ID!) {
     getUser(id: $id) {
+      _id
+      type
       fullName
       phoneNumber
+      address
+      image
       email
-      username
       type
-      _id
-      cashWallet {
-        unit {
-          _id
-          unit
-          status
+      profit
+      payments {
+        _id
+        order {
+          buyer {
+            fullName
+          }
         }
-        amount
+        transaction {
+          _id
+          payment
+          type
+          increase
+          decrease
+          deposit
+          withDraw
+          isDeleted
+        }
+        # settlementRequest
+        user {
+          fullName
+        }
+        provider {
+          fullName
+        }
+        status
+        type
+        description
+        isDeleted
+        image
+        createdAt
+        updatedAt
+        from
+      }
+      # services {
+      #   _id
+      #   name {
+      #     lang
+      #     value
+      #   }
+      # creditCardNO
+      # country
+      # bio
+
+      cashWallet
+      barter
+      enable
+      currency {
+        _id
+        unit
+        status
       }
     }
   }

@@ -69,48 +69,17 @@ export const UsersTopBox = ({
   const openDrop = () => {
     setDropVisible(!dropVisible);
   };
-  const [realVals, setRealVals] = useState({});
-
-  const onChange = (value) => {
-    switch (value.id) {
-      case "fullName":
-        // code block
-        setRealVals({ ...realVals, fullName: value.value });
-        break;
-      case "phoneNumber":
-        setRealVals({ ...realVals, phoneNumber: value.value });
-
-        break;
-      case "email":
-        // code block
-        setRealVals({ ...realVals, email: value.value });
-        break;
-      case "type":
-        // code block
-        setRealVals({ ...realVals, type: value.value });
-        break;
-      default:
-        // code block
-        setRealVals({});
-    }
-  };
 
   // on search
-  const onSearch = (values) => {
-    console.log(realVals);
+  const onSearch = async (values) => {
+    Object.keys(values).forEach((k) => values[k] == null && delete values[k]);
+
     try {
-      getByFilter({ ...realVals });
+      getByFilter(values);
       setDropVisible(!dropVisible);
     } catch (err) {
       console.log(err);
     }
-  };
-
-  // get all
-  const getAllData = async () => {
-    await getAll()
-      .then(() => searchForm.resetFields())
-      .then(() => setDropVisible(false));
   };
 
   // Increase number
@@ -150,16 +119,16 @@ export const UsersTopBox = ({
                   validateMessages={validateMessages}
                 >
                   <Form.Item name={"fullName"} label={filter && filter?.first}>
-                    <Input onChange={(e) => onChange(e.target)} />
+                    <Input />
                   </Form.Item>
                   <Form.Item
                     name={"phoneNumber"}
                     label={filter && filter?.second}
                   >
-                    <Input onChange={(e) => onChange(e.target)} />
+                    <Input />
                   </Form.Item>
                   <Form.Item name={"email"} label={filter && filter?.third}>
-                    <Input onChange={(e) => onChange(e.target)} />
+                    <Input />
                   </Form.Item>
                   <Form.Item label={filter && filter?.forth} name="type">
                     <Select
@@ -167,7 +136,6 @@ export const UsersTopBox = ({
                       style={{
                         width: "50%",
                       }}
-                      onChange={(e) => onChange(e.target)}
                     >
                       <Option value={"Real"}>حقیقی</Option>
                       <Option value={"Legal"}>حقوقی</Option>
@@ -288,7 +256,7 @@ export const UsersTopBox = ({
               فیلتر
             </Button>
           </Dropdown>
-          <Button type="primary" onClick={getAllData}>
+          <Button type="primary" onClick={() => getByFilter()}>
             همه
           </Button>
         </div>

@@ -16,8 +16,11 @@ import { Profile } from "../pages/Profile";
 import { map } from "./RouteMap";
 
 import TokenManager from "../lib/tokenManager";
-import { Template } from "../components/Template/Template";
 import { Users } from "../pages/Users";
+import { SingleUser } from "../pages/SingleUser";
+import { FinancialManagement } from "../pages/FinancialManagement";
+import { UserWallet } from "../pages/UserWallet";
+import { Settlements } from "../pages/Settlements";
 
 export const RoutesFa = () => {
   const { access_token } = TokenManager.getToken();
@@ -99,6 +102,38 @@ export const RoutesFa = () => {
           path={map.routes.users}
           element={
             access_token ? <Users /> : <Navigate to={map.routes.login} />
+          }
+        />
+        <Route
+          exact
+          path={map.routes.settlements}
+          element={
+            access_token ? <Settlements /> : <Navigate to={map.routes.login} />
+          }
+        />
+        <Route
+          exact
+          path={map.routes.userWallet}
+          element={
+            access_token ? <UserWallet /> : <Navigate to={map.routes.login} />
+          }
+        />
+        <Route
+          exact
+          path={map.routes.financialManagement}
+          element={
+            access_token ? (
+              <FinancialManagement />
+            ) : (
+              <Navigate to={map.routes.login} />
+            )
+          }
+        />
+        <Route
+          exact
+          path={map.routes.user}
+          element={
+            access_token ? <SingleUser /> : <Navigate to={map.routes.login} />
           }
         />
         <Route

@@ -1,5 +1,19 @@
 import { message } from "antd";
 
+// get
+export const getOrdersHandler = async (getF, set) => {
+  try {
+    await getF().then((res) => {
+      const data = res?.data?.getOrders;
+      const filtered = res?.data?.getOrders.filter((order) => order.accepted);
+      set(filtered);
+      // set.value = res.data;
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 // create
 export const OrdersCreate = async (
   create = "",

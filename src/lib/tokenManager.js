@@ -11,7 +11,7 @@ let refresh_token;
 const token = localStorage.getItem(accessToken);
 
 export const client = new ApolloClient({
-  uri: "https://cashforchat.com:8080/graphql",
+  uri: "http://api.getgiveservice.com:8080/graphql",
   cache: new InMemoryCache(),
   headers: {
     authorization: token ? token : "",

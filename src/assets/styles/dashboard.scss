@@ -12,10 +12,10 @@
     border-radius: 10px;
     display: flex;
     padding: 20px;
-    // flex-direction: column;
+
+    flex-direction: column;
     background-color: #fff;
-    gap: 5px;
-    justify-content: space-between;
+    gap: 10px;
     align-items: center;
     text-align: center;
 
@@ -32,62 +32,29 @@
       width: 50px;
       height: 50px;
     }
-    .icon-admin {
-      color: #bddcff;
+    .icon-bg {
+      color: #fff;
       background-color: $color1;
     }
-    .icon-user {
-      color: #bddcff;
-      background-color: #0e488a;
-    }
-    .icon-active-user {
-      color: #faa2c5;
-      background-color: #ff106f;
-    }
-    .icon-deactiveuser {
-      color: #a2b5fa;
-      background-color: #5477f7;
-    }
-    .icon-payment {
-      color: #a2faed;
-      background-color: #2cbaa4;
-    }
-    .icon-count {
-      color: #a2faed;
-      background-color: #2cbaa4;
-    }
-    .icon-settlement {
-      color: #faa2c5;
-      background-color: #ff106f;
-    }
-    .icon-count-amount {
-      color: #a2b5fa;
-      background-color: #5477f7;
-    }
-    .icon-count-wallet {
-      color: #bddcff;
-      background-color: $color1;
-    }
-    .icon-calls {
-      color: #faa2c5;
-      background-color: #ff106f;
-    }
-    .icon-reserved {
-      color: #a2faed;
-      background-color: #2cbaa4;
-    }
-    .icon-blocked {
-      color: #faa2c5;
-      background-color: #ff106f;
-    }
+
     .count-box {
-      width: 50%;
+      width: 100%;
       display: flex;
+      align-items: center;
       flex-direction: column;
+      gap: 10px;
+      p {
+        margin-bottom: 0;
+        // line-height: 100%;
+        font-size: 1.4rem;
+        width: fit-content;
+      }
+      // flex-direction: column;
       .count-item {
         font-size: 1.5rem;
-        font-weight: 900;
-        margin-bottom: 0;
+        font-weight: 700;
+        line-height: 100%;
+        color: $color1;
       }
     }
   }

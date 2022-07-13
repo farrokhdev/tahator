@@ -8,6 +8,8 @@ export const GET_Orders = gql`
       _id
       accepted
       description
+      status
+      cash
 
       service {
         presenter {
@@ -15,6 +17,8 @@ export const GET_Orders = gql`
           phoneNumber
           _id
         }
+        country
+
         category {
           name {
             value

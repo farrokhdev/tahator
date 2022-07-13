@@ -28,7 +28,8 @@ export const CatsCreate = async (
   try {
     await create({
       variables: {
-        input: { ...input },
+        // input: { ...input },
+        input: input,
       },
     })
       .then(() => {
@@ -72,6 +73,7 @@ export const CatsEdit = async (
   edit = "",
   input = "",
   id = "",
+  formRef,
   refetch = "",
   hide = "",
   error = ""
@@ -89,6 +91,7 @@ export const CatsEdit = async (
         refetch();
       })
       .then(() => {
+        formRef.resetFields();
         hide();
       });
   } catch (err) {
@@ -130,15 +133,24 @@ export const CatsGetSingle = async (
         id: id,
       },
     }).then((res) => {
-      console.log(res.data.getCategory.name);
+      console.log(res.data.getCategory);
       setId(id);
+      const en = res.data.getCategory.name.map((item) => {
+        if (item.lang === "en") {
+          return item.value;
+        }
+      });
+      const tr = res.data.getCategory.name.map((item) => {
+        if (item.lang === "tr") {
+          return item.value;
+        }
+      });
       formRef.setFieldsValue({
-        name: res.data.getCategory.name.map((item) => {
-          return {
-            lang: item.lang,
-            value: item.value,
-          };
-        }),
+        value: {
+          en: en[0],
+          tr: tr[1],
+        },
+        parent: res.data.getCategory.parent._id,
       });
     });
   } catch (err) {

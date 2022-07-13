@@ -1,18 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getUsersHandler } from "../components/CrudOprations/UserOprations";
 
-const initialState = {};
+const initialState = {
+  value: [],
+};
 
-export const counterSlice = createSlice({
+export const users = createSlice({
   name: "users",
   initialState,
   reducers: {
-    getUsers: (state, actions) => {
-      state.value = actions.payload;
+    getUList: async (state, action) => {
+      getUsersHandler(action.payload, state).then(
+        (res) => (state.value = res.data)
+      );
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { getUsers } = counterSlice.actions;
+export const { getUList } = users.actions;
 
-export default counterSlice.reducer;
+export default users.reducer;

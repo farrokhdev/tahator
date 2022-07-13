@@ -6,8 +6,6 @@ import {
   EditOutlined,
   CheckSquareOutlined,
 } from "@ant-design/icons";
-import { TopBox } from "../Globals/TopBox";
-import { useGetUnits } from "../../hooks/useUnits";
 
 import {
   getUsersHandler,
@@ -27,6 +25,8 @@ import {
   useEditUser,
 } from "../../hooks/useUsers";
 import { UsersTopBox } from "../Globals/UsersTopBox";
+import CurrencyFormat from "react-currency-format";
+import { useNavigate } from "react-router";
 
 export const UsersComp = () => {
   // Form Refs
@@ -54,14 +54,8 @@ export const UsersComp = () => {
   }, []);
 
   // filter
-  const FilterOp = (filters) => {
-    UserGetByfilter(
-      getUsersList,
-      filters,
-      refetchHandler,
-      usersError,
-      searchForm
-    );
+  const FilterOp = (filter) => {
+    UserGetByfilter(getUsersList, setUsers, filter, searchForm);
   };
 
   // add
@@ -112,9 +106,19 @@ export const UsersComp = () => {
   // TABLE COLUMN
   const columns = [
     {
+      title: "شناسه",
+      // dataIndex: "_id",
+      width: "10%",
+      editable: true,
+      align: "center",
+      render: (_, record, num) => {
+        return num;
+      },
+    },
+    {
       title: "نام کامل",
       dataIndex: "fullName",
-      width: "20%",
+      width: "10%",
       editable: true,
       align: "center",
       render: (_, record) => {
@@ -124,7 +128,7 @@ export const UsersComp = () => {
     {
       title: "شماره تلفن",
       dataIndex: "phoneNumber",
-      width: "20%",
+      width: "10%",
       editable: true,
       align: "center",
       render: (_, record) => {
@@ -132,29 +136,70 @@ export const UsersComp = () => {
       },
     },
     {
-      title: "موجودی",
+      title: "ایمیل",
+      dataIndex: "email",
+      width: "10%",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        return <>{record?.email}</>;
+      },
+    },
+    {
+      title: "کشور",
+      dataIndex: "country",
+      width: "10%",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        return <>{record?.country}</>;
+      },
+    },
+    {
+      title: "آدرس",
+      dataIndex: "address",
+      width: "10%",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        return <>{record?.address}</>;
+      },
+    },
+    {
+      title: " موجودی نقدی",
       // dataIndex: "wallet",
-      width: "20%",
+      width: "10%",
       editable: true,
       align: "center",
       render: (_, record) => {
         console.log(record);
-        return <>{record?.cashWallet?.amount}</>;
+        return (
+          <>
+            {
+              <CurrencyFormat
+                value={record?.cashWallet}
+                // suffix={"ریال"}
+                displayType={"text"}
+                thousandSeparator={true}
+              />
+            }
+          </>
+        );
       },
     },
     {
-      title: "type",
+      title: "نوع",
       dataIndex: "type",
-      width: "20%",
+      width: "10%",
       editable: true,
       align: "center",
       render: (_, record) => {
         return (
           <>
             {record.type == "Real" ? (
-              <Tag color={"yellow"}>{record.type}</Tag>
+              <Tag color={"yellow"}>{"حقیقی"}</Tag>
             ) : (
-              <Tag color={"green"}>{record.type}</Tag>
+              <Tag color={"green"}>{"حقوقی"}</Tag>
             )}
           </>
         );
@@ -163,7 +208,7 @@ export const UsersComp = () => {
     {
       title: "تغییرات",
       dataIndex: "actions",
-      width: "40%",
+      width: "20%",
       align: "center",
       render: (_, record) => {
         return (
@@ -171,17 +216,16 @@ export const UsersComp = () => {
             style={{
               display: "flex",
               flexDirection: "row",
+              alignItems: "center",
               justifyContent: "space-evenly",
             }}
           >
+            <Button type="primary" onClick={() => singleUser(record._id)}>
+              جزییات
+            </Button>
             <Typography.Link onClick={() => showEditModal(record)}>
               <EditOutlined />
             </Typography.Link>
-
-            <Button type="primary" onClick={() => showWalletModal(record)}>
-              کیف پول
-            </Button>
-
             <Typography.Link>
               <Popconfirm
                 onConfirm={() => deleteOp(record._id)}
@@ -231,6 +275,13 @@ export const UsersComp = () => {
   };
 
   // MODAL OPRATIONS END
+
+  // Navigate
+  const Navigate = useNavigate();
+
+  const singleUser = (id) => {
+    Navigate(`/users/${id}`);
+  };
 
   return (
     <>

@@ -10,13 +10,20 @@ export const GET_CategoryAtrs = gql`
         value
         lang
       }
+      userId {
+        fullName
+      }
 
       accepted
       category {
         _id
+        name {
+          value
+          lang
+        }
       }
       isDeleted
-      attrValues {
+      attrValue {
         name {
           lang
           value

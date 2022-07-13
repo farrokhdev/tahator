@@ -142,7 +142,7 @@ export const CategorieAtrComp = () => {
   // TABLE COLUMN
   const columns = [
     {
-      title: "نام زیر دسته ها",
+      title: " ویژگی",
       // dataIndex: "name",
       width: "15%",
       editable: true,
@@ -152,11 +152,7 @@ export const CategorieAtrComp = () => {
           <>
             <div className="d-flex-row gap-10">
               {record?.name.map((item) => {
-                return (
-                  <>
-                    <Tag color="processing"> {item.value} </Tag>
-                  </>
-                );
+                return <>{item.value}</>;
               })}
             </div>
           </>
@@ -164,44 +160,18 @@ export const CategorieAtrComp = () => {
       },
     },
     {
-      title: "کد دسته های اصلی",
+      title: "نام دسته بندی",
       // dataIndex: "name",
-      width: "15%",
+      width: "10%",
       editable: true,
       align: "center",
       render: (_, record) => {
         return (
-          <>
-            <Tag color="success"> {record?.category?._id} </Tag>
-          </>
-        );
-      },
-    },
-    {
-      title: "مقدار های ویژگی",
-
-      width: "15%",
-      editable: true,
-      align: "center",
-      render: (_, record) => {
-        return (
-          <>
-            {record?.attrValues ? (
-              <>
-                {record?.attrValues?.map((item) => {
-                  return (
-                    <>
-                      {item?.name?.map((name) => {
-                        return <Tag color={"processing"}>{name.value}</Tag>;
-                      })}
-                    </>
-                  );
-                })}
-              </>
-            ) : (
-              "__"
-            )}
-          </>
+          <div className="d-flex-row gap-10">
+            {record?.name.map((val) => (
+              <> {val.lang === "en" && val.value} </>
+            ))}
+          </div>
         );
       },
     },
@@ -216,6 +186,22 @@ export const CategorieAtrComp = () => {
           <Tag color={"success"}>
             {record?.accepted ? "تایید شده" : "تایید نشده"}
           </Tag>
+        );
+      },
+    },
+    {
+      title: "ثبت کننده",
+      // dataIndex: "name",
+      width: "15%",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        return (
+          <>
+            {record?.userId?.fullName == null
+              ? "ادمین"
+              : record?.userId?.fullName}
+          </>
         );
       },
     },
@@ -244,12 +230,6 @@ export const CategorieAtrComp = () => {
                   CategoriesAtrEdit(
                     editCategoryAtr,
                     {
-                      name: record.name.map((n) => {
-                        return {
-                          lang: n.lang,
-                          value: n.value,
-                        };
-                      }),
                       accepted: true,
                     },
                     record._id,

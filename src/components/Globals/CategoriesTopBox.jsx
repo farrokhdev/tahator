@@ -36,6 +36,8 @@ const validateMessages = {
 const { Option } = Select;
 
 export const CategoriesTopBox = ({
+  categories = "",
+  CategoriesLoading = "",
   filter = {},
   showModal = "",
   visible = "",
@@ -156,7 +158,12 @@ export const CategoriesTopBox = ({
         hideModal={hideModal}
         formName={"add-category"}
       >
-        <AddCategoryForm onFinish={create} formRef={createForm} />
+        <AddCategoryForm
+          categories={categories}
+          loading={CategoriesLoading}
+          onFinish={create}
+          formRef={createForm}
+        />
       </GlobModal>
       {/* ADD MODAL END */}
       {/* EDIT MODAL */}
@@ -169,7 +176,12 @@ export const CategoriesTopBox = ({
         {loading ? (
           <Spin spinning={loading} />
         ) : (
-          <EditCategoryForm onFinish={edit} formRef={editForm} />
+          <EditCategoryForm
+            categories={categories}
+            loading={CategoriesLoading}
+            onFinish={edit}
+            formRef={editForm}
+          />
         )}
       </GlobModal>
       {/* EDIT MODAL END */}

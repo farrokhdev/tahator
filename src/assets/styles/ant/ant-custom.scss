@@ -66,3 +66,36 @@
 // .ant-table-pagination {
 //   display: none !important;
 // }
+
+.custom-table {
+  overflow: hidden !important;
+  border-radius: 5px;
+}
+.ant-pagination-options {
+  display: none !important;
+}
+
+.ant-table-thead {
+  tr {
+    th {
+      background-color: $color1 !important;
+      // border-right: none !important;
+      color: $bgColor !important;
+    }
+  }
+}
+
+// Modal
+.peymentModal {
+  width: 70% !important;
+  .ant-modal-body {
+    min-height: 300px !important;
+  }
+}
+
+// menu
+.ant-menu-submenu {
+  .ant-menu-item {
+    padding-right: 30px !important;
+  }
+}

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Button, Form, Input, InputNumber, Select } from "antd";
+import { Button, Form, Input, InputNumber, Select, Spin } from "antd";
 import Password from "antd/lib/input/Password";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { langs } from "../../lib/globalLangs";
 
 const validateMessages = {
   required: "${label} پر کردن این فیلد ضروری میباشد!",
@@ -16,7 +17,12 @@ const validateMessages = {
 
 const { Option } = Select;
 
-export const EditCategoryForm = ({ onFinish, formRef }) => {
+export const EditCategoryForm = ({
+  categories,
+  loading,
+  onFinish,
+  formRef,
+}) => {
   return (
     <Form
       name="edit-category"
@@ -34,58 +40,35 @@ export const EditCategoryForm = ({ onFinish, formRef }) => {
       //   },
       // ]}
     >
-      <Form.List
-        name="name"
-
-        // rules={[
-        //   {
-        //     validator: async (_, names) => {
-        //       if (!names || names.length < 2) {
-        //         return Promise.reject(new Error("حد اقل مجاز"));
-        //       }
-        //     },
-        //   },
-        // ]}
-      >
-        {(fields, { add, remove }, { errors }) => (
+      {langs.map((item) => {
+        return (
           <>
-            {fields.map((field, key) => {
-              return (
-                <>
-                  <Form.Item
-                    label="نام دسته"
-                    {...field}
-                    key={key}
-                    name={[field.name, "value"]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    key={key}
-                    label="زبان"
-                    {...field}
-                    name={[field.name, "lang"]}
-                  >
-                    <Input />
-                  </Form.Item>
-                </>
-              );
-            })}
-
-            <Form.Item>
-              <Button
-                type="dashed"
-                onClick={() => add()}
-                icon={<PlusOutlined />}
-              >
-                افزودن دسته
-              </Button>
-
-              <Form.ErrorList errors={errors} />
+            <Form.Item label={`نام دسته (${item}) `} name={["value", item]}>
+              <Input />
             </Form.Item>
           </>
-        )}
-      </Form.List>
+        );
+      })}
+      <Form.Item label={"نام دسته اصلی"} name={"parent"}>
+        <Select defaultValue={"نام  دسته"}>
+          {loading ? (
+            <Spin spinning={loading} />
+          ) : (
+            <>
+              {categories &&
+                categories?.map((cat) => {
+                  return (
+                    <Option value={cat._id}>
+                      {cat.name.map((val) => (
+                        <>{val.lang === "en" && val.value}</>
+                      ))}
+                    </Option>
+                  );
+                })}
+            </>
+          )}
+        </Select>
+      </Form.Item>
     </Form>
   );
 };

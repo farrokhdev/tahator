@@ -10,6 +10,14 @@ export const GET_Categories = gql`
         lang
         value
       }
+
+      parent {
+        _id
+        name {
+          value
+          lang
+        }
+      }
       categoryAttrs {
         name {
           lang
@@ -54,6 +62,13 @@ export const GET_Categorie = gql`
       name {
         value
         lang
+      }
+      parent {
+        _id
+        name {
+          value
+          lang
+        }
       }
 
       _id

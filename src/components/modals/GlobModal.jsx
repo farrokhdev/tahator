@@ -1,10 +1,18 @@
 import React from "react";
 import { Button, Modal } from "antd";
 
-const GlobModal = ({ title, formName, hideModal, visible, children }) => {
+const GlobModal = ({
+  className = "",
+  title,
+  formName,
+  hideModal,
+  visible,
+  children,
+}) => {
   return (
     <>
       <Modal
+        className={className}
         title={title}
         visible={visible}
         onCancel={hideModal}

@@ -12,6 +12,10 @@ const routes = {
   categoriesAtr: "categories-atribute",
   roles: "roles",
   users: "users",
+  settlements: "settelments",
+  userWallet: "user-wallet",
+  financialManagement: "financial-management",
+  user: "users/:id",
 };
 
 const ref = { ...{ routes } };

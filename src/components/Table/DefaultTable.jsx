@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Form, Table, message } from "antd";
 
 const DefaultTable = ({
+  className = "",
   form = "",
   data = "",
   columns = "",
@@ -18,7 +19,7 @@ const DefaultTable = ({
   return (
     <Form form={form} component={false}>
       <Table
-        className="custom-table"
+        className={className || "custom-table"}
         locale={{
           emptyText: "دیتایی موجود نیست",
         }}

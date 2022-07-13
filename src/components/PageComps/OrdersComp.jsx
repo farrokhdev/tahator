@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DefaultTable from "../Table/DefaultTable";
-import { Form, Popconfirm, Typography } from "antd";
+import { Form, Popconfirm, Popover, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { TopBox } from "../Globals/TopBox";
 import { useGetOrders, useGetUserOrders } from "../../hooks/useOrder";
@@ -42,9 +42,7 @@ export const OrdersComp = () => {
   // TABLE COLUMN
   const columns = [
     {
-      title: "ارایه دهنده",
-      // dataIndex: "presenter",
-      width: "20%",
+      title: "مشخصات کاربر",
       editable: true,
       align: "center",
       render: (_, record) => {
@@ -52,61 +50,97 @@ export const OrdersComp = () => {
       },
     },
     {
-      title: "خریدار",
-      dataIndex: "buyer",
-      width: "20%",
+      title: "موضوع",
       editable: true,
       align: "center",
       render: (_, record) => {
-        return <>{record?.buyer?.fullName}</>;
+        return <>{record?.description}</>;
       },
     },
-
-    // {
-    //   title: "وضعیت",
-    //   dataIndex: "accepted",
-    //   width: "20%",
-    //   editable: true,
-    //   align: "center",
-    //   render: (_, record) => {
-    //     console.log(record);
-    //     return <>{record?.accepted ? "تایید شده" : " تایید نشده"}</>;
-    //   },
-    // },
     {
-      title: "تغییرات",
-      dataIndex: "actions",
-      width: "40%",
+      title: "دسته بندی",
+      editable: true,
       align: "center",
       render: (_, record) => {
         return (
-          <span
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-evenly",
-            }}
-          >
-            <Typography.Link onClick={() => showDetailModal(record)}>
-              جزییات خرید
-            </Typography.Link>
-            {/* <Typography.Link
-             onClick={() => showEditModal(record)}
-            >
-              <EditOutlined />
-            </Typography.Link>
+          <>
+            {record?.service?.category?.name.map(
+              (n) => n.lang === "en" && n.value
+            )}
+          </>
+        );
+      },
+    },
+    {
+      title: "کشور",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        return <>{record?.service?.country}</>;
+      },
+    },
+    {
+      title: "واحد شمارش",
+      editable: true,
+      align: "center",
+    },
+    {
+      title: "واحد پول",
+      editable: true,
+      align: "center",
+    },
+    {
+      title: "قیمت هر واحد",
+      editable: true,
+      align: "center",
+    },
+    {
+      title: "قیمت با تخفیف",
+      editable: true,
+      align: "center",
+    },
+    {
+      title: "مبلغ نقدی",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        return <>{record?.cash}</>;
+      },
+    },
+    {
+      title: "مبلغ تهاتری",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        return <>{record?.barter}</>;
+      },
+    },
+    {
+      title: "تاریخ اعتبار",
+      editable: true,
+      align: "center",
+    },
+    {
+      title: "تعداد فروش",
+      editable: true,
+      align: "center",
+    },
+    {
+      title: "وضعیت",
 
-            <Typography.Link>
-              <Popconfirm
-                onConfirm={() => remove(record)}
-                title="آیا مطمئن هستید؟"
-                okText={"حذف"}
-                cancelText={"انصراف"}
-              >
-                <DeleteOutlined />
-              </Popconfirm>
-            </Typography.Link> */}
-          </span>
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        return <>{record?.status}</>;
+      },
+    },
+    {
+      title: "ویژگی ها",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        return (
+          <> {record?.service?.name?.map((n) => n.lang === "en" && n.value)}</>
         );
       },
     },

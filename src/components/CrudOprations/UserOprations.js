@@ -7,7 +7,37 @@ export const getUsersHandler = async (getF, set) => {
       const data = res?.data?.getUsers;
       const filtered = res?.data?.getUsers.filter((user) => !user.isDeleted);
       set(filtered);
+      // set.value = res.data;
     });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// filter
+export const UserGetByfilter = async (
+  getF = "",
+  set,
+  filters = "",
+  formRef
+) => {
+  try {
+    if (filters) {
+      await getF({
+        variables: {
+          filters: {
+            ...filters,
+          },
+        },
+      }).then((res) => {
+        const data = res?.data?.getUsers;
+        const filtered = res?.data?.getUsers.filter((user) => !user.isDeleted);
+        set(filtered);
+        formRef.resetFields();
+      });
+    } else {
+      getUsersHandler(getF, set);
+    }
   } catch (err) {
     console.log(err);
   }
@@ -39,28 +69,6 @@ export const UserCreate = async (
   } catch (err) {
     console.log(err);
     await message.error(error ? error.message : "خطا");
-  }
-};
-
-// filter
-export const UserGetByfilter = async (
-  getF = "",
-  filters = "",
-  refetch = "",
-  error = "",
-  formRef = ""
-) => {
-  try {
-    await getF({
-      variables: {
-        filters: {
-          ...filters,
-        },
-      },
-    }).then(() => refetch());
-  } catch (err) {
-    console.log(err);
-    message.error(error && error.message);
   }
 };
 
@@ -126,6 +134,7 @@ export const UserGetSingle = async (
         id: id,
       },
     }).then((res) => {
+      console.log(res);
       setId(id);
       formRef.setFieldsValue({
         ...res.data.getUser,

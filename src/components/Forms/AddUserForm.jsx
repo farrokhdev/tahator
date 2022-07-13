@@ -86,6 +86,25 @@ export const AddUserForm = ({ onFinish, formRef }) => {
           <Option value={"Legal"}>حقوقی</Option>
         </Select>
       </Form.Item>
+      <Form.Item
+        label={"زبان"}
+        name="language"
+        rules={[
+          {
+            required: true,
+          },
+        ]}
+      >
+        <Select
+          defaultValue="زبان کاربر"
+          style={{
+            width: "50%",
+          }}
+        >
+          <Option value={"en"}>انگلیسی</Option>
+          <Option value={"tr"}>ترکی</Option>
+        </Select>
+      </Form.Item>
     </Form>
   );
 };

@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
   DashboardOutlined,
   UsergroupAddOutlined,
-  DropboxOutlined,
-  TransactionOutlined,
-  PhoneOutlined,
+  FileProtectOutlined,
   DollarCircleOutlined,
+  WalletOutlined,
+  BlockOutlined,
+  SelectOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import Logo from "../../assets/images/icon/logo.png";
 
@@ -54,10 +53,9 @@ export const Template = ({ children }) => {
         <Menu
           theme="dark"
           mode="inline"
-
           // defaultSelectedKeys={["1"]}
         >
-          {/* <Menu.Item
+          <Menu.Item
             className={
               location?.pathname === "/" ? "ant-menu-item-selected" : ""
             }
@@ -65,16 +63,67 @@ export const Template = ({ children }) => {
             icon={<DashboardOutlined />}
           >
             <Link to="/">داشبرد</Link>
-          </Menu.Item> */}
+          </Menu.Item>
           <Menu.Item
             className={
               location?.pathname === "/users" ? "ant-menu-item-selected" : ""
             }
-            key="8"
+            key="2"
             icon={<UsergroupAddOutlined />}
           >
             <Link to="/users">کاربر ها</Link>
           </Menu.Item>
+          <Menu.Item
+            className={
+              location?.pathname === "/orders" ? "ant-menu-item-selected" : ""
+            }
+            key="12"
+            icon={<FileProtectOutlined />}
+          >
+            <Link to="/orders"> سفارشات</Link>
+          </Menu.Item>
+          <Menu.SubMenu
+            title={
+              <>
+                <DollarCircleOutlined />
+                <span>مدیریت مالی</span>
+              </>
+            }
+          >
+            <Menu.Item
+              className={
+                location?.pathname === "/financial-management"
+                  ? "ant-menu-item-selected"
+                  : ""
+              }
+              key="3"
+              icon={<WalletOutlined />}
+            >
+              <Link to="/financial-management"> سود حساب ها</Link>
+            </Menu.Item>
+            <Menu.Item
+              className={
+                location?.pathname === "/user-wallet"
+                  ? "ant-menu-item-selected"
+                  : ""
+              }
+              key="4"
+              icon={<WalletOutlined />}
+            >
+              <Link to="/user-wallet">کیف پول کاربران </Link>
+            </Menu.Item>
+            <Menu.Item
+              className={
+                location?.pathname === "/settelments"
+                  ? "ant-menu-item-selected"
+                  : ""
+              }
+              key="5"
+              icon={<WalletOutlined />}
+            >
+              <Link to="/settelments"> درخواست برداشت </Link>
+            </Menu.Item>
+          </Menu.SubMenu>
 
           <Menu.Item
             className={
@@ -82,8 +131,8 @@ export const Template = ({ children }) => {
                 ? "ant-menu-item-selected"
                 : ""
             }
-            key="5"
-            icon={<UsergroupAddOutlined />}
+            key="6"
+            icon={<BlockOutlined />}
           >
             <Link to="/categories"> دسته بندی ها</Link>
           </Menu.Item>
@@ -93,58 +142,50 @@ export const Template = ({ children }) => {
                 ? "ant-menu-item-selected"
                 : ""
             }
-            key="6"
-            icon={<UsergroupAddOutlined />}
+            key="7"
+            icon={<BlockOutlined />}
           >
             <Link to="/categories-atribute">ویژگی دسته بندی ها</Link>
           </Menu.Item>
           <Menu.Item
             className={
+              location?.pathname === "/services" ? "ant-menu-item-selected" : ""
+            }
+            key="10"
+            icon={<SelectOutlined />}
+          >
+            <Link to="/services"> خدمات</Link>
+          </Menu.Item>
+
+          {/* <Menu.Item
+            className={
               location?.pathname === "/roles" ? "ant-menu-item-selected" : ""
             }
-            key="7"
+            key="8"
             icon={<UsergroupAddOutlined />}
           >
             <Link to="/roles">نقش ها</Link>
-          </Menu.Item>
+          </Menu.Item> */}
 
           <Menu.Item
             className={
               location?.pathname === "/admins" ? "ant-menu-item-selected" : ""
             }
             key="9"
-            icon={<UsergroupAddOutlined />}
+            icon={<UserOutlined />}
           >
             <Link to="/admins">مدیران</Link>
           </Menu.Item>
-          <Menu.Item
-            className={
-              location?.pathname === "/services" ? "ant-menu-item-selected" : ""
-            }
-            key="2"
-            icon={<UsergroupAddOutlined />}
-          >
-            <Link to="/services"> خدمات</Link>
-          </Menu.Item>
 
-          <Menu.Item
+          {/* <Menu.Item
             className={
               location?.pathname === "/units" ? "ant-menu-item-selected" : ""
             }
-            key="4"
+            key="11"
             icon={<UsergroupAddOutlined />}
           >
             <Link to="/units"> یونیت ها</Link>
-          </Menu.Item>
-          <Menu.Item
-            className={
-              location?.pathname === "/orders" ? "ant-menu-item-selected" : ""
-            }
-            key="3"
-            icon={<UsergroupAddOutlined />}
-          >
-            <Link to="/orders"> سفارشات</Link>
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu>
       </Sider>
       <Layout className="site-layout">

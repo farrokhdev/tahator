@@ -7,42 +7,9 @@ export const GET_Services = gql`
     getServices(filters: $filters) {
       _id
       name {
+        # lang
         value
-        lang
       }
-      presenter {
-        _id
-        fullName
-        phoneNumber
-        address
-        type
-      }
-      category {
-        _id
-        accepted
-        categoryAttrs {
-          name {
-            lang
-            value
-          }
-          attrValues {
-            name {
-              lang
-              value
-            }
-          }
-        }
-      }
-      # discount
-      value
-      expireDate
-      isDeleted
-
-      # barter
-      # expireDate
-      # cash
-      # profit
-      # accepted
     }
   }
 `;
