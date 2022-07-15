@@ -162,7 +162,7 @@ export const SettelmentFinish = async (
   try {
     await finish({
       variables: {
-        input: { ...input },
+        input: input,
         id: id,
       },
     })
@@ -176,6 +176,6 @@ export const SettelmentFinish = async (
       });
   } catch (err) {
     console.log(err);
-    await message.error(error ? error.message : "خطا");
+    await message.error(error && error.message);
   }
 };

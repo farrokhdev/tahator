@@ -11,20 +11,20 @@ export const GET_Orders = gql`
       status
       cash
 
-      service {
-        presenter {
-          fullName
-          phoneNumber
-          _id
-        }
-        country
+      # service {
+      #   presenter {
+      #     fullName
+      #     phoneNumber
+      #     _id
+      #   }
+      #   country
 
-        category {
-          name {
-            value
-          }
-        }
-      }
+      #   category {
+      #     name {
+      #       value
+      #     }
+      #   }
+      # }
       buyer {
         fullName
       }

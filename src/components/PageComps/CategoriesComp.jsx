@@ -265,9 +265,17 @@ export const CategoriesComp = () => {
                   CatsEdit(
                     editCategorie,
                     {
+                      name: record?.name?.map((val) => {
+                        return {
+                          lang: val.lang,
+                          value: val.value,
+                        };
+                      }),
                       accepted: true,
+                      parent: record?.parent._id,
                     },
-                    record._id,
+                    record?._id,
+                    editForm,
                     refetchHandler,
                     hideEditModal,
                     editError

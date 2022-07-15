@@ -50,9 +50,9 @@ const DefaultTable = ({
           },
         }}
         loading={loading}
-        scroll={{
-          x: 900,
-        }}
+        // scroll={{
+        //   x: 1000,
+        // }}
       />
     </Form>
   );

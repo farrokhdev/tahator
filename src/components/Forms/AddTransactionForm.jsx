@@ -55,8 +55,8 @@ export const AddTransactionForm = ({ onFinish, formRef }) => {
             width: "50%",
           }}
         >
-          <Option value={"DESC"}>افزایش</Option>
-          <Option value={"ASC"}>کاهش</Option>
+          <Option value={"ASC"}>افزایش</Option>
+          <Option value={"DESC"}>کاهش</Option>
         </Select>
       </Form.Item>
       <Form.Item

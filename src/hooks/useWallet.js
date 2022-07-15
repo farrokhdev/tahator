@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql, useLazyQuery, useMutation } from "@apollo/client";
 
 export const chargeWallet = gql`
   mutation chargeWallet($id: ID!, $amount: Float!) {
@@ -26,5 +26,38 @@ export const useChargeWallet = (id, amount) => {
     chargeLoading,
     chargeError,
     walletRefetch,
+  };
+};
+
+export const getUserFinancial = gql`
+  query getFinancial {
+    getFinancial {
+      _id
+      profitBarterFeePerMount
+      systemIncome
+      profitCashFeePerMount
+    }
+  }
+`;
+
+export const useGetFinancials = () => {
+  const [
+    getFinancialList,
+    {
+      data: financialData,
+      error: financialError,
+      loading: financialLoading,
+      refetch: financialRefetch,
+    },
+  ] = useLazyQuery(getUserFinancial, {
+    fetchPolicy: "no-cache",
+  });
+
+  return {
+    getFinancialList,
+    financialData,
+    financialError,
+    financialLoading,
+    financialRefetch,
   };
 };

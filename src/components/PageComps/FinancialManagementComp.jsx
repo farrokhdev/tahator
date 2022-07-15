@@ -6,29 +6,20 @@ import {
   EditOutlined,
   CheckSquareOutlined,
 } from "@ant-design/icons";
+import CurrencyFormat from "react-currency-format";
 
-import {
-  getUsersHandler,
-  UserCreate,
-  UserDelete,
-  UserEdit,
-  UserGetByfilter,
-  UserGetSingle,
-} from "../CrudOprations/UserOprations";
+import { GetFinancialHandler } from "../CrudOprations/FinancialsOpration";
 
 import { AddUserForm } from "../Forms/AddUserForm";
-import {
-  useAddUser,
-  useGetUser,
-  useGetUsers,
-  useDeleteUser,
-  useEditUser,
-} from "../../hooks/useUsers";
-import { UsersTopBox } from "../Globals/UsersTopBox";
-import CurrencyFormat from "react-currency-format";
-import { useNavigate } from "react-router";
+
+import { useGetFinancials } from "../../hooks/useWallet";
+import { useDispatch, useSelector } from "react-redux";
 
 export const FinancialManagementComp = () => {
+  // redux
+  const financialStates = useSelector((state) => state.financials);
+
+  const dispatch = useDispatch();
   // Form Refs
   const [form] = Form.useForm();
   const [createForm] = Form.useForm();
@@ -42,65 +33,24 @@ export const FinancialManagementComp = () => {
   //   CRUD OPRATIONS
 
   // get
-  const { getUsersList, usersLoading, usersError } = useGetUsers();
+  const {
+    getFinancialList,
+    financialError,
+    financialLoading,
+    financialRefetch,
+  } = useGetFinancials();
 
-  const [users, setUsers] = useState([]);
+  const [financial, setFinancials] = useState([]);
+
   const refetchHandler = () => {
-    getUsersHandler(getUsersList, setUsers);
+    GetFinancialHandler(getFinancialList, setFinancials);
   };
 
   useEffect(() => {
-    getUsersHandler(getUsersList, setUsers);
+    GetFinancialHandler(getFinancialList, setFinancials);
+    // dispatch(GetFinancialHandler(getFinancialList, setFinancials));
   }, []);
 
-  // filter
-  const FilterOp = (filter) => {
-    UserGetByfilter(getUsersList, setUsers, filter, searchForm);
-  };
-
-  // add
-  const { createUser, addData, addLoading, addError, addrefetchHandler } =
-    useAddUser();
-
-  const createOp = (input) => {
-    console.log(input);
-    UserCreate(
-      createUser,
-      input,
-      refetchHandler,
-      createForm,
-      hideModal,
-      addError
-    );
-  };
-
-  // get single
-  const {
-    getUser,
-    singleUserData,
-    singleUserLoading,
-    singleUserError,
-    singlerefetchHandler,
-  } = useGetUser();
-
-  const getSingleOp = (id) => {
-    UserGetSingle(getUser, id, setId, editForm);
-  };
-
-  // edit
-  const { updateUser, editData, editLoading, editError } = useEditUser();
-
-  const editOp = (input) => {
-    UserEdit(updateUser, input, id, refetchHandler, hideEditModal, editError);
-  };
-
-  // delete
-  const { removeUser, deleteData, deleteLoading, deleteError } =
-    useDeleteUser();
-
-  const deleteOp = (id) => {
-    UserDelete(removeUser, id, refetchHandler, deleteError);
-  };
   //   CRUD OPRATIONS END
 
   // TABLE COLUMN
@@ -111,9 +61,9 @@ export const FinancialManagementComp = () => {
       width: "10%",
       editable: true,
       align: "center",
-      // render: (_, record) => {
-      //   return <>{record?.fullName}</>;
-      // },
+      render: (_, record) => {
+        return <>{record?.profitCashFeePerMount}</>;
+      },
     },
     {
       title: "درصد سود ماهیانه تهاتری",
@@ -121,19 +71,20 @@ export const FinancialManagementComp = () => {
       width: "10%",
       editable: true,
       align: "center",
-      // render: (_, record) => {
-      //   return <>{record?.fullName}</>;
-      // },
+      render: (_, record) => {
+        console.log(record);
+        return <>{record?.profitBarterFeePerMount}</>;
+      },
     },
     {
-      title: "تاریخ فعال سازی",
+      title: "در آمد",
       // dataIndex: "fullName",
       width: "10%",
       editable: true,
       align: "center",
-      // render: (_, record) => {
-      //   return <>{record?.fullName}</>;
-      // },
+      render: (_, record) => {
+        return <>{record?.systemIncome}</>;
+      },
     },
 
     {
@@ -151,12 +102,12 @@ export const FinancialManagementComp = () => {
               justifyContent: "space-evenly",
             }}
           >
-            <Typography.Link onClick={() => showEditModal(record)}>
+            <Typography.Link>
               <EditOutlined />
             </Typography.Link>
             <Typography.Link>
               <Popconfirm
-                onConfirm={() => deleteOp(record._id)}
+                // onConfirm={() => deleteOp(record._id)}
                 title="آیا مطمئن هستید؟"
                 okText={"حذف"}
                 cancelText={"انصراف"}
@@ -173,76 +124,46 @@ export const FinancialManagementComp = () => {
   // TABLE COLUMN END
 
   // MODAL OPRATIONS
-  const [visible, setVisible] = useState(false);
+  // const [visible, setVisible] = useState(false);
 
-  const showModal = () => {
-    setVisible(true);
-  };
-  const hideModal = () => {
-    setVisible(false);
-  };
-  const [editVisible, setEditVisible] = useState(false);
+  // const showModal = () => {
+  //   setVisible(true);
+  // };
+  // const hideModal = () => {
+  //   setVisible(false);
+  // };
+  // const [editVisible, setEditVisible] = useState(false);
 
-  const showEditModal = async (record) => {
-    getSingleOp(record._id);
-    setEditVisible(true);
-  };
+  // const showEditModal = async (record) => {
+  //   getSingleOp(record._id);
+  //   setEditVisible(true);
+  // };
 
-  const hideEditModal = () => {
-    setEditVisible(false);
-  };
-  const [walletVisible, setWalletVisible] = useState(false);
+  // const hideEditModal = () => {
+  //   setEditVisible(false);
+  // };
+  // const [walletVisible, setWalletVisible] = useState(false);
 
-  const showWalletModal = async (record) => {
-    getSingleOp(record._id);
-    setWalletVisible(true);
-  };
+  // const showWalletModal = async (record) => {
+  //   getSingleOp(record._id);
+  //   setWalletVisible(true);
+  // };
 
-  const hideWalletModal = () => {
-    setWalletVisible(false);
-  };
+  // const hideWalletModal = () => {
+  //   setWalletVisible(false);
+  // };
 
   // MODAL OPRATIONS END
 
-  // Navigate
-  const Navigate = useNavigate();
-
-  const singleUser = (id) => {
-    Navigate(`/users/${id}`);
-  };
-
+  console.log(financial);
   return (
     <>
-      <UsersTopBox
-        filter={{
-          first: "نام",
-          second: "شماره",
-          third: "ایمیل",
-          forth: "نوع",
-        }}
-        showModal={showModal}
-        visible={visible}
-        hideModal={hideModal}
-        editVisible={editVisible}
-        hideEditModal={hideEditModal}
-        walletVisible={walletVisible}
-        hideWalletModal={hideWalletModal}
-        edit={editOp}
-        create={createOp}
-        getAll={getUsersList}
-        getByFilter={FilterOp}
-        createForm={createForm}
-        editForm={editForm}
-        searchForm={searchForm}
-        loading={singleUserLoading}
-        singleUserData={singleUserData}
-      />
       <DefaultTable
         form={form}
-        data={users}
+        data={financial}
         columns={columns}
-        loading={usersLoading}
-        error={usersError}
+        loading={financialLoading}
+        error={financialError}
       />
     </>
   );

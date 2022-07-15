@@ -10,7 +10,8 @@
   .single-contents {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    // grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(400px, 4fr));
     gap: 20px;
     .single-content {
       display: flex;

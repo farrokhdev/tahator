@@ -74,7 +74,7 @@ export const useGetSettlements = (filters) => {
 
 // Finish_settelment
 export const finishSettelment = gql`
-  mutation finishSettelmentss($input: FinishSettlementRequestInput, $id: ID!) {
+  mutation finishSet($input: FinishSettlementRequestInput!, $id: ID!) {
     finishSettlementRequest(input: $input, id: $id)
   }
 `;

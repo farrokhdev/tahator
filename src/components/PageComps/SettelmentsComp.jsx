@@ -136,7 +136,7 @@ export const SettelmentsComp = () => {
       refetchHandler,
       finishForm,
       hideModal,
-      addError
+      finishError
     );
   };
 

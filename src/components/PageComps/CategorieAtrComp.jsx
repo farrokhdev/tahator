@@ -230,9 +230,17 @@ export const CategorieAtrComp = () => {
                   CategoriesAtrEdit(
                     editCategoryAtr,
                     {
+                      name: record?.name?.map((val) => {
+                        return {
+                          lang: val.lang,
+                          value: val.value,
+                        };
+                      }),
                       accepted: true,
+                      parent: record?.category?.parent?._id,
                     },
-                    record._id,
+                    record?._id,
+                    editForm,
                     refetchHandler,
                     hideEditModal,
                     editError

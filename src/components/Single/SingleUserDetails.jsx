@@ -8,7 +8,7 @@ export const SingleUserDetails = ({ data }) => {
   const navigate = useNavigate();
 
   const navigateTo = () => {
-    navigate("/financia-lmanagement");
+    navigate("/user-wallet");
   };
   return (
     <>
