@@ -1,13 +1,13 @@
 import React from "react";
-import { UnitsComp } from "../components/PageComps";
+import { CurrencysComp } from "../components/PageComps/CurrencysComp";
 
 import { Template } from "../components/Template/Template";
 
-export const Units = () => {
+export const Currencys = () => {
   return (
     <>
       <Template>
-        <UnitsComp />
+        <CurrencysComp />
       </Template>
     </>
   );

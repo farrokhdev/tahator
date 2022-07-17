@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Form, Input, InputNumber, Select } from "antd";
 import Password from "antd/lib/input/Password";
+import { t } from "i18next";
 
 const validateMessages = {
   required: "${label} پر کردن این فیلد ضروری میباشد!",
@@ -25,7 +26,7 @@ export const AddAdminForm = ({ onFinish, formRef }) => {
     >
       <Form.Item
         name={"name"}
-        label="نام "
+        label={t("admins.name")}
         rules={[
           {
             required: true,
@@ -36,7 +37,7 @@ export const AddAdminForm = ({ onFinish, formRef }) => {
       </Form.Item>
       <Form.Item
         name={"username"}
-        label="نام کاربری"
+        label={t("admins.username")}
         rules={[
           {
             required: true,
@@ -47,7 +48,7 @@ export const AddAdminForm = ({ onFinish, formRef }) => {
       </Form.Item>
       <Form.Item
         name={"family"}
-        label="نام خانوادگی"
+        label={t("admins.family")}
         rules={[
           {
             required: true,
@@ -59,7 +60,7 @@ export const AddAdminForm = ({ onFinish, formRef }) => {
 
       <Form.Item
         name={"password"}
-        label="کلمه عبور"
+        label={t("admins.password")}
         rules={[
           {
             required: true,
@@ -84,7 +85,7 @@ export const AddAdminForm = ({ onFinish, formRef }) => {
       </Form.Item> */}
       <Form.Item
         name={"role"}
-        label="نقش"
+        label={t("admins.role")}
         rules={[
           {
             required: true,

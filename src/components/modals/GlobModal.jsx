@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Modal } from "antd";
 
 const GlobModal = ({
+  noFooter = "",
   className = "",
   title,
   formName,
@@ -16,21 +17,23 @@ const GlobModal = ({
         title={title}
         visible={visible}
         onCancel={hideModal}
-        footer={[
-          <>
-            <Button
-              type="primary"
-              form={formName}
-              key="submit"
-              htmlType="submit"
-            >
-              ثبت
-            </Button>
-            <Button type="primary" onClick={hideModal}>
-              انصراف
-            </Button>
-          </>,
-        ]}
+        footer={
+          !noFooter && [
+            <>
+              <Button
+                type="primary"
+                form={formName}
+                key="submit"
+                htmlType="submit"
+              >
+                ثبت
+              </Button>
+              <Button type="primary" onClick={hideModal}>
+                انصراف
+              </Button>
+            </>,
+          ]
+        }
       >
         {children}
       </Modal>

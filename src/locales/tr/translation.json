@@ -1,0 +1,123 @@
+{
+  "sidebar": {
+    "dashboard": "داشبرد",
+    "users": "کاربران",
+    "orders": "سفارشات",
+    "financial management": "مدیرت مالی",
+    "currency management": "مدیرت ارزها",
+    "Profit accounts": "سود حساب ها",
+    "users wallet": "کیف پول کاربران",
+    "settelment requests": "درخواست برداشت",
+    "categories": "دسته بندی ها",
+    "category attributes": "ویژگی دسته بندی ها",
+    "services": "خدمات",
+    "admins": "مدیران"
+  },
+  "header": {
+    "logout": "خروج"
+  },
+  "topBox": {
+    "filter": "فیلتر",
+    "all": "همه",
+    "create": "ایجاد"
+  },
+  "dashboard": {
+    "userCounts": "تعداد کاربران",
+    "userCashSome": "جمع موجودی نقدی کاربران",
+    "userBarterSome": "جمع موجودی تهاتری کاربران",
+    "acceptedOrders": "تعداد سفارشات ثبت شده",
+    "BuyOrders": "تعداد سفارشات خریداری شده",
+    "BuyOrdersCashSome": "جمع مبالغ نقدی سفارشات خریداری شده",
+    "BuyOrdersBarterSome": "جمع مبالغ تهاتری سفارشات خریداری شده"
+  },
+  "users": {
+    "indicator": "شناسه",
+    "language": "زبان",
+    "name": "نام",
+    "username": "نام کاربری",
+    "family": "نام خانوادگی",
+    "password": "کلمه عبور",
+    "fullname": "نام کامل",
+    "phoneNumber": "شماره تلفن",
+    "email": "ایمیل",
+    "country": "کشور",
+    "adress": "آدرس",
+    "cash": "موجودی نقدی",
+    "barter": "موجودی تهاتری",
+    "type": "نوع",
+    "changes": "تغییرات",
+    "services": "خدمات",
+    "cardNo": "شماره حساب",
+    "info": "درباره کاربر",
+    "allUsers": "همه کاربران",
+    "financials": "مدیریت مالی",
+    "transactions": "تراکنش ها",
+    "show": "نمایش",
+    "user": "کاربر",
+    "buyer": "خریدار",
+    "status": "وضعیت",
+    "desc": "توضیحات",
+    "uploadTransaction": "آپلود رسید",
+    "upload": "آپلود",
+    "sharge": "شارژ موجودی",
+    "accept": "تایید",
+    "amount requested": "میزان درخواستی"
+  },
+  "orders": {
+    "indicator": "مشخصات کاربر",
+    "subject": "موضوع",
+    "category": "دسته بندی",
+    "country": "کشور",
+    "count": "واحد شمارش",
+    "cashUnit": "واحد پول",
+    "cashPerOne": "قیمت هر واحد",
+    "cashDiscount": "قیمت تخفیف",
+    "cash": "مبلغ نقدی",
+    "barter": "مبلغ تهاتری",
+    "date": "تاریخ اعتبار",
+    "sellCounts": "تعداد فروش",
+    "status": "وضعیت"
+  },
+  "currencys": {
+    "currency": "واحد",
+    "status": "وضعیت",
+    "desc": "توضیحات",
+    "changes": "تغییرات"
+  },
+  "financials": {
+    "mounthPercentCash": "درصد سود ماهیانه نقدی",
+    "mounthPercentBarter": "درصد سود ماهیانه تهاتری",
+    "incomes": "درآمد",
+    "changes": "تغییرات"
+  },
+  "categories": {
+    "nameEn": "نام دسته بندی (en)",
+    "nameTr": "نام دسته بندی (tr)",
+    "parentCat": "دسته بندی اصلی",
+    "status": "وضعیت",
+    "acceptProvider": "ثبت کننده",
+    "changes": "تغییرات"
+  },
+  "category attrs": {
+    "atr": "ویژگی",
+    "nameEn": "نام دسته بندی (en)",
+    "nameTr": "نام دسته بندی (tr)",
+    "status": "وضعیت",
+    "acceptProvider": "ثبت کننده",
+    "changes": "تغییرات"
+  },
+  "services": {
+    "name": "نام",
+    "presenter": "ارايه دهنده",
+    "category": "دسته بندی"
+  },
+  "admins": {
+    "name": "نام",
+    "username": "نام کاربری",
+    "family": "نام خانوادگی",
+    "password": "کلمه عبور",
+    "fullname": "نام کامل",
+    "role": "نقش",
+    "changes": "تغییرات"
+  }
+}

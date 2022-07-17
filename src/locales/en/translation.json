@@ -1,0 +1,123 @@
+{
+  "sidebar": {
+    "dashboard": "dashboard",
+    "users": "users",
+    "orders": "orders",
+    "financial management": "Financial Management",
+    "currency management": "currency Management",
+    "Profit accounts": "Profit accounts",
+    "users wallet": "users wallet",
+    "settelment requests": "settelment requests",
+    "categories": "categories",
+    "category attributes": "category attributes",
+    "services": "services",
+    "admins": "admins"
+  },
+  "header": {
+    "logout": "logout"
+  },
+  "topBox": {
+    "filter": "filter",
+    "all": "all",
+    "create": "create"
+  },
+  "dashboard": {
+    "userCounts": "user counts",
+    "userCashSome": "The sum of users cash balance",
+    "userBarterSome": "The sum of users barter balance",
+    "acceptedOrders": "accepted orders",
+    "BuyOrders": "Purchased orders",
+    "BuyOrdersCashSome": "Total cash amounts of purchased orders",
+    "BuyOrdersBarterSome": "Total barter amounts of purchased orders"
+  },
+  "users": {
+    "indicator": "indicator",
+    "language": "language",
+    "name": "name",
+    "username": "username",
+    "family": "family",
+    "fullname": "full name",
+    "password": "password",
+    "phoneNumber": "phone number",
+    "email": "email",
+    "country": "country",
+    "adress": "address",
+    "cash": "cash",
+    "barter": "barter",
+    "type": "type",
+    "changes": "changes",
+    "services": "services",
+    "cardNo": "card number",
+    "info": "info",
+    "allUsers": "all users",
+    "financials": "financial managements",
+    "transactions": "transactions",
+    "show": "show",
+    "user": "user",
+    "buyer": "buyer",
+    "status": "status",
+    "desc": "desc",
+    "uploadTransaction": "upload transaction",
+    "upload": "upload",
+    "sharge": "charg",
+    "accept": "accept",
+    "amount requested": "amount requested"
+  },
+  "orders": {
+    "indicator": "user details",
+    "subject": "subject",
+    "category": "category",
+    "country": "country",
+    "count": "count",
+    "cashUnit": "cash unit",
+    "cashPerOne": "cash per unit",
+    "cashDiscount": "cash discount",
+    "cash": "cash",
+    "barter": "barter",
+    "date": "date",
+    "sellCounts": "purchased counts",
+    "status": "status"
+  },
+  "currencys": {
+    "currency": "currency",
+    "status": "status",
+    "desc": "desc",
+    "changes": "changes"
+  },
+  "financials": {
+    "mounthPercentCash": "mounth Percent Cash",
+    "mounthPercentBarter": "mounth Percent Barter",
+    "incomes": "incomes",
+    "changes": "changes"
+  },
+  "categories": {
+    "nameEn": "category name (en)",
+    "nameTr": "category name (tr)",
+    "parentCat": "parent category",
+    "status": "status",
+    "acceptProvider": "accept provider",
+    "changes": "changes"
+  },
+  "category attrs": {
+    "atr": "property",
+    "nameEn": "category name (en)",
+    "nameTr": "category name (tr)",
+    "status": "status",
+    "acceptProvider": "accept provider",
+    "changes": "changes"
+  },
+  "services": {
+    "name": "name",
+    "presenter": "presenter",
+    "category": "category"
+  },
+  "admins": {
+    "name": "name",
+    "username": "username",
+    "family": "family",
+    "password": "password",
+    "fullname": "full name",
+    "role": "role",
+    "changes": "changes"
+  }
+}

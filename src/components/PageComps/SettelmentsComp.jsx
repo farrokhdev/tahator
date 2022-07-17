@@ -38,6 +38,7 @@ import {
 } from "../CrudOprations/SettelmentOprations";
 import GlobModal from "../modals/GlobModal";
 import { FinishSettelmentForm } from "../Forms/FinishSettelmentForm";
+import { t } from "i18next";
 
 export const SettelmentsComp = () => {
   // Form Refs
@@ -145,7 +146,7 @@ export const SettelmentsComp = () => {
   // TABLE COLUMN
   const columns = [
     {
-      title: "شناسه",
+      title: t("users.indicator"),
       // dataIndex: "_id",
       width: "10%",
       editable: true,
@@ -155,7 +156,7 @@ export const SettelmentsComp = () => {
       },
     },
     {
-      title: "نام کامل",
+      title: t("users.fullname"),
       dataIndex: "fullName",
       width: "10%",
       editable: true,
@@ -167,7 +168,7 @@ export const SettelmentsComp = () => {
     },
 
     {
-      title: "کشور",
+      title: t("users.country"),
       dataIndex: "country",
       width: "10%",
       editable: true,
@@ -177,7 +178,7 @@ export const SettelmentsComp = () => {
       },
     },
     {
-      title: "آدرس",
+      title: t("users.adress"),
       dataIndex: "address",
       width: "10%",
       editable: true,
@@ -188,7 +189,7 @@ export const SettelmentsComp = () => {
     },
 
     {
-      title: "نوع",
+      title: t("users.type"),
       dataIndex: "type",
       width: "10%",
       editable: true,
@@ -206,7 +207,7 @@ export const SettelmentsComp = () => {
       },
     },
     {
-      title: " موجودی نقدی",
+      title: t("users.cash"),
       // dataIndex: "wallet",
       width: "10%",
       editable: true,
@@ -228,7 +229,7 @@ export const SettelmentsComp = () => {
       },
     },
     {
-      title: " شماره حساب",
+      title: t("users.cardNo"),
       // dataIndex: "wallet",
       width: "10%",
       editable: true,
@@ -250,7 +251,7 @@ export const SettelmentsComp = () => {
       },
     },
     {
-      title: "میزان درخواستی",
+      title: t("users.amount requested"),
       // dataIndex: "wallet",
       width: "10%",
       editable: true,
@@ -261,7 +262,7 @@ export const SettelmentsComp = () => {
       },
     },
     {
-      title: "وضعیت",
+      title: t("users.status"),
       // dataIndex: "wallet",
       width: "10%",
       editable: true,
@@ -282,7 +283,7 @@ export const SettelmentsComp = () => {
       },
     },
     {
-      title: "تایید",
+      title: t("users.accept"),
       dataIndex: "actions",
       width: "20%",
       align: "center",
@@ -301,7 +302,7 @@ export const SettelmentsComp = () => {
               style={{ color: "green" }}
             >
               <CheckSquareOutlined style={{ color: "green" }} />
-              تایید
+              {t("users.accept")}
             </Typography.Link>
           </span>
         );

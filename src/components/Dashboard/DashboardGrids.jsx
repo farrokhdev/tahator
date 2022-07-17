@@ -8,8 +8,11 @@ import { useGetOrders } from "../../hooks/useOrder";
 import { useGetUsers } from "../../hooks/useUsers";
 import { getOrdersHandler } from "../CrudOprations/OrdersOpration";
 import { getUsersHandler } from "../CrudOprations/UserOprations";
+import { useTranslation } from "react-i18next";
 
 export const DashboardGrids = () => {
+  const { t } = useTranslation();
+
   // USERs
   const { getUsersList, usersLoading, usersError } = useGetUsers();
   const [users, setUsers] = useState([]);
@@ -60,7 +63,7 @@ export const DashboardGrids = () => {
       <div className="dashboard-item">
         <TbUsers className="icon icon-bg" />
         <div className="count-box">
-          <p> تعداد کاربران</p>
+          <p>{t("dashboard.userCounts")}</p>
           <p className="count-item">
             {usersLoading ? (
               <Spin spinning={usersLoading} />
@@ -73,7 +76,7 @@ export const DashboardGrids = () => {
       <div className="dashboard-item">
         <BsCurrencyDollar className="icon icon-bg" />
         <div className="count-box">
-          <p>جمع موجودی نقدی کاربران</p>
+          <p>{t("dashboard.userCashSome")}</p>
           <p className="count-item">
             {usersLoading ? <Spin spinning={usersLoading} /> : userAmount}
           </p>
@@ -82,7 +85,7 @@ export const DashboardGrids = () => {
       <div className="dashboard-item">
         <BsCurrencyDollar className="icon icon-bg" />
         <div className="count-box">
-          <p>جمع موجودی تهاتری کاربران</p>
+          <p>{t("dashboard.userBarterSome")}</p>
           <p className="count-item">
             {usersLoading ? <Spin spinning={usersLoading} /> : userAmount}
           </p>
@@ -91,7 +94,7 @@ export const DashboardGrids = () => {
       <div className="dashboard-item">
         <BiBarChartSquare className="icon icon-bg" />
         <div className="count-box">
-          <p>تعداد سفارشات ثبت شده</p>
+          <p>{t("dashboard.acceptedOrders")}</p>
           <p className="count-item">
             {ordersLoading ? (
               <Spin spinning={ordersLoading} />
@@ -104,7 +107,7 @@ export const DashboardGrids = () => {
       <div className="dashboard-item">
         <BiBarChartSquare className="icon icon-bg" />
         <div className="count-box">
-          <p>تعداد سفارشات خریداری شده</p>
+          <p>{t("dashboard.BuyOrdersCashSome")}</p>
           <p className="count-item">
             {ordersLoading ? (
               <Spin spinning={ordersLoading} />
@@ -117,7 +120,7 @@ export const DashboardGrids = () => {
       <div className="dashboard-item">
         <BsCurrencyDollar className="icon icon-bg" />
         <div className="count-box">
-          <p>جمع مبالغ نقدی سفارشات خریداری شده</p>
+          <p>{t("dashboard.BuyOrdersBarterSome")}</p>
           <p className="count-item">
             {ordersLoading ? <Spin spinning={ordersLoading} /> : orderAmount}
           </p>
@@ -126,7 +129,7 @@ export const DashboardGrids = () => {
       <div className="dashboard-item">
         <BsCurrencyDollar className="icon icon-bg" />
         <div className="count-box">
-          <p>جمع مبالغ تهاتری سفارشات خریداری شده</p>
+          <p>{t("dashboard.BuyOrdersBarterSome")}</p>
           <p className="count-item">
             {ordersLoading ? <Spin spinning={ordersLoading} /> : orderAmount}
           </p>

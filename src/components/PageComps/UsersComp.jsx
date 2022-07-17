@@ -27,6 +27,7 @@ import {
 import { UsersTopBox } from "../Globals/UsersTopBox";
 import CurrencyFormat from "react-currency-format";
 import { useNavigate } from "react-router";
+import { t } from "i18next";
 
 export const UsersComp = () => {
   // Form Refs
@@ -106,7 +107,7 @@ export const UsersComp = () => {
   // TABLE COLUMN
   const columns = [
     {
-      title: "شناسه",
+      title: t("users.indicator"),
       // dataIndex: "_id",
       width: "10%",
       editable: true,
@@ -116,7 +117,7 @@ export const UsersComp = () => {
       },
     },
     {
-      title: "نام کامل",
+      title: t("users.fullname"),
       dataIndex: "fullName",
       width: "10%",
       editable: true,
@@ -126,7 +127,7 @@ export const UsersComp = () => {
       },
     },
     {
-      title: "شماره تلفن",
+      title: t("users.phoneNumber"),
       dataIndex: "phoneNumber",
       width: "10%",
       editable: true,
@@ -136,7 +137,7 @@ export const UsersComp = () => {
       },
     },
     {
-      title: "ایمیل",
+      title: t("users.email"),
       dataIndex: "email",
       width: "10%",
       editable: true,
@@ -146,7 +147,7 @@ export const UsersComp = () => {
       },
     },
     {
-      title: "کشور",
+      title: t("users.country"),
       dataIndex: "country",
       width: "10%",
       editable: true,
@@ -156,7 +157,7 @@ export const UsersComp = () => {
       },
     },
     {
-      title: "آدرس",
+      title: t("users.adress"),
       dataIndex: "address",
       width: "10%",
       editable: true,
@@ -166,7 +167,7 @@ export const UsersComp = () => {
       },
     },
     {
-      title: " موجودی نقدی",
+      title: t("users.cash"),
       // dataIndex: "wallet",
       width: "10%",
       editable: true,
@@ -188,7 +189,7 @@ export const UsersComp = () => {
       },
     },
     {
-      title: "نوع",
+      title: t("users.type"),
       dataIndex: "type",
       width: "10%",
       editable: true,
@@ -206,7 +207,7 @@ export const UsersComp = () => {
       },
     },
     {
-      title: "تغییرات",
+      title: t("users.changes"),
       dataIndex: "actions",
       width: "20%",
       align: "center",

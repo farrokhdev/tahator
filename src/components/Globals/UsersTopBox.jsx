@@ -20,6 +20,7 @@ import { AddUserForm } from "../Forms/AddUserForm";
 import { EditUserForm } from "../Forms/EditUserForm";
 import { BsFillWalletFill } from "react-icons/bs";
 import { useChargeWallet } from "../../hooks/useWallet";
+import { t } from "i18next";
 
 const { Search } = Input;
 const { Option } = Select;
@@ -180,24 +181,24 @@ export const UsersTopBox = ({
             <div className="wallet-card flex-col-center">
               <h4>مشخصات کاربر</h4>
               <div className="flex-row fwidth gap-10">
-                <span>نام کامل :</span>
+                <span>{t("users.fullname") + ":"}</span>
                 <span>{singleUserData && singleUserData.getUser.fullName}</span>
               </div>
               <div className="flex-row fwidth gap-10">
-                <span>شماره تماس :</span>
+                <span>{t("users.phoneNumber") + ":"}</span>
                 <span>
                   {singleUserData && singleUserData.getUser.phoneNumber}
                 </span>
               </div>
               <div className="flex-row fwidth gap-10">
-                <span>آدرس :</span>
+                <span>{t("users.adress") + ":"}</span>
                 <span>{singleUserData && singleUserData.getUser.address}</span>
               </div>
             </div>
             <BsFillWalletFill className="wallet-icon" />
             <div className="flex-row">
               <div className="wallet-amount">
-                <span> کیف پول : </span>
+                <span> {t("users.cash") + ":"} </span>
                 <span>
                   {singleUserData && singleUserData.getUser.cashWallet.amount}
                 </span>
@@ -253,17 +254,17 @@ export const UsersTopBox = ({
               icon={dropVisible ? <UpOutlined /> : <DownOutlined />}
               onClick={openDrop}
             >
-              فیلتر
+              {t("topBox.filter")}
             </Button>
           </Dropdown>
           <Button type="primary" onClick={() => getByFilter()}>
-            همه
+            {t("topBox.all")}
           </Button>
         </div>
 
         <div className="create-btn">
           <Button type="primary" onClick={showModal}>
-            ایجاد
+            {t("topBox.create")}
           </Button>
         </div>
       </div>

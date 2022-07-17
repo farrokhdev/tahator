@@ -14,6 +14,7 @@ import { AddUserForm } from "../Forms/AddUserForm";
 
 import { useGetFinancials } from "../../hooks/useWallet";
 import { useDispatch, useSelector } from "react-redux";
+import { t } from "i18next";
 
 export const FinancialManagementComp = () => {
   // redux
@@ -56,7 +57,7 @@ export const FinancialManagementComp = () => {
   // TABLE COLUMN
   const columns = [
     {
-      title: "درصد سود ماهیانه نقدی",
+      title: t("financials.mounthPercentCash"),
       // dataIndex: "fullName",
       width: "10%",
       editable: true,
@@ -66,7 +67,7 @@ export const FinancialManagementComp = () => {
       },
     },
     {
-      title: "درصد سود ماهیانه تهاتری",
+      title: t("financials.mounthPercentBarter"),
       // dataIndex: "fullName",
       width: "10%",
       editable: true,
@@ -77,7 +78,7 @@ export const FinancialManagementComp = () => {
       },
     },
     {
-      title: "در آمد",
+      title: t("financials.incomes"),
       // dataIndex: "fullName",
       width: "10%",
       editable: true,
@@ -88,7 +89,7 @@ export const FinancialManagementComp = () => {
     },
 
     {
-      title: "تغییرات",
+      title: t("financials.changes"),
       dataIndex: "actions",
       width: "20%",
       align: "center",

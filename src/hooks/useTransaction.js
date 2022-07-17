@@ -8,7 +8,14 @@ export const addTransaction = gql`
     $type: Direction!
     $wallet: WalletEnum!
   ) {
-    chargeWalletByAdmin(amount: $amount, id: $id, type: $type, wallet: $wallet)
+    chargeWalletByAdmin(
+      amount: $amount
+      id: $id
+      type: $type
+      wallet: $wallet
+    ) {
+      _id
+    }
   }
 `;
 

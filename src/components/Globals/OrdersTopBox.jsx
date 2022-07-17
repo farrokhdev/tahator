@@ -17,6 +17,7 @@ import { AddAdminForm } from "../Forms/AddAdminForm";
 import { EditAdminForm } from "../Forms/EditAdminForm";
 import { useGetServices } from "../../hooks/useServices";
 import { useGetUsers } from "../../hooks/useUsers";
+import { t } from "i18next";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -224,11 +225,11 @@ export const OrdersTopBox = ({
               icon={dropVisible ? <UpOutlined /> : <DownOutlined />}
               onClick={openDrop}
             >
-              فیلتر
+              {t("topBox.filter")}
             </Button>
           </Dropdown>
           <Button type="primary" onClick={getAllData}>
-            همه
+            {t("topBox.all")}
           </Button>
         </div>
       </div>

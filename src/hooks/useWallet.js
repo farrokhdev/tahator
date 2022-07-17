@@ -2,7 +2,9 @@ import { gql, useLazyQuery, useMutation } from "@apollo/client";
 
 export const chargeWallet = gql`
   mutation chargeWallet($id: ID!, $amount: Float!) {
-    chargeWalletByAdmin(id: $id, amount: $amount)
+    chargeWalletByAdmin(id: $id, amount: $amount) {
+      _id
+    }
   }
 `;
 

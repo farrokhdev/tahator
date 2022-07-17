@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Form, Input, InputNumber, Select } from "antd";
+import { t } from "i18next";
 
 const validateMessages = {
   required: "${label} پر کردن این فیلد ضروری میباشد!",
@@ -23,7 +24,7 @@ export const AddUserForm = ({ onFinish, formRef }) => {
     >
       <Form.Item
         name={"fullName"}
-        label="نام کامل"
+        label={t("users.fullname")}
         rules={[
           {
             required: true,
@@ -34,7 +35,7 @@ export const AddUserForm = ({ onFinish, formRef }) => {
       </Form.Item>
       <Form.Item
         name={"password"}
-        label="کلمه عبور"
+        label={t("users.password")}
         rules={[
           {
             required: true,
@@ -45,7 +46,7 @@ export const AddUserForm = ({ onFinish, formRef }) => {
       </Form.Item>
       <Form.Item
         name={"phoneNumber"}
-        label="شماره تماس"
+        label={t("users.phoneNumber")}
         rules={[
           {
             required: true,
@@ -58,7 +59,7 @@ export const AddUserForm = ({ onFinish, formRef }) => {
       </Form.Item>
       <Form.Item
         name={"email"}
-        label="ایمیل"
+        label={t("users.email")}
         rules={[
           {
             required: true,
@@ -69,7 +70,7 @@ export const AddUserForm = ({ onFinish, formRef }) => {
       </Form.Item>
       <Form.Item
         label={"نوع"}
-        name="type"
+        name={t("users.type")}
         rules={[
           {
             required: true,
@@ -87,7 +88,7 @@ export const AddUserForm = ({ onFinish, formRef }) => {
         </Select>
       </Form.Item>
       <Form.Item
-        label={"زبان"}
+        label={t("users.language")}
         name="language"
         rules={[
           {

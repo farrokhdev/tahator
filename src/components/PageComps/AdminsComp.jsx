@@ -21,6 +21,7 @@ import {
 } from "../CrudOprations/AdminOprations";
 
 import { AddAdminForm } from "../Forms/AddAdminForm";
+import { t } from "i18next";
 
 export const AdminsComp = () => {
   // Form Refs
@@ -110,7 +111,7 @@ export const AdminsComp = () => {
   // TABLE COLUMN
   const columns = [
     {
-      title: "نام",
+      title: t("admins.name"),
       dataIndex: "name",
       width: "15%",
       editable: true,
@@ -125,14 +126,14 @@ export const AdminsComp = () => {
       },
     },
     {
-      title: "نام کاربری",
+      title: t("admins.username"),
       dataIndex: "username",
       width: "15%",
       editable: true,
       align: "center",
     },
     {
-      title: "نقش",
+      title: t("admins.role"),
       dataIndex: "role",
       width: "15%",
       editable: true,
@@ -143,7 +144,7 @@ export const AdminsComp = () => {
     },
 
     {
-      title: "تغییرات",
+      title: t("admins.changes"),
       dataIndex: "actions",
       width: "30%",
       align: "center",

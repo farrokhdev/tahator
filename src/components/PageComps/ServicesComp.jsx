@@ -36,9 +36,10 @@ import { useGetUnits } from "../../hooks/useUnits";
 import { useGetCurrencys } from "../../hooks/useCurrency";
 import { getUsersHandler } from "../CrudOprations/UserOprations";
 import { getCatsHandler } from "../CrudOprations/CategoriesOpration";
-import { getCurrencyHandler } from "../CrudOprations/UnitsOprations";
+import { getCurrencyHandler } from "../CrudOprations/CurrencyOprations";
 import GlobModal from "../modals/GlobModal";
 import { useNavigate } from "react-router";
+import { t } from "i18next";
 
 export const ServicesComp = () => {
   // Form Refs
@@ -111,7 +112,7 @@ export const ServicesComp = () => {
   // TABLE COLUMN
   const columns = [
     {
-      title: "نام",
+      title: t("services.name"),
       editable: true,
       width: "30%",
       align: "center",
@@ -127,7 +128,7 @@ export const ServicesComp = () => {
     },
 
     {
-      title: "ارائه کننده",
+      title: t("services.presenter"),
       editable: true,
       width: "30%",
       align: "center",
@@ -136,7 +137,7 @@ export const ServicesComp = () => {
       },
     },
     {
-      title: "دسته بندی",
+      title: t("services.category"),
       editable: true,
       width: "30%",
       align: "center",

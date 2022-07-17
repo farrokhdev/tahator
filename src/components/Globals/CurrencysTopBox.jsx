@@ -13,12 +13,9 @@ import {
 } from "antd";
 import { DownOutlined, UpOutlined, SearchOutlined } from "@ant-design/icons";
 import GlobModal from "../modals/GlobModal";
-import { AddAdminForm } from "../Forms/AddAdminForm";
-import { EditAdminForm } from "../Forms/EditAdminForm";
-import { AddCategoryForm } from "../Forms/AddCategoryForm";
-import { EditCategoryForm } from "../Forms/EditCategoryForm";
-import { AddUnitForm } from "../Forms/AddUnitForm";
-import { EditUnitForm } from "../Forms/EditUnitForm";
+
+import { AddCurrencyForm } from "../Forms/AddCurrencyForm";
+import { EditCurrencyForm } from "../Forms/EditCurrencyForm";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -36,7 +33,7 @@ const validateMessages = {
 
 const { Option } = Select;
 
-export const UnitsTopBox = ({
+export const CurrencysTopBox = ({
   filter = {},
   showModal = "",
   visible = "",
@@ -152,15 +149,9 @@ export const UnitsTopBox = ({
         title={" ایجاد یونیت"}
         visible={visible}
         hideModal={hideModal}
-        formName={"add-unit"}
+        formName={"add-currency"}
       >
-        <AddUnitForm
-          onFinish={create}
-          formRef={createForm}
-          data={servicesData}
-          loading={servicesLoading}
-          error={servicesError}
-        />
+        <AddCurrencyForm onFinish={create} formRef={createForm} />
       </GlobModal>
       {/* ADD MODAL END */}
       {/* EDIT MODAL */}
@@ -168,12 +159,12 @@ export const UnitsTopBox = ({
         title={" ویرایش  یونیت"}
         visible={editVisible}
         hideModal={hideEditModal}
-        formName={"edit-unit"}
+        formName={"edit-currency"}
       >
         {loading ? (
           <Spin spinning={loading} />
         ) : (
-          <EditUnitForm
+          <EditCurrencyForm
             onFinish={edit}
             formRef={editForm}
             data={servicesData}

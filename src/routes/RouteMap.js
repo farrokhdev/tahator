@@ -5,7 +5,7 @@ const routes = {
   services: "services",
   orders: "orders",
   other: "other",
-  units: "units",
+  currencys: "currencys",
   auth: "auth",
   services: "services",
   categories: "categories",

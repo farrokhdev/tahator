@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -13,13 +13,21 @@ import {
 } from "@ant-design/icons";
 import Logo from "../../assets/images/icon/logo.png";
 
-import { Button, Layout, Menu } from "antd";
+import { Button, Layout, Menu, Select } from "antd";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import useAuthContext from "../../Context/authContext";
 import TokenManager from "../../lib/tokenManager";
+import { useGlobalContext } from "../../Context/GlobalContext";
+import { useTranslation } from "react-i18next";
+
+const { Option } = Select;
 const { Header, Sider, Content } = Layout;
 
 export const Template = ({ children }) => {
+  const { t, i18n } = useTranslation();
+
+  const { langugeHandler } = useGlobalContext();
+
   const [collapsed, setCollapsed] = useState(false);
   const { access_token } = TokenManager.getToken();
 
@@ -29,6 +37,12 @@ export const Template = ({ children }) => {
 
   const location = useLocation();
   console.log(location);
+
+  const onLangChange = (lang) => {
+    // console.log(lang);
+    i18n.changeLanguage(lang);
+    langugeHandler(lang);
+  };
 
   return (
     <Layout className="costum-template">
@@ -62,7 +76,7 @@ export const Template = ({ children }) => {
             key="1"
             icon={<DashboardOutlined />}
           >
-            <Link to="/">داشبرد</Link>
+            <Link to="/">{t("sidebar.dashboard")}</Link>
           </Menu.Item>
           <Menu.Item
             className={
@@ -71,7 +85,7 @@ export const Template = ({ children }) => {
             key="2"
             icon={<UsergroupAddOutlined />}
           >
-            <Link to="/users">کاربر ها</Link>
+            <Link to="/users">{t("sidebar.users")}</Link>
           </Menu.Item>
           <Menu.Item
             className={
@@ -80,16 +94,27 @@ export const Template = ({ children }) => {
             key="12"
             icon={<FileProtectOutlined />}
           >
-            <Link to="/orders"> سفارشات</Link>
+            <Link to="/orders"> {t("sidebar.orders")}</Link>
           </Menu.Item>
           <Menu.SubMenu
             title={
               <>
                 <DollarCircleOutlined />
-                <span>مدیریت مالی</span>
+                <span>{t("sidebar.financial management")}</span>
               </>
             }
           >
+            <Menu.Item
+              className={
+                location?.pathname === "/currencys"
+                  ? "ant-menu-item-selected"
+                  : ""
+              }
+              key="11"
+              icon={<DollarCircleOutlined />}
+            >
+              <Link to="/currencys">{t("sidebar.currency management")}</Link>
+            </Menu.Item>
             <Menu.Item
               className={
                 location?.pathname === "/financial-management"
@@ -99,7 +124,9 @@ export const Template = ({ children }) => {
               key="3"
               icon={<WalletOutlined />}
             >
-              <Link to="/financial-management"> سود حساب ها</Link>
+              <Link to="/financial-management">
+                {t("sidebar.Profit accounts")}
+              </Link>
             </Menu.Item>
             <Menu.Item
               className={
@@ -110,7 +137,7 @@ export const Template = ({ children }) => {
               key="4"
               icon={<WalletOutlined />}
             >
-              <Link to="/user-wallet">کیف پول کاربران </Link>
+              <Link to="/user-wallet">{t("sidebar.users wallet")}</Link>
             </Menu.Item>
             <Menu.Item
               className={
@@ -121,7 +148,10 @@ export const Template = ({ children }) => {
               key="5"
               icon={<WalletOutlined />}
             >
-              <Link to="/settelments"> درخواست برداشت </Link>
+              <Link to="/settelments">
+                {" "}
+                {t("sidebar.settelment requests")}{" "}
+              </Link>
             </Menu.Item>
           </Menu.SubMenu>
 
@@ -134,7 +164,7 @@ export const Template = ({ children }) => {
             key="6"
             icon={<BlockOutlined />}
           >
-            <Link to="/categories"> دسته بندی ها</Link>
+            <Link to="/categories">{t("sidebar.categories")}</Link>
           </Menu.Item>
           <Menu.Item
             className={
@@ -145,7 +175,9 @@ export const Template = ({ children }) => {
             key="7"
             icon={<BlockOutlined />}
           >
-            <Link to="/categories-atribute">ویژگی دسته بندی ها</Link>
+            <Link to="/categories-atribute">
+              {t("sidebar.category attributes")}
+            </Link>
           </Menu.Item>
           <Menu.Item
             className={
@@ -154,7 +186,7 @@ export const Template = ({ children }) => {
             key="10"
             icon={<SelectOutlined />}
           >
-            <Link to="/services"> خدمات</Link>
+            <Link to="/services"> {t("sidebar.services")}</Link>
           </Menu.Item>
 
           {/* <Menu.Item
@@ -174,18 +206,8 @@ export const Template = ({ children }) => {
             key="9"
             icon={<UserOutlined />}
           >
-            <Link to="/admins">مدیران</Link>
+            <Link to="/admins">{t("sidebar.admins")}</Link>
           </Menu.Item>
-
-          {/* <Menu.Item
-            className={
-              location?.pathname === "/units" ? "ant-menu-item-selected" : ""
-            }
-            key="11"
-            icon={<UsergroupAddOutlined />}
-          >
-            <Link to="/units"> یونیت ها</Link>
-          </Menu.Item> */}
         </Menu>
       </Sider>
       <Layout className="site-layout">
@@ -202,8 +224,22 @@ export const Template = ({ children }) => {
               onClick: () => setCollapsed(!collapsed),
             }
           )}
-          <div type="primary" className="logout" onClick={() => logOutAdmin()}>
-            خروج
+          <div type="primary" className="logout gap-20 flex-row">
+            <Select
+              defaultValue="tr"
+              style={
+                {
+                  // width: 20,
+                }
+              }
+              bordered={false}
+              onChange={onLangChange}
+            >
+              <Option value="en">EN</Option>
+              <Option value="tr">TR</Option>
+            </Select>
+
+            <span onClick={() => logOutAdmin()}>خروج</span>
           </div>
         </Header>
         <Content

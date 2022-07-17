@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Form, Table, message } from "antd";
 
 const DefaultTable = ({
@@ -50,9 +50,9 @@ const DefaultTable = ({
           },
         }}
         loading={loading}
-        // scroll={{
-        //   x: 1000,
-        // }}
+        scroll={{
+          x: 1000,
+        }}
       />
     </Form>
   );

@@ -27,6 +27,7 @@ import {
 import { CategoriesAtrTopBox } from "../Globals/CategoriesAtrTopBox";
 import { useGetCategories } from "../../hooks/useCategories";
 import { getCatsHandler } from "../CrudOprations/CategoriesOpration";
+import { t } from "i18next";
 
 export const CategorieAtrComp = () => {
   // Form Refs
@@ -142,7 +143,7 @@ export const CategorieAtrComp = () => {
   // TABLE COLUMN
   const columns = [
     {
-      title: " ویژگی",
+      title: t("category attrs.atr"),
       // dataIndex: "name",
       width: "15%",
       editable: true,
@@ -152,7 +153,7 @@ export const CategorieAtrComp = () => {
           <>
             <div className="d-flex-row gap-10">
               {record?.name.map((item) => {
-                return <>{item.value}</>;
+                return <>{item.lang === "en" && item.value}</>;
               })}
             </div>
           </>
@@ -160,7 +161,7 @@ export const CategorieAtrComp = () => {
       },
     },
     {
-      title: "نام دسته بندی",
+      title: t("category attrs.nameEn"),
       // dataIndex: "name",
       width: "10%",
       editable: true,
@@ -176,7 +177,7 @@ export const CategorieAtrComp = () => {
       },
     },
     {
-      title: "وضعیت",
+      title: t("category attrs.status"),
       // dataIndex: "name",
       width: "15%",
       editable: true,
@@ -190,7 +191,7 @@ export const CategorieAtrComp = () => {
       },
     },
     {
-      title: "ثبت کننده",
+      title: t("category attrs.acceptProvider"),
       // dataIndex: "name",
       width: "15%",
       editable: true,
@@ -207,7 +208,7 @@ export const CategorieAtrComp = () => {
     },
 
     {
-      title: "تغییرات",
+      title: t("category attrs.changes"),
       dataIndex: "actions",
       width: "30%",
       align: "center",

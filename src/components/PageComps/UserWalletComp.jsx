@@ -32,6 +32,8 @@ import GlobModal from "../modals/GlobModal";
 import { AddTransactionForm } from "../Forms/AddTransactionForm";
 import { useAddTransaction } from "../../hooks/useTransaction";
 import { TransactionCreate } from "../CrudOprations/TransactionOpration";
+import { TransactionImageForm } from "../Forms/TransactionImageForm";
+import { t } from "i18next";
 
 export const UserWalletComp = () => {
   // Form Refs
@@ -82,7 +84,7 @@ export const UserWalletComp = () => {
       transForm,
       hideModal,
       addError
-    );
+    ).then(() => showUploadtModal());
   };
 
   // get single
@@ -103,7 +105,7 @@ export const UserWalletComp = () => {
   // TABLE COLUMN
   const columns = [
     {
-      title: "شناسه",
+      title: t("users.indicator"),
       // dataIndex: "_id",
       width: "10%",
       editable: true,
@@ -113,7 +115,7 @@ export const UserWalletComp = () => {
       },
     },
     {
-      title: "نام کامل",
+      title: t("users.fullname"),
       dataIndex: "fullName",
       width: "10%",
       editable: true,
@@ -123,7 +125,7 @@ export const UserWalletComp = () => {
       },
     },
     {
-      title: "نوع",
+      title: t("users.type"),
       dataIndex: "type",
       width: "10%",
       editable: true,
@@ -141,7 +143,7 @@ export const UserWalletComp = () => {
       },
     },
     {
-      title: " موجودی نقدی",
+      title: t("users.cash"),
       // dataIndex: "wallet",
       width: "10%",
       editable: true,
@@ -163,7 +165,7 @@ export const UserWalletComp = () => {
       },
     },
     {
-      title: " موجودی  تهاتری",
+      title: t("users.barter"),
       // dataIndex: "wallet",
       width: "10%",
       editable: true,
@@ -185,7 +187,7 @@ export const UserWalletComp = () => {
       },
     },
     {
-      title: "تراکنش ها ",
+      title: t("users.transactions"),
       // dataIndex: "wallet",
       width: "20%",
       editable: true,
@@ -195,14 +197,14 @@ export const UserWalletComp = () => {
         return (
           <>
             <Typography.Link onClick={() => showPeymentModal(record)}>
-              نمایش
+              {t("users.show")}
             </Typography.Link>
           </>
         );
       },
     },
     {
-      title: "تغییرات",
+      title: t("users.changes"),
       dataIndex: "actions",
       width: "20%",
       align: "center",
@@ -217,7 +219,7 @@ export const UserWalletComp = () => {
             }}
           >
             <Button type="primary" onClick={() => showModal(record)}>
-              شارژ موجودی
+              {t("users.sharge")}
             </Button>
           </span>
         );
@@ -229,7 +231,7 @@ export const UserWalletComp = () => {
   // Payments TABLE COLUMN
   const paymentsColumns = [
     {
-      title: "نوع",
+      title: t("users.type"),
       dataIndex: "type",
       width: "10%",
       editable: true,
@@ -239,7 +241,7 @@ export const UserWalletComp = () => {
       },
     },
     {
-      title: "کاربر",
+      title: t("users.user"),
       dataIndex: "user",
       width: "10%",
       editable: true,
@@ -249,7 +251,7 @@ export const UserWalletComp = () => {
       },
     },
     {
-      title: "خریدار",
+      title: t("users.buyer"),
       dataIndex: "provider",
       width: "10%",
       editable: true,
@@ -259,7 +261,7 @@ export const UserWalletComp = () => {
       },
     },
     {
-      title: "وضعیت",
+      title: t("users.status"),
       dataIndex: "status",
       width: "10%",
       editable: true,
@@ -269,13 +271,38 @@ export const UserWalletComp = () => {
       },
     },
     {
-      title: "توضیحات",
+      title: t("users.desc"),
       dataIndex: "description",
       width: "10%",
       editable: true,
       align: "center",
       render: (_, record, num) => {
         return <>{record?.description}</>;
+      },
+    },
+    {
+      title: t("users.uploadTransaction"),
+      width: "15%",
+      editable: true,
+      align: "center",
+      render: (_, record, num) => {
+        return (
+          <>
+            <span
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: "10px",
+                justifyContent: "space-evenly",
+              }}
+            >
+              <Button type="primary" onClick={() => showUploadtModal()}>
+                {t("users.upload")}
+              </Button>
+            </span>
+          </>
+        );
       },
     },
   ];
@@ -305,14 +332,37 @@ export const UserWalletComp = () => {
     setPeymentVisible(false);
   };
 
+  // Upload Modal
+  const [uploadVisible, setUploadVisible] = useState(false);
+
+  const showUploadtModal = async (record) => {
+    setUploadVisible(true);
+  };
+
+  const hideUploadModal = () => {
+    setUploadVisible(false);
+  };
+
   // MODAL OPRATIONS END
 
   console.log(singleUserData);
   return (
     <>
+      {/* upload TRANSACTION MODAL  */}
+      <GlobModal
+        noFooter={true}
+        title={t("users.uploadTransaction")}
+        visible={uploadVisible}
+        hideModal={hideUploadModal}
+        // formName={"wallet"}
+      >
+        <TransactionImageForm />
+      </GlobModal>
+      {/* upload TRANSACTION MODAL END */}
+
       {/* TRANSACTION MODAL */}
       <GlobModal
-        title={"شارژ موجودی"}
+        title={t("users.sharge")}
         visible={visible}
         hideModal={hideModal}
         formName={"wallet"}
@@ -323,7 +373,7 @@ export const UserWalletComp = () => {
       {/* PEYMENT MODAL */}
       <GlobModal
         className="peymentModal"
-        title={"تراکنش ها"}
+        title={t("users.transactions")}
         visible={peymentVisible}
         hideModal={hidePeymentModal}
       >

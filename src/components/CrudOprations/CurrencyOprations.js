@@ -1,17 +1,5 @@
 import { message } from "antd";
 
-// get unit
-export const getUnitsHandler = async (getF, set) => {
-  try {
-    await getF().then((res) => {
-      const data = res?.data?.getUnits;
-      const filtered = res?.data?.getUnits.filter((unit) => !unit.isDeleted);
-      set(filtered);
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
 // get currency
 
 export const getCurrencyHandler = async (getF, set) => {
@@ -29,7 +17,7 @@ export const getCurrencyHandler = async (getF, set) => {
 };
 
 // create
-export const UnitsCreate = async (
+export const CurrencyCreate = async (
   create = "",
   input = "",
   refetch = "",
@@ -44,7 +32,7 @@ export const UnitsCreate = async (
       },
     })
       .then(() => {
-        message.success("یونیت جدید با موفقیت ایجاد شد");
+        message.success("واحد پول جدید با موفقیت ایجاد شد");
         refetch();
       })
       .then(() => {
@@ -58,7 +46,7 @@ export const UnitsCreate = async (
 };
 
 // filter
-export const UnitsGetByfilter = async (
+export const CurrencyGetByfilter = async (
   getF = "",
   filters = "",
   refetch = "",
@@ -80,7 +68,7 @@ export const UnitsGetByfilter = async (
 };
 
 // edit
-export const UnitsEdit = async (
+export const CurrencyEdit = async (
   edit = "",
   input = "",
   id = "",
@@ -92,11 +80,11 @@ export const UnitsEdit = async (
     await edit({
       variables: {
         id: id,
-        input: { ...input },
+        input: input,
       },
     })
       .then(() => {
-        message.success("یونیت با موفقیت ویرایش شد");
+        message.success("واحد پول با موفقیت ویرایش شد");
         refetch();
       })
       .then(() => {
@@ -108,7 +96,7 @@ export const UnitsEdit = async (
   }
 };
 // delete
-export const UnitsDelete = async (
+export const CurrencyDelete = async (
   deleteF = "",
   id = "",
   refetch = "",
@@ -120,7 +108,7 @@ export const UnitsDelete = async (
         id: id,
       },
     }).then(() => {
-      message.success("یونیت با موفقیت حذف شد");
+      message.success("واحد پول با موفقیت حذف شد");
       refetch();
     });
   } catch (err) {
@@ -129,7 +117,7 @@ export const UnitsDelete = async (
   }
 };
 // get single
-export const UnitsGetSingle = async (
+export const CurrencyGetSingle = async (
   getF = "",
   id = "",
   setId = "",
@@ -144,13 +132,9 @@ export const UnitsGetSingle = async (
       setId(id);
       console.log(res);
       formRef.setFieldsValue({
-        name: res?.data?.getUnit?.name?.map((item) => {
-          return {
-            value: item.value,
-            lang: item.lang,
-          };
-        }),
-        service: res?.data?.getUnit?.service?._id,
+        unit: res.data?.getCurrency.unit,
+        status: res.data?.getCurrency.status,
+        description: res.data?.getCurrency.description,
       });
     });
   } catch (err) {

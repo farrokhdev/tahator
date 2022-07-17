@@ -7,6 +7,8 @@ import { ApolloProvider, gql } from "@apollo/client";
 import { client } from "./lib/tokenManager";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import { GlobalProvider, useGlobalContext } from "./Context/GlobalContext";
+import "./i18n";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -33,9 +35,9 @@ root.render(
   <>
     <Provider store={store}>
       <ApolloProvider client={client}>
-        <ConfigProvider direction="rtl">
+        <GlobalProvider>
           <App />
-        </ConfigProvider>
+        </GlobalProvider>
       </ApolloProvider>
     </Provider>
   </>

@@ -1,6 +1,6 @@
 export * from "./ServicesComp";
 export * from "./OrdersComp";
-export * from "./UnitsComp";
+export * from "./CurrencysComp";
 export * from "./CategorieAtrComp";
 export * from "./CategoriesComp";
 export * from "./RolesComp";

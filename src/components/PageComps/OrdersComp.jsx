@@ -6,6 +6,7 @@ import { TopBox } from "../Globals/TopBox";
 import { useGetOrders, useGetUserOrders } from "../../hooks/useOrder";
 import { OrdersGetByfilter } from "../CrudOprations/OrdersOpration";
 import { OrdersTopBox } from "../Globals/OrdersTopBox";
+import { t } from "i18next";
 
 export const OrdersComp = () => {
   // form refs
@@ -42,7 +43,7 @@ export const OrdersComp = () => {
   // TABLE COLUMN
   const columns = [
     {
-      title: "مشخصات کاربر",
+      title: t("orders.indicator"),
       editable: true,
       align: "center",
       render: (_, record) => {
@@ -50,7 +51,7 @@ export const OrdersComp = () => {
       },
     },
     {
-      title: "موضوع",
+      title: t("orders.subject"),
       editable: true,
       align: "center",
       render: (_, record) => {
@@ -58,7 +59,7 @@ export const OrdersComp = () => {
       },
     },
     {
-      title: "دسته بندی",
+      title: t("orders.category"),
       editable: true,
       align: "center",
       render: (_, record) => {
@@ -72,7 +73,7 @@ export const OrdersComp = () => {
       },
     },
     {
-      title: "کشور",
+      title: t("orders.country"),
       editable: true,
       align: "center",
       render: (_, record) => {
@@ -80,27 +81,27 @@ export const OrdersComp = () => {
       },
     },
     {
-      title: "واحد شمارش",
+      title: t("orders.count"),
       editable: true,
       align: "center",
     },
     {
-      title: "واحد پول",
+      title: t("orders.cashUnit"),
       editable: true,
       align: "center",
     },
     {
-      title: "قیمت هر واحد",
+      title: t("orders.cashPerOne"),
       editable: true,
       align: "center",
     },
     {
-      title: "قیمت با تخفیف",
+      title: t("orders.cashDiscount"),
       editable: true,
       align: "center",
     },
     {
-      title: "مبلغ نقدی",
+      title: t("orders.cash"),
       editable: true,
       align: "center",
       render: (_, record) => {
@@ -108,7 +109,7 @@ export const OrdersComp = () => {
       },
     },
     {
-      title: "مبلغ تهاتری",
+      title: t("orders.barter"),
       editable: true,
       align: "center",
       render: (_, record) => {
@@ -116,17 +117,17 @@ export const OrdersComp = () => {
       },
     },
     {
-      title: "تاریخ اعتبار",
+      title: t("orders.date"),
       editable: true,
       align: "center",
     },
     {
-      title: "تعداد فروش",
+      title: t("orders.sellCounts"),
       editable: true,
       align: "center",
     },
     {
-      title: "وضعیت",
+      title: t("orders.status"),
 
       editable: true,
       align: "center",

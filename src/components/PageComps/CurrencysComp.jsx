@@ -6,7 +6,6 @@ import {
   EditOutlined,
   CheckSquareOutlined,
 } from "@ant-design/icons";
-import { CategoriesTopBox } from "../Globals/CategoriesTopBox";
 
 import {
   CatsCreate,
@@ -23,16 +22,25 @@ import {
   useGetUnit,
   useGetUnits,
 } from "../../hooks/useUnits";
-import { UnitsTopBox } from "../Globals/UnitsTopBox";
+import { CurrencysTopBox } from "../Globals/CurrencysTopBox";
 import {
-  getUnitsHandler,
+  CurrencyDelete,
+  CurrencyEdit,
+  CurrencyGetSingle,
+  getCurrencyHandler,
   UnitsDelete,
-  UnitsEdit,
-  UnitsGetSingle,
-} from "../CrudOprations/UnitsOprations";
+} from "../CrudOprations/CurrencyOprations";
 import { getServicesHandler } from "../CrudOprations/ServicesOpration";
+import {
+  useAddCurrency,
+  useDeleteCurrency,
+  useEditCurrency,
+  useGetCurrency,
+  useGetCurrencys,
+} from "../../hooks/useCurrency";
+import { t } from "i18next";
 
-export const UnitsComp = () => {
+export const CurrencysComp = () => {
   // form refs
   const [form] = Form.useForm();
   const [createForm] = Form.useForm();
@@ -45,14 +53,20 @@ export const UnitsComp = () => {
   //   CRUD OPRATIONS
 
   // get
-  const { getUnitsList, UnitsLoading, UnitsError } = useGetUnits();
+  const {
+    getCurrencysList,
+    CurrencysData,
+    CurrencysLoading,
+    CurrencysError,
+    CurrencysRefetch,
+  } = useGetCurrencys();
   const [units, setUnits] = useState([]);
   const refetchHandler = () => {
-    getUnitsHandler(getUnitsList, setUnits);
+    getCurrencyHandler(getCurrencysList, setUnits);
   };
 
   useEffect(() => {
-    getUnitsHandler(getUnitsList, setUnits);
+    getCurrencyHandler(getCurrencysList, setUnits);
   }, []);
 
   const {
@@ -68,28 +82,18 @@ export const UnitsComp = () => {
     getServicesHandler(getServicesList, sestServices);
   };
 
-  // filter
-  const FilterOp = (filters) => {
-    CatsGetByfilter(
-      refetchHandler,
-      filters,
-      refetchHandler,
-      UnitsError,
-      searchForm
-    );
-  };
-
   // add
   const { createUnit, addData, addLoading, addError, addRefetch } =
-    useAddUnit();
+    useAddCurrency();
 
   const createOp = (input) => {
     console.log(input);
     CatsCreate(
       createUnit,
       {
-        name: [...input.name],
-        service: input.service,
+        unit: input?.unit,
+        status: input?.status,
+        description: input?.description,
       },
       refetchHandler,
       createForm,
@@ -100,27 +104,27 @@ export const UnitsComp = () => {
 
   // get single
   const {
-    getSingleUnit,
+    getSingleCurrency,
     singleData,
     singleLoading,
     singleError,
     singleRefetch,
-  } = useGetUnit();
+  } = useGetCurrency();
 
   const getSingleOp = (id) => {
-    UnitsGetSingle(getSingleUnit, id, setId, editForm);
+    CurrencyGetSingle(getSingleCurrency, id, setId, editForm);
   };
 
   // edit
-  const { editUnit, editData, editLoading, editError } = useEditUnit();
+  const { editCurrency, editData, editLoading, editError } = useEditCurrency();
 
   const editOp = (input) => {
-    console.log(input);
-    UnitsEdit(
-      editUnit,
+    CurrencyEdit(
+      editCurrency,
       {
-        name: [...input.name],
-        service: input.service,
+        unit: input?.unit,
+        status: input?.status,
+        description: input?.description,
       },
       id,
       refetchHandler,
@@ -130,52 +134,54 @@ export const UnitsComp = () => {
   };
 
   // delete
-  const { removeUnit, deleteData, deleteLoading, deleteError } =
-    useDeleteUnit();
+  const { removeCurrency, deleteData, deleteLoading, deleteError } =
+    useDeleteCurrency();
 
   const deleteOp = (id) => {
-    UnitsDelete(removeUnit, id, refetchHandler, deleteError);
+    CurrencyDelete(removeCurrency, id, refetchHandler, deleteError);
   };
   //   CRUD OPRATIONS END
 
   // TABLE COLUMN
   const columns = [
     {
-      title: "نام",
-      dataIndex: "name",
+      title: t("currencys.currency"),
+      // dataIndex: "unit",
       width: "20%",
       editable: true,
       align: "center",
       render: (_, record) => {
-        return (
-          <>
-            {record?.name.map((val) => (
-              <>{val.value},</>
-            ))}
-          </>
-        );
+        return <>{record?.unit}</>;
       },
     },
     {
-      title: "تایید شده",
-      dataIndex: "accepted",
+      title: t("currencys.status"),
       width: "20%",
       editable: true,
       align: "center",
       render: (_, record) => {
         return (
           <>
-            {record?.accepted ? (
-              <Tag color={"success"}>تایید شده</Tag>
+            {record?.status === "Active" ? (
+              <Tag color={"success"}> فعال</Tag>
             ) : (
-              <Tag color={"processing"}>تایید نشده</Tag>
+              <Tag color={"processing"}>غیر فعال</Tag>
             )}
           </>
         );
       },
     },
     {
-      title: "تغییرات",
+      title: t("currencys.desc"),
+      width: "20%",
+      editable: true,
+      align: "center",
+      render: (_, record) => {
+        return <>{record?.description}</>;
+      },
+    },
+    {
+      title: t("currencys.changes"),
       dataIndex: "actions",
       width: "40%",
       align: "center",
@@ -191,33 +197,7 @@ export const UnitsComp = () => {
             <Typography.Link onClick={() => showEditModal(record)}>
               <EditOutlined />
             </Typography.Link>
-            <Typography.Link>
-              <Popconfirm
-                onConfirm={() =>
-                  UnitsEdit(
-                    editUnit,
-                    {
-                      name: record.name.map((n) => {
-                        return {
-                          lang: n.lang,
-                          value: n.value,
-                        };
-                      }),
-                      accepted: true,
-                    },
-                    record._id,
-                    refetchHandler,
-                    hideEditModal,
-                    editError
-                  )
-                }
-                title="آیا از تایید مطمئن هستید؟"
-                okText={"تایید"}
-                cancelText={"انصراف"}
-              >
-                <CheckSquareOutlined style={{ color: "green" }} />
-              </Popconfirm>
-            </Typography.Link>
+
             <Typography.Link>
               <Popconfirm
                 onConfirm={() => deleteOp(record._id)}
@@ -261,7 +241,7 @@ export const UnitsComp = () => {
   // MODAL OPRATIONS END
   return (
     <>
-      <UnitsTopBox
+      <CurrencysTopBox
         filter={{ first: "نام", second: "وضعیت" }}
         showModal={showModal}
         showEditModal={showEditModal}
@@ -276,7 +256,6 @@ export const UnitsComp = () => {
         searchForm={searchForm}
         loading={singleLoading}
         getAll={refetchHandler}
-        getByFilter={FilterOp}
         servicesData={services}
         servicesLoading={servicesLoading}
         servicesError={servicesError}
@@ -285,8 +264,8 @@ export const UnitsComp = () => {
         form={form}
         data={units}
         columns={columns}
-        loading={UnitsLoading}
-        error={UnitsError}
+        loading={CurrencysLoading}
+        error={CurrencysError}
       />
     </>
   );

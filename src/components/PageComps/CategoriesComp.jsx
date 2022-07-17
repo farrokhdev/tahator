@@ -23,6 +23,7 @@ import {
   getCatsHandler,
 } from "../CrudOprations/CategoriesOpration";
 import { langs } from "../../lib/globalLangs";
+import { t } from "i18next";
 
 export const CategoriesComp = () => {
   // form refs
@@ -159,7 +160,7 @@ export const CategoriesComp = () => {
   // TABLE COLUMN
   const columns = [
     {
-      title: "نام دسته بندی (en)",
+      title: t("categories.nameEn"),
       // dataIndex: "name",
       width: "10%",
       editable: true,
@@ -175,7 +176,7 @@ export const CategoriesComp = () => {
       },
     },
     {
-      title: "نام دسته بندی (tr)",
+      title: t("categories.nameTr"),
       // dataIndex: "name",
       width: "10%",
       editable: true,
@@ -191,7 +192,7 @@ export const CategoriesComp = () => {
       },
     },
     {
-      title: "دسته بندی اصلی",
+      title: t("categories.parentCat"),
       dataIndex: "name",
       width: "10%",
       editable: true,
@@ -209,7 +210,7 @@ export const CategoriesComp = () => {
     },
 
     {
-      title: "وضعیت",
+      title: t("categories.status"),
       dataIndex: "accepted",
       width: "10%",
       editable: true,
@@ -227,7 +228,7 @@ export const CategoriesComp = () => {
       },
     },
     {
-      title: "ثبت کننده",
+      title: t("categories.acceptProvider"),
       // dataIndex: "name",
       width: "15%",
       editable: true,
@@ -242,7 +243,7 @@ export const CategoriesComp = () => {
     },
 
     {
-      title: "تغییرات",
+      title: t("categories.changes"),
       dataIndex: "actions",
       width: "20%",
       align: "center",

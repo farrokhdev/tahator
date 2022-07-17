@@ -102,7 +102,7 @@ export const AddCatAtrsForm = ({
                   return (
                     <Option value={cat._id}>
                       {cat.name.map((value) => (
-                        <>{value.value} ,</>
+                        <>{value.lang === "en" && value.value}</>
                       ))}
                     </Option>
                   );

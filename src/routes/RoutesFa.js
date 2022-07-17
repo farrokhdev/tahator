@@ -8,7 +8,7 @@ import { Services } from "../pages/Services";
 import Login from "../pages/Login";
 import { Orders } from "../pages/Orders";
 import { Roles } from "../pages/Roles";
-import { Units } from "../pages/Units";
+import { Currencys } from "../pages/Currencys";
 import { CategoriesAttribute } from "../pages/CategoriesAttribute";
 import { Categories } from "../pages/Categories";
 import { Profile } from "../pages/Profile";
@@ -71,9 +71,9 @@ export const RoutesFa = () => {
 
         <Route
           exact
-          path={map.routes.units}
+          path={map.routes.currencys}
           element={
-            access_token ? <Units /> : <Navigate to={map.routes.login} />
+            access_token ? <Currencys /> : <Navigate to={map.routes.login} />
           }
         />
 
