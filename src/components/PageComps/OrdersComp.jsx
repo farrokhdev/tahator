@@ -135,16 +135,6 @@ export const OrdersComp = () => {
         return <>{record?.status}</>;
       },
     },
-    {
-      title: "ویژگی ها",
-      editable: true,
-      align: "center",
-      render: (_, record) => {
-        return (
-          <> {record?.service?.name?.map((n) => n.lang === "en" && n.value)}</>
-        );
-      },
-    },
   ];
 
   // TABLE COLUMN END

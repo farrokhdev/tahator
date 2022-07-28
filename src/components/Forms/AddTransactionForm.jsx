@@ -59,6 +59,26 @@ export const AddTransactionForm = ({ onFinish, formRef }) => {
           <Option value={"DESC"}>کاهش</Option>
         </Select>
       </Form.Item>
+      {/* <Form.Item
+        label={"نوع تراکنش "}
+        name="transactionType"
+        // rules={[
+        //   {
+        //     required: true,
+        //   },
+        // ]}
+      >
+        <Select
+          defaultValue="نوع  تراکنش"
+          style={{
+            width: "50%",
+          }}
+        >
+          <Option value={"Offline"}>آفلاین</Option>
+          <Option value={"Online"}>آنلاین</Option>
+          <Option value={"Wallet"}>کیف پول</Option>
+        </Select>
+      </Form.Item> */}
       <Form.Item
         name={"amount"}
         label={"مقدار"}

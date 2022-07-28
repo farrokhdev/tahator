@@ -49,19 +49,6 @@ export const Template = ({ children }) => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
           <img src={Logo} alt="" />
-
-          <h1
-            className="logo-text"
-            style={{
-              visibility: `${collapsed ? "hidden" : "visible"}`,
-              opacity: `${collapsed ? "0" : "1"}`,
-              width: `${collapsed ? "0px" : "100%"}`,
-              height: `${collapsed ? "0px" : "100%"}`,
-              transform: `translateX(${collapsed ? "100%" : "0"})`,
-            }}
-          >
-            سامانه ...
-          </h1>
         </div>
 
         <Menu
@@ -91,7 +78,7 @@ export const Template = ({ children }) => {
             className={
               location?.pathname === "/orders" ? "ant-menu-item-selected" : ""
             }
-            key="12"
+            key="13"
             icon={<FileProtectOutlined />}
           >
             <Link to="/orders"> {t("sidebar.orders")}</Link>
@@ -115,7 +102,8 @@ export const Template = ({ children }) => {
             >
               <Link to="/currencys">{t("sidebar.currency management")}</Link>
             </Menu.Item>
-            <Menu.Item
+
+            {/* <Menu.Item
               className={
                 location?.pathname === "/financial-management"
                   ? "ant-menu-item-selected"
@@ -127,7 +115,7 @@ export const Template = ({ children }) => {
               <Link to="/financial-management">
                 {t("sidebar.Profit accounts")}
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item
               className={
                 location?.pathname === "/user-wallet"
@@ -138,6 +126,19 @@ export const Template = ({ children }) => {
               icon={<WalletOutlined />}
             >
               <Link to="/user-wallet">{t("sidebar.users wallet")}</Link>
+            </Menu.Item>
+            <Menu.Item
+              className={
+                location?.pathname === "/offline-transactions"
+                  ? "ant-menu-item-selected"
+                  : ""
+              }
+              key="12"
+              icon={<DollarCircleOutlined />}
+            >
+              <Link to="/offline-transactions">
+                {t("sidebar.offline transactions")}
+              </Link>
             </Menu.Item>
             <Menu.Item
               className={

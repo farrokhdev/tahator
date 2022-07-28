@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Form,
@@ -10,6 +10,8 @@ import {
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { TransactionImageUploadHandler } from "../CrudOprations/UploadImage";
+import TokenManager from "../../lib/tokenManager";
+import GlobModal from "../modals/GlobModal";
 
 const validateMessages = {
   required: "${label} پر کردن این فیلد ضروری میباشد!",
@@ -22,51 +24,63 @@ const validateMessages = {
   },
 };
 
+const getBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = () => resolve(reader.result);
+
+    reader.onerror = (error) => reject(error);
+  });
+
 const { Option } = Select;
-export const TransactionImageForm = ({ onFinish, formRef }) => {
-  const [fileData, setFileData] = useState({});
+export const TransactionImageForm = ({ onFinish, formRef, id }) => {
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewVisible, setPreviewVisible] = useState("");
 
   const props = {
-    name: "file",
+    name: "image",
     action: "http://api.getgiveservice.com:8080/upload/admin/payment",
     data: {
-      id: "62d3b35ae8d08e78b96b0112",
-      image: fileData,
+      id: id,
     },
+    listType: "picture",
+    multiple: false,
+    maxCount: 1,
     headers: {
-      authorization:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MmFkN2E0YWY5YTNiYzFmOGYzZmY2NTIiLCJzdWIiOiI2MmFkN2E0YWY5YTNiYzFmOGYzZmY2NTIiLCJpc3MiOiJ0YWhhdG9yLmNvbSIsInRva2VuVHlwZSI6IkFDQ0VTU19UT0tFTiIsInJvbGVzIjoiQURNSU4iLCJ0b2tlbktleSI6ImIxMjM1NzI4LTI4YTQtNGE4My1iMDgxLWQ5MWUzZTRmMDhkNCIsImlhdCI6MTY1ODA1NDI4MiwiZXhwIjoxNjU4MjI3MDgyfQ.0TXUDpZLwq_cdWFZYz9aTSJq8bHxsRpapzWC10TEqzk",
+      authorization: TokenManager.getToken().access_token,
     },
+    onPreview: async (file) => {
+      if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj);
+      }
 
+      setPreviewImage(file.url || file.preview);
+      setPreviewVisible(true);
+    },
     onChange(info) {
-      console.log(info);
-      setFileData({ ...info.file });
-      // if (info.file.status !== "uploading") {
-      //   console.log(info.file, info.fileList);
-      // }
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
 
-      // if (info.file.status === "done") {
-      //   message.success(`${info.file.name} file uploaded successfully`);
-      // } else if (info.file.status === "error") {
-      //   message.error(`${info.file.name} file upload failed.`);
-      // }
+      if (info.file.status === "done") {
+        message.success(`فایل ${info.file.name} با موفقیت آپلود شد`);
+      } else if (info.file.status === "error") {
+        message.error(`آپلود فایل ${info.file.name} با خطا مواجه شد`);
+      }
     },
   };
 
-  const handleChange = (e) => {
-    console.log(e.target.files[0]);
-    setFileData(e.target.files[0]);
-  };
-
-  const upload = () => {
-    TransactionImageUploadHandler(
-      "http://api.getgiveservice.com:8080/upload/admin/payment",
-      fileData
-    );
-  };
+  const handleCancel = () => setPreviewVisible(false);
 
   return (
     <>
+      {/* Preview Modal  */}
+      <GlobModal visible={previewVisible} hideModal={handleCancel} noFooter>
+        <img src={previewImage} alt="" />
+      </GlobModal>
+      {/* Preview Modal end  */}
       <Upload {...props}>
         <Button icon={<UploadOutlined />}>آپلود</Button>
       </Upload>

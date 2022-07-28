@@ -1,12 +1,13 @@
 import { message } from "antd";
 
 // get
-export const getUsersHandler = async (getF, set) => {
+export const getUsersHandler = async (getF, set = "") => {
   try {
     await getF().then((res) => {
       const data = res?.data?.getUsers;
       const filtered = res?.data?.getUsers.filter((user) => !user.isDeleted);
       set(filtered);
+      return filtered;
       // set.value = res.data;
     });
   } catch (err) {

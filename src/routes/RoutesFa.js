@@ -21,6 +21,8 @@ import { SingleUser } from "../pages/SingleUser";
 import { FinancialManagement } from "../pages/FinancialManagement";
 import { UserWallet } from "../pages/UserWallet";
 import { Settlements } from "../pages/Settlements";
+import { OfflineTransactions } from "../pages/OfflineTransactions";
+import { TestPage } from "../pages/TestPage";
 
 export const RoutesFa = () => {
   const { access_token } = TokenManager.getToken();
@@ -148,6 +150,24 @@ export const RoutesFa = () => {
           path={map.routes.admins}
           element={
             access_token ? <Admins /> : <Navigate to={map.routes.login} />
+          }
+        />
+        <Route
+          exact
+          path={map.routes.offlineTransactions}
+          element={
+            access_token ? (
+              <OfflineTransactions />
+            ) : (
+              <Navigate to={map.routes.login} />
+            )
+          }
+        />
+        <Route
+          exact
+          path={"/test"}
+          element={
+            access_token ? <TestPage /> : <Navigate to={map.routes.login} />
           }
         />
       </Routes>

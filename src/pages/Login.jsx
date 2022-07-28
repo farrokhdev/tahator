@@ -34,6 +34,7 @@ const Login = () => {
     } catch (err) {
       console.log(err);
       await message.error(loginError?.message && "خطا در ورود مجدد تلاش کنید");
+      Navigate(map.routes.login);
     }
   };
 

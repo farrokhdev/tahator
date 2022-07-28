@@ -224,7 +224,7 @@ export const UsersTopBox = ({
       {/* Wallet MODAL END */}
       {/* ADD MODAL */}
       <GlobModal
-        title={" ایجاد ادمین"}
+        title={" ایجاد کاربر"}
         visible={visible}
         hideModal={hideModal}
         formName={"add-user"}
@@ -234,7 +234,7 @@ export const UsersTopBox = ({
       {/* ADD MODAL END */}
       {/* EDIT MODAL */}
       <GlobModal
-        title={" ویرایش ادمین"}
+        title={" ویرایش کاربر"}
         visible={editVisible}
         hideModal={hideEditModal}
         formName={"edit-user"}

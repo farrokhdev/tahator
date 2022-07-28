@@ -5,6 +5,7 @@
     "orders": "سفارشات",
     "financial management": "مدیرت مالی",
     "currency management": "مدیرت ارزها",
+    "offline transactions": "تراکنش های دستی ",
     "Profit accounts": "سود حساب ها",
     "users wallet": "کیف پول کاربران",
     "settelment requests": "درخواست برداشت",
@@ -27,6 +28,7 @@
     "userBarterSome": "جمع موجودی تهاتری کاربران",
     "acceptedOrders": "تعداد سفارشات ثبت شده",
     "BuyOrders": "تعداد سفارشات خریداری شده",
+    "orders": "تعداد سفارشات خریداری شده",
     "BuyOrdersCashSome": "جمع مبالغ نقدی سفارشات خریداری شده",
     "BuyOrdersBarterSome": "جمع مبالغ تهاتری سفارشات خریداری شده"
   },
@@ -34,6 +36,7 @@
     "indicator": "شناسه",
     "language": "زبان",
     "name": "نام",
+    "transactionImg": "رسید",
     "username": "نام کاربری",
     "family": "نام خانوادگی",
     "password": "کلمه عبور",
@@ -61,6 +64,8 @@
     "upload": "آپلود",
     "sharge": "شارژ موجودی",
     "accept": "تایید",
+    "accepted": "تایید شده",
+    "transactionType": "نوع تراکنش",
     "amount requested": "میزان درخواستی"
   },
   "orders": {
@@ -72,8 +77,8 @@
     "cashUnit": "واحد پول",
     "cashPerOne": "قیمت هر واحد",
     "cashDiscount": "قیمت تخفیف",
-    "cash": "مبلغ نقدی",
-    "barter": "مبلغ تهاتری",
+    "cash": "موجودی نقدی",
+    "barter": "موجودی تهاتری",
     "date": "تاریخ اعتبار",
     "sellCounts": "تعداد فروش",
     "status": "وضعیت"

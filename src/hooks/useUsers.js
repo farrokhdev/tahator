@@ -20,23 +20,22 @@ export const GET_USERS = gql`
       isDeleted
       payments {
         _id
+        image
       }
     }
   }
 `;
 
 export const useGetUsers = (filters) => {
-  const [
-    getUsersList,
-    { data: usersData, loading: usersLoading, error: usersError, refetch },
-  ] = useLazyQuery(GET_USERS, {
-    variables: {
-      filters: filters,
-    },
-    fetchPolicy: "no-cache",
-  });
+  const [getUsersList, { data: usersData, error: usersError, refetch }] =
+    useLazyQuery(GET_USERS, {
+      variables: {
+        filters: filters,
+      },
+      fetchPolicy: "no-cache",
+    });
 
-  return { getUsersList, usersData, usersLoading, usersError, refetch };
+  return { getUsersList, usersData, usersError, refetch };
 };
 
 // GET_USERS END
@@ -56,11 +55,14 @@ export const GET_USER = gql`
       profit
       payments {
         _id
+        transactionType
+        accepted
         order {
           buyer {
             fullName
           }
         }
+        image
         transaction {
           _id
           payment

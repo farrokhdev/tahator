@@ -69,8 +69,8 @@ export const AddUserForm = ({ onFinish, formRef }) => {
         <Input />
       </Form.Item>
       <Form.Item
-        label={"نوع"}
-        name={t("users.type")}
+        label={t("users.type")}
+        name={"type"}
         rules={[
           {
             required: true,

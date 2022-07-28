@@ -16,6 +16,7 @@ const routes = {
   userWallet: "user-wallet",
   financialManagement: "financial-management",
   user: "users/:id",
+  offlineTransactions: "offline-transactions",
 };
 
 const ref = { ...{ routes } };

@@ -34,6 +34,7 @@ import { useAddTransaction } from "../../hooks/useTransaction";
 import { TransactionCreate } from "../CrudOprations/TransactionOpration";
 import { TransactionImageForm } from "../Forms/TransactionImageForm";
 import { t } from "i18next";
+import { useGetPayments } from "../../hooks/usePayment";
 
 export const UserWalletComp = () => {
   // Form Refs
@@ -50,6 +51,7 @@ export const UserWalletComp = () => {
   //   CRUD OPRATIONS
 
   // get
+
   const { getUsersList, usersLoading, usersError } = useGetUsers();
 
   const [users, setUsers] = useState([]);
@@ -79,6 +81,7 @@ export const UserWalletComp = () => {
         type: input.type,
         wallet: input.wallet,
         amount: input.amount,
+        // transactionType: input.transactionType,
       },
       refetchHandler,
       transForm,
@@ -231,6 +234,20 @@ export const UserWalletComp = () => {
   // Payments TABLE COLUMN
   const paymentsColumns = [
     {
+      title: t("users.transactionImg"),
+      width: "10%",
+      editable: true,
+      align: "center",
+      render: (_, record, num) => {
+        console.log(record);
+        return (
+          <>
+            <img src={`${record?.image}`} alt="" />
+          </>
+        );
+      },
+    },
+    {
       title: t("users.type"),
       dataIndex: "type",
       width: "10%",
@@ -281,6 +298,34 @@ export const UserWalletComp = () => {
       },
     },
     {
+      title: t("users.accepted"),
+      width: "10%",
+      editable: true,
+      align: "center",
+      render: (_, record, num) => {
+        console.log(record);
+        return (
+          <>
+            {record?.accepted ? (
+              <Tag color={"green"}>تایید شده</Tag>
+            ) : (
+              <Tag color={"yellow"}>در حال پردازش</Tag>
+            )}
+          </>
+        );
+      },
+    },
+    {
+      title: t("users.transactionType"),
+      width: "10%",
+      editable: true,
+      align: "center",
+      render: (_, record, num) => {
+        console.log(record);
+        return <>{record?.transactionType}</>;
+      },
+    },
+    {
       title: t("users.uploadTransaction"),
       width: "15%",
       editable: true,
@@ -297,7 +342,7 @@ export const UserWalletComp = () => {
                 justifyContent: "space-evenly",
               }}
             >
-              <Button type="primary" onClick={() => showUploadtModal()}>
+              <Button type="primary" onClick={() => showUploadtModal(record)}>
                 {t("users.upload")}
               </Button>
             </span>
@@ -336,6 +381,8 @@ export const UserWalletComp = () => {
   const [uploadVisible, setUploadVisible] = useState(false);
 
   const showUploadtModal = async (record) => {
+    console.log(record);
+    setPayId(record?._id);
     setUploadVisible(true);
   };
 
@@ -356,7 +403,7 @@ export const UserWalletComp = () => {
         hideModal={hideUploadModal}
         // formName={"wallet"}
       >
-        <TransactionImageForm />
+        <TransactionImageForm id={payId} />
       </GlobModal>
       {/* upload TRANSACTION MODAL END */}
 

@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import DefaultTable from "../Table/DefaultTable";
-import { Button, Form, message, Popconfirm, Tag, Typography } from "antd";
-import {
-  DeleteOutlined,
-  EditOutlined,
-  CheckSquareOutlined,
-} from "@ant-design/icons";
+import { Button, Form, Popconfirm, Tag, Typography } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 import {
-  getUsersHandler,
   UserCreate,
   UserDelete,
   UserEdit,
@@ -16,7 +11,6 @@ import {
   UserGetSingle,
 } from "../CrudOprations/UserOprations";
 
-import { AddUserForm } from "../Forms/AddUserForm";
 import {
   useAddUser,
   useGetUser,
@@ -28,8 +22,12 @@ import { UsersTopBox } from "../Globals/UsersTopBox";
 import CurrencyFormat from "react-currency-format";
 import { useNavigate } from "react-router";
 import { t } from "i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllUsers } from "../../redux/users";
 
 export const UsersComp = () => {
+  const dispatch = useDispatch();
+  const usersData = useSelector((state) => state.users);
   // Form Refs
   const [form] = Form.useForm();
   const [createForm] = Form.useForm();
@@ -43,20 +41,17 @@ export const UsersComp = () => {
   //   CRUD OPRATIONS
 
   // get
-  const { getUsersList, usersLoading, usersError } = useGetUsers();
-
-  const [users, setUsers] = useState([]);
-  const refetchHandler = () => {
-    getUsersHandler(getUsersList, setUsers);
+  const { getUsersList } = useGetUsers();
+  const getUserData = () => {
+    dispatch(fetchAllUsers(getUsersList));
   };
-
   useEffect(() => {
-    getUsersHandler(getUsersList, setUsers);
+    getUserData();
   }, []);
 
   // filter
   const FilterOp = (filter) => {
-    UserGetByfilter(getUsersList, setUsers, filter, searchForm);
+    // UserGetByfilter(getUsersList, setUsers, filter, searchForm);
   };
 
   // add
@@ -65,14 +60,7 @@ export const UsersComp = () => {
 
   const createOp = (input) => {
     console.log(input);
-    UserCreate(
-      createUser,
-      input,
-      refetchHandler,
-      createForm,
-      hideModal,
-      addError
-    );
+    UserCreate(createUser, input, getUserData, createForm, hideModal, addError);
   };
 
   // get single
@@ -92,7 +80,7 @@ export const UsersComp = () => {
   const { updateUser, editData, editLoading, editError } = useEditUser();
 
   const editOp = (input) => {
-    UserEdit(updateUser, input, id, refetchHandler, hideEditModal, editError);
+    UserEdit(updateUser, input, id, getUserData, hideEditModal, editError);
   };
 
   // delete
@@ -100,7 +88,7 @@ export const UsersComp = () => {
     useDeleteUser();
 
   const deleteOp = (id) => {
-    UserDelete(removeUser, id, refetchHandler, deleteError);
+    UserDelete(removeUser, id, getUserData, deleteError);
   };
   //   CRUD OPRATIONS END
 
@@ -137,16 +125,6 @@ export const UsersComp = () => {
       },
     },
     {
-      title: t("users.email"),
-      dataIndex: "email",
-      width: "10%",
-      editable: true,
-      align: "center",
-      render: (_, record) => {
-        return <>{record?.email}</>;
-      },
-    },
-    {
       title: t("users.country"),
       dataIndex: "country",
       width: "10%",
@@ -159,7 +137,7 @@ export const UsersComp = () => {
     {
       title: t("users.adress"),
       dataIndex: "address",
-      width: "10%",
+      width: "20%",
       editable: true,
       align: "center",
       render: (_, record) => {
@@ -313,10 +291,10 @@ export const UsersComp = () => {
       />
       <DefaultTable
         form={form}
-        data={users}
+        data={usersData.users[0]}
         columns={columns}
-        loading={usersLoading}
-        error={usersError}
+        loading={usersData.loading}
+        error={usersData.error}
       />
     </>
   );

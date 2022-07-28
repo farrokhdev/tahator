@@ -13,7 +13,7 @@ const DefaultTable = ({
 }) => {
   useEffect(() => {
     if (error) {
-      message.error(error?.message);
+      message.error(error);
     }
   }, [error]);
   return (
@@ -50,9 +50,9 @@ const DefaultTable = ({
           },
         }}
         loading={loading}
-        scroll={{
-          x: 1000,
-        }}
+        // scroll={{
+        //   x: 1000,
+        // }}
       />
     </Form>
   );

@@ -1,18 +1,42 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getUsersHandler } from "../components/CrudOprations/UserOprations";
 
 const initialState = {
-  value: [],
+  users: [],
+  loading: false,
+  error: "",
 };
+
+export const fetchAllUsers = createAsyncThunk(
+  "users/fetchAllStatus",
+  async (getF) => {
+    try {
+      const res = await getF();
+      const data = res?.data?.getUsers;
+      const filtered = res?.data?.getUsers.filter((user) => !user.isDeleted);
+      // set(filtered);
+      return filtered;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
 
 export const users = createSlice({
   name: "users",
   initialState,
-  reducers: {
-    getUList: async (state, action) => {
-      getUsersHandler(action.payload, state).then(
-        (res) => (state.value = res.data)
-      );
+  reducers: {},
+  extraReducers: {
+    [fetchAllUsers.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [fetchAllUsers.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.users.push(action.payload);
+    },
+    [fetchAllUsers.rejected]: (state, action) => {
+      state.loading = false;
+      state.error.push(action.payload.message);
     },
   },
 });

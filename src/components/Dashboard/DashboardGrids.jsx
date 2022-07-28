@@ -94,6 +94,19 @@ export const DashboardGrids = () => {
       <div className="dashboard-item">
         <BiBarChartSquare className="icon icon-bg" />
         <div className="count-box">
+          <p>{t("dashboard.orders")}</p>
+          <p className="count-item">
+            {ordersLoading ? (
+              <Spin spinning={ordersLoading} />
+            ) : (
+              ordersData?.getOrders?.length
+            )}
+          </p>
+        </div>
+      </div>
+      <div className="dashboard-item">
+        <BiBarChartSquare className="icon icon-bg" />
+        <div className="count-box">
           <p>{t("dashboard.acceptedOrders")}</p>
           <p className="count-item">
             {ordersLoading ? (
@@ -114,15 +127,6 @@ export const DashboardGrids = () => {
             ) : (
               ordersData?.getOrders?.length
             )}
-          </p>
-        </div>
-      </div>
-      <div className="dashboard-item">
-        <BsCurrencyDollar className="icon icon-bg" />
-        <div className="count-box">
-          <p>{t("dashboard.BuyOrdersBarterSome")}</p>
-          <p className="count-item">
-            {ordersLoading ? <Spin spinning={ordersLoading} /> : orderAmount}
           </p>
         </div>
       </div>

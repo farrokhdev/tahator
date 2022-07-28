@@ -111,6 +111,13 @@ export const AdminsComp = () => {
   // TABLE COLUMN
   const columns = [
     {
+      title: t("admins.username"),
+      dataIndex: "username",
+      width: "15%",
+      editable: true,
+      align: "center",
+    },
+    {
       title: t("admins.name"),
       dataIndex: "name",
       width: "15%",
@@ -124,13 +131,6 @@ export const AdminsComp = () => {
           </div>
         );
       },
-    },
-    {
-      title: t("admins.username"),
-      dataIndex: "username",
-      width: "15%",
-      editable: true,
-      align: "center",
     },
     {
       title: t("admins.role"),

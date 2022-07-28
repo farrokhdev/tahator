@@ -5,6 +5,7 @@
     "orders": "orders",
     "financial management": "Financial Management",
     "currency management": "currency Management",
+    "offline transactions": "offline transactions",
     "Profit accounts": "Profit accounts",
     "users wallet": "users wallet",
     "settelment requests": "settelment requests",
@@ -26,6 +27,7 @@
     "userCashSome": "The sum of users cash balance",
     "userBarterSome": "The sum of users barter balance",
     "acceptedOrders": "accepted orders",
+    "orders": "orders",
     "BuyOrders": "Purchased orders",
     "BuyOrdersCashSome": "Total cash amounts of purchased orders",
     "BuyOrdersBarterSome": "Total barter amounts of purchased orders"
@@ -34,6 +36,7 @@
     "indicator": "indicator",
     "language": "language",
     "name": "name",
+    "transactionImg": "transaction",
     "username": "username",
     "family": "family",
     "fullname": "full name",
@@ -61,6 +64,8 @@
     "upload": "upload",
     "sharge": "charg",
     "accept": "accept",
+    "accepted": "accepted",
+    "transactionType": "transaction type",
     "amount requested": "amount requested"
   },
   "orders": {
